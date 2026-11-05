@@ -1,0 +1,20 @@
+document semantic at :: {
+system SQLInvestigator #afccf3ce-8751-44dc-af76-be60c1034415 {
+ desc "A single-user conversational investigation tool. Claude Code uses a local MCP server to inspect and query independently authorized SQL Server databases."
+ actor Developer #2bac7d1e-21e9-4e61-983b-e69eb142ae6e [person] { owns: Investigation }
+ external-system ClaudeCode #10910d6f-5d19-4f89-ae88-476abe3abddb { desc "Employer-approved cloud agent host and conversational interface." }
+ external-system SQLServer #aeba2c48-3b2d-49aa-af24-0d15cc96e98a { desc "One or more independently authorized SQL Server databases." }
+ domain Investigation #9fcc2c3f-016c-4280-a14e-1481f2a17b98 {
+  classification = core
+  capability InvestigateData #76dbe96b-b9bc-470c-a8ba-4ed85da2c1a9 { requirement ReadOnly #8144081a-f7b9-4816-a724-cfcd5ea0542d { desc "Only bounded, authorized read-only SQL queries may execute." } }
+  bounded-context QueryExecution #17808217-6642-46c3-af86-9de41ad9fe5d {
+   realizes: InvestigateData
+   resource InvestigationHistory #069e8309-22db-4048-8c43-341fa9586f57 [data-store] { desc "Local JSON history with evidence and provenance." }
+   resource CredentialVault #783fa850-ffb5-40e3-846c-4a215d12d393 [secret-store] { desc "Windows DPAPI protected SQL credentials." }
+   service QueryGateway #c1f771be-65f0-46b9-a3d1-514b26a8d027 { desc "Local .NET MCP stdio service validating SQL and enforcing budgets before execution." }
+   service KnowledgeService #1dca3692-e8e7-4b8c-864e-baf97ab2070b { desc "Maintains schema snapshots and proposed cross-database relationships." }
+  }
+ }
+ deployable LocalMCPServer #6ae994a4-5c93-4913-a298-8e93a51a0d32 { desc "Windows .NET 10 executable, MCP over stdio." }
+}
+}
