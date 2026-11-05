@@ -1,0 +1,89 @@
+# Continuum — the architecture gate, answered by Continuum Host.
+#
+# ONE checkout: your own repository. No Continuum source, no compiler, no corpus,
+# and no credential to a private repository — the semantics live in Host and this
+# job asks it.
+#
+# Three settings, all yours — `continuum ci setup` checks each of them from your
+# machine (and `--apply` creates the missing ones from your shell):
+#   vars.CONTINUUM_HOST            your Continuum Host, e.g. https://continuum.example
+#   secrets.CONTINUUM_HOST_API_KEY the Host's automation API key — the CI credential
+#                                  (or secrets.CONTINUUM_HOST_TOKEN, a bearer — never both;
+#                                  the one left unset arrives empty and is ignored)
+#   secrets.AZURE_ARTIFACTS_TOKEN  read access (Packaging: Read) to the Avlon feed
+#
+# The CLI is published to the Avlon Azure Artifacts feed ONLY — never npmjs — so
+# the install needs a feed credential. It goes to a userconfig OUTSIDE the checkout.
+#
+# EVERY RED RUN SAYS WHETHER THE ARCHITECTURE WAS LOOKED AT. A missing or refused
+# credential, an unreachable feed or Host, or a CLI that would not install stops the
+# job with an annotation naming the cause and "architecture not evaluated" — never
+# as an architecture failure.
+#
+# FIVE OUTCOMES, FOUR EXITS (DEVELOPMENT-LIFECYCLE 12.1.3). `guard ci` exits
+#   0  PASS            Host judged yes
+#   1  FAIL            Host judged no — never retry this one
+#   2  INDETERMINATE   no judgment was obtained and none was required
+#   3  INDETERMINATE   no judgment was obtained and one WAS required — ci requires one by default
+#   3  NOT APPLICABLE  no package, spec or model — blocks HERE, because this workflow passes
+#                      --require-judgment: a repository that installed this gate and lost its
+#                      model must not go green (without the flag it would exit 0)
+# A gate that went green because the service was down would certify nothing while
+# looking like it had, so 2 and 3 fail the job — and because they are distinguishable
+# from 1, a workflow can choose to retry an outage and never retry a genuine FAIL.
+name: Continuum
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  architecture:
+    name: Architecture gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Authenticate to the Avlon feed
+        shell: bash
+        env:
+          FEED: https://pkgs.dev.azure.com/avlon/_packaging/continuum/npm/registry/
+          AZURE_ARTIFACTS_TOKEN: ${{ secrets.AZURE_ARTIFACTS_TOKEN }}
+        run: |
+          set -euo pipefail
+          stop() { echo "::error title=Continuum gate: $1, architecture not evaluated::$2"; echo "$2"; echo "architecture  NOT EVALUATED — the CLI was not installed, so nothing was judged"; exit 1; }
+          test -n "$AZURE_ARTIFACTS_TOKEN" || stop "feed credential (missing)" "the secret AZURE_ARTIFACTS_TOKEN is not set — the CLI is published only to the Avlon feed. Add it under Settings, Secrets and variables, Actions; on your machine, continuum ci setup checks every setting"
+          umask 077
+          # the credential travels in a file, never on a command line
+          printf 'Authorization: Bearer %s\n' "$AZURE_ARTIFACTS_TOKEN" > "$RUNNER_TEMP/continuum-feed.hdr"
+          status=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 --retry 2 --retry-delay 3 -H "@$RUNNER_TEMP/continuum-feed.hdr" "${FEED}@avlon%2fcontinuum-cli" 2>/dev/null) || status=000
+          rm -f "$RUNNER_TEMP/continuum-feed.hdr"
+          case "$status" in
+            200) ;;
+            401|403) stop "feed credential (rejected)" "the Avlon feed refused AZURE_ARTIFACTS_TOKEN (HTTP $status): the secret is set and is wrong, expired or lacks Packaging: Read — replace it" ;;
+            000) stop "feed unreachable" "the Avlon feed could not be reached — an outage is safe to retry" ;;
+            *) stop "feed (HTTP $status)" "the Avlon feed answered HTTP $status for @avlon/continuum-cli" ;;
+          esac
+          {
+            echo "@avlon:registry=$FEED"
+            echo "${FEED#*:}:_authToken=$AZURE_ARTIFACTS_TOKEN"
+          } > "$RUNNER_TEMP/.npmrc"
+          echo "npm_config_userconfig=$RUNNER_TEMP/.npmrc" >> "$GITHUB_ENV"
+
+      - name: Install the Continuum CLI
+        shell: bash
+        run: |
+          npm install -g @avlon/continuum-cli || { echo "::error title=Continuum gate: installation failed, architecture not evaluated::npm could not install @avlon/continuum-cli from the Avlon feed — the npm error is above"; exit 1; }
+          continuum --version
+
+      - name: Check the architecture against Host
+        env:
+          CONTINUUM_HOST: ${{ vars.CONTINUUM_HOST }}
+          CONTINUUM_HOST_API_KEY: ${{ secrets.CONTINUUM_HOST_API_KEY }}
+          CONTINUUM_HOST_TOKEN: ${{ secrets.CONTINUUM_HOST_TOKEN }}
+        run: continuum guard ci --require-judgment

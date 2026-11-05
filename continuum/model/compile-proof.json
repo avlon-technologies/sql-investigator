@@ -1,0 +1,73 @@
+{
+  "development-package-proof": "1",
+  "normative": false,
+  "note": "the compiler's result relayed by tools/development-package.mjs — diagnostics and the ledger have no ratified wire form; the attestation and changeState are the engines' own digests",
+  "package": {
+    "name": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "core": "adl/1.7",
+    "documents": [
+      "architecture.adl"
+    ]
+  },
+  "ok": true,
+  "attestation": "sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1",
+  "changeState": "sha256:78a0887bfc1e20092d2def2ab8d0a36bcb2d415904e2983b83c452cfc6f83155",
+  "ledger": {
+    "passed": 78,
+    "failed": 0,
+    "notEvaluated": 0,
+    "byReason": {}
+  },
+  "notEvaluated": [],
+  "inputs": {
+    "manifest": {
+      "name": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "core": "adl/1.7",
+      "imports": [],
+      "extensions": [],
+      "digest": "sha256:59b0dae175582da20f1c75547f8121409d1e90e39946eb4a1ba90abd31b528b2"
+    },
+    "documents": [
+      {
+        "path": "architecture.adl",
+        "digest": "sha256:ffaa29b24d5e796b09a13c9024ba5edddbef9a2beed12a81ba9b048b0e87cb3c",
+        "bytes": 2930
+      }
+    ],
+    "inputSet": "sha256:5f78cbc0b413602d71efd2994a011ff52babe5a849c1a985a2898e4b6c878714",
+    "note": "digests over the AUTHORED input bytes, distinct from the attestation (the engine's digest over canonical content)."
+  },
+  "verifier": {
+    "recordedBeside": "compile-proof.verifier.json",
+    "note": "the verifier that decided this judgment is NOT in this proof: it is acquired by the client and recorded beside it (continuum-verifier-record/1). When that record is absent the judgment is UNIDENTIFIED — a historical record, not attributable, not replayable, never a current claim."
+  },
+  "warnings": [],
+  "errors": [],
+  "derivedFrom": null,
+  "binding": {
+    "environments": [
+      {
+        "name": "LocalDevelopment",
+        "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+        "document": "model/local-development.adl-binding.json",
+        "completeness": "passed",
+        "bindingDigest": "sha256:e9c99a6caaf7b7081128db03e24d834927215691ed9b9db84f893546d4d7189e",
+        "notEvaluated": []
+      }
+    ],
+    "claims": [
+      {
+        "vocabulary": "avlon.bindings.localdotnet draft-1",
+        "digest": "sha256:c5041a88de4546ec3477affca3a8af7f588e8e9daadb9136ee723015ed0f7da4"
+      }
+    ],
+    "secretMaterial": {
+      "status": "not-evaluated",
+      "reason": "unresolved-normative-dependency",
+      "detail": "R12-1"
+    },
+    "unboundEnvironments": []
+  }
+}

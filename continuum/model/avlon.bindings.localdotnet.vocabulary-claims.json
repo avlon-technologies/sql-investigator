@@ -29,7 +29,12 @@
         }
       },
       "atomic-json-files": {
-        "claims": [],
+        "claims": [
+          "retention-honored",
+          "erasure-capable",
+          "access-controlled",
+          "auditable"
+        ],
         "configuration": {
           "serializer": "atom",
           "writes": "atom",

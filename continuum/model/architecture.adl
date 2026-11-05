@@ -1,7 +1,7 @@
 document semantic at :: {
 system SQLInvestigator #afccf3ce-8751-44dc-af76-be60c1034415 {
  desc "A single-user conversational investigation tool. Claude Code uses a local MCP server to inspect and query independently authorized SQL Server databases."
- actor Developer #2bac7d1e-21e9-4e61-983b-e69eb142ae6e [person] { owns: Investigation }
+ actor Developer #2bac7d1e-21e9-4e61-983b-e69eb142ae6e [person] { owns: Investigation, Investigation.QueryExecution }
  external-system ClaudeCode #10910d6f-5d19-4f89-ae88-476abe3abddb { desc "Employer-approved cloud agent host and conversational interface." }
  external-system SQLServer #aeba2c48-3b2d-49aa-af24-0d15cc96e98a { desc "One or more independently authorized SQL Server databases." }
  domain Investigation #9fcc2c3f-016c-4280-a14e-1481f2a17b98 {
@@ -10,12 +10,27 @@ system SQLInvestigator #afccf3ce-8751-44dc-af76-be60c1034415 {
   bounded-context QueryExecution #17808217-6642-46c3-af86-9de41ad9fe5d {
    realizes: InvestigateData
    resource InvestigationHistory #069e8309-22db-4048-8c43-341fa9586f57 [data-store] { desc "Local JSON history with evidence and provenance." }
+   resource KnowledgeStore #4ab9a12f-98de-44a1-b021-0d700f8361da [data-store] { desc "Local JSON schema snapshots with source and freshness, and inferred cross-database relationships with provenance and review state." }
    resource CredentialVault #783fa850-ffb5-40e3-846c-4a215d12d393 [secret-store] { desc "Windows DPAPI protected SQL credentials." }
-   service QueryGateway #c1f771be-65f0-46b9-a3d1-514b26a8d027 { desc "Local .NET MCP stdio service validating SQL and enforcing budgets before execution." }
-   service KnowledgeService #1dca3692-e8e7-4b8c-864e-baf97ab2070b { desc "Maintains schema snapshots and proposed cross-database relationships." }
+   service QueryGateway #c1f771be-65f0-46b9-a3d1-514b26a8d027 { desc "Local .NET MCP stdio service validating SQL and enforcing budgets before execution."
+    realizes: ::SQLInvestigator.Investigation.InvestigateData
+    satisfies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly
+    reads: CredentialVault
+    writes: InvestigationHistory
+    deployedAs: ::SQLInvestigator.LocalMCPServer
+   }
+   service KnowledgeService #1dca3692-e8e7-4b8c-864e-baf97ab2070b {
+    desc "Maintains schema snapshots and proposed cross-database relationships."
+    writes: KnowledgeStore
+    deployedAs: ::SQLInvestigator.LocalMCPServer
+   }
   }
  }
  deployable LocalMCPServer #6ae994a4-5c93-4913-a298-8e93a51a0d32 { desc "Windows .NET 10 executable, MCP over stdio." }
+ test ReadOnlyEnforcement #df706509-e137-4f52-a415-42cc1ada9a8a {
+  desc "Negative security suite: writes, multiple batches, dynamic SQL, linked servers, OPENROWSET, cross-database references and unparseable SQL are rejected before execution, and a read-only SQL principal denies writes independently."
+  verifies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway
+ }
  environment LocalDevelopment #a2eaf960-60d0-4a93-a7c6-4e61e672983a { desc "Local Windows developer workstation running Claude Code and the MCP stdio executable." }
 }
 }

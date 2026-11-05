@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "continuum": {
+      "type": "stdio",
+      "command": "continuum-local-mcp",
+      "args": [],
+      "env": {
+        "CONTINUUM_HOST_URL": "https://continuum.dev.avlon.ca"
+      }
+    }
+  }
+}

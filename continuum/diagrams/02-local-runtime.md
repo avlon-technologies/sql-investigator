@@ -1,4 +1,4 @@
-# Local runtime — provisional component allocation
+# Local runtime — component allocation
 
 ```mermaid
 flowchart TB
@@ -6,16 +6,18 @@ flowchart TB
   subgraph exe[LocalMCPServer — .NET 10 MCP stdio executable]
     gateway[QueryGateway\nScriptDom validation / budgets]
     knowledge[KnowledgeService\nSchema snapshots / relationship review]
-    history[(InvestigationHistory\nAtomic JSON)]
-    secrets[(CredentialVault\nDPAPI CurrentUser)]
   end
+  history[(InvestigationHistory\nAtomic JSON)]
+  kstore[(KnowledgeStore\nAtomic JSON)]
+  secrets[(CredentialVault\nDPAPI CurrentUser)]
   db[(SQL Server)]
   claude -. "MCP stdio" .-> gateway
-  gateway --> history
-  gateway --> secrets
+  claude -. "MCP stdio" .-> knowledge
+  gateway -- writes --> history
+  gateway -- reads --> secrets
   gateway -. "SqlClient / authorized SELECT" .-> db
-  knowledge --> history
+  knowledge -- writes --> kstore
   knowledge -. "Schema inspection" .-> db
 ```
 
-**Modeling gap:** QueryGateway and KnowledgeService are declared Services; LocalMCPServer is a declared Deployable. Their placement inside that deployable is a **design intent**, not yet supported by `deployedAs` relationships. Correct ADL before treating this as a mechanically proven C2/C3 diagram.
+Solid arrows and the placement of both services inside `LocalMCPServer` are declared in the ADL (`writes`, `reads`, `deployedAs`). Dashed arrows are intended integrations the model does not declare.

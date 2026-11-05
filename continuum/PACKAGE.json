@@ -1,0 +1,128 @@
+{
+  "development-package": "continuum-development-package/1",
+  "name": "sql-investigator",
+  "generator": {
+    "tool": "tools/development-package.mjs",
+    "version": "0.1.0"
+  },
+  "goal": "GOAL.md",
+  "semantic": {
+    "package": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "core": "adl/1.7",
+    "attestation": "sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1",
+    "changeState": "sha256:78a0887bfc1e20092d2def2ab8d0a36bcb2d415904e2983b83c452cfc6f83155",
+    "manifest": "model/architecture.adl-manifest.json",
+    "documents": [
+      "model/architecture.adl"
+    ],
+    "textProjection": "model/architecture.adl.txt",
+    "proof": "model/compile-proof.json",
+    "warnings": 0,
+    "notEvaluated": 0
+  },
+  "change": null,
+  "environment": {
+    "name": "LocalDevelopment",
+    "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+    "document": "model/local-development.adl-binding.json",
+    "bindingDigest": "sha256:e9c99a6caaf7b7081128db03e24d834927215691ed9b9db84f893546d4d7189e"
+  },
+  "environments": [
+    {
+      "name": "LocalDevelopment",
+      "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+      "document": "model/local-development.adl-binding.json",
+      "bindingDigest": "sha256:e9c99a6caaf7b7081128db03e24d834927215691ed9b9db84f893546d4d7189e"
+    }
+  ],
+  "bindings": [
+    "model/local-development.adl-binding.json"
+  ],
+  "vocabularies": [
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json"
+  ],
+  "acceptance": {
+    "scenarios": "acceptance/scenarios",
+    "runner": "acceptance/run.mjs",
+    "fakeProvider": "acceptance/fake-model-provider.mjs",
+    "adapter": "acceptance/adapter.mjs",
+    "count": 12,
+    "names": [
+      "b01-connection-provisioning",
+      "b02-bounded-select",
+      "b03-reject-writes",
+      "b04-fail-closed-policy",
+      "b05-resource-budgets",
+      "b06-cross-database-correlation",
+      "b07-history",
+      "b08-relationship-review",
+      "b09-secret-redaction",
+      "b10-schema-drift",
+      "b11-safe-failures",
+      "b12-claude-only"
+    ],
+    "traces": [],
+    "executed": false,
+    "results": null,
+    "uncoveredRequirements": []
+  },
+  "implementation": "IMPLEMENTATION.md",
+  "behaviour": {
+    "document": "BEHAVIOUR.md",
+    "starts": 0,
+    "underspecified": 0
+  },
+  "readme": "README.md",
+  "controls": [
+    {
+      "variable": "MAX_QUERY_ROWS",
+      "default": "500",
+      "meaning": "Recommended maximum returned rows per query; enforce in gateway."
+    },
+    {
+      "variable": "SQL_TIMEOUT_SECONDS",
+      "default": "15",
+      "meaning": "Recommended SQL command timeout; subject to environment review."
+    }
+  ],
+  "generated": [
+    "BEHAVIOUR.md",
+    "IMPLEMENTATION.md",
+    "README.md",
+    "acceptance/README.md",
+    "acceptance/fake-model-provider.mjs",
+    "acceptance/run.mjs",
+    "model/architecture.adl.txt",
+    "model/compile-proof.json"
+  ],
+  "files": {
+    "BEHAVIOUR.md": "sha256:6d45d37581d38be8ae14770459dd2b95793d83a30d1c7472a7d8d2760da67b5b",
+    "GOAL.md": "sha256:242c389a8bd6ca13518b6f7655dcdd7b5b379b5674982e9cb03ddec01f31b90b",
+    "IMPLEMENTATION.md": "sha256:7ee50c204bb41c2fcbc334feb4c229704e4f872005fbbe1e4857edd6d97fe402",
+    "README.md": "sha256:4b3e7cf6f717d94a4ebb495bf970c4557b2ce3509cec1b07756ecf5f32949101",
+    "acceptance/README.md": "sha256:4db1ad8c511285657cd8860fb053c84e8e9784514d174dedd5d3ce20ab3ad54f",
+    "acceptance/adapter.mjs": "sha256:47a260982e58d27635ed77fb5b0ff558861712c3deffc1fab357879645221172",
+    "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
+    "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:274ef87e6cd6b3a14f82208c5d591c4afc3d2777472e886e5d851df4bd557ef6",
+    "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:171bea3590a6dad4532e2c98a19c4bc20da3a36a3e4826bdee32f6060ce9a863",
+    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:dfe355639f26cae33fc08e7eafe86cffac13dfb3663cab9efbd5392951416af7",
+    "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:662fa6b47f754d2018ea401c90d08744ace7209296975bee1f4bb93efbfbe899",
+    "acceptance/scenarios/b05-resource-budgets.scenario.json": "sha256:99f98a45333b3b6e7c2369d1f84252153e73256dea7f3e542722576301d607bf",
+    "acceptance/scenarios/b06-cross-database-correlation.scenario.json": "sha256:0eeb48f9ebed2866eb987becf93f52a822c8625c5145780a34f3975bd6d44b19",
+    "acceptance/scenarios/b07-history.scenario.json": "sha256:9e9a2f1616b9c143396a02c347202e31171daa467d22791d65de96ad52d3c8cd",
+    "acceptance/scenarios/b08-relationship-review.scenario.json": "sha256:de655868385ce10b7f5444e7320e013b933d9a8bd4ee00c1d07b9d35288e40c6",
+    "acceptance/scenarios/b09-secret-redaction.scenario.json": "sha256:223c542b74d59627816ff48c781e61222684dbd4b1d3c334a87c1faa651e9988",
+    "acceptance/scenarios/b10-schema-drift.scenario.json": "sha256:ad1be20fd08c0f6833a70a97b054b836db92721ad9c753efdc6e493b918110d3",
+    "acceptance/scenarios/b11-safe-failures.scenario.json": "sha256:7e0f1387826a0ec3c2dbb1b81406769fb4b94aa3b247775c5eeb67b6aa451d7a",
+    "acceptance/scenarios/b12-claude-only.scenario.json": "sha256:06c6a1c17c319f0f29322141a3ea9d024479d54d21a969ad41d704deb99872e9",
+    "development-package.json": "sha256:a50f14ee24e2df90af5251d40d798532a9a1252e6228d990f34b22ae9464cce3",
+    "model/architecture.adl": "sha256:fb5df5f24eeb95cef9950e35a178e8bfbd8e9a490d640342189d8035fb2a0e43",
+    "model/architecture.adl-manifest.json": "sha256:4ac02691d8b094729b7f1c5f7fc9fd58a94ae504cf6e61277d75f3bc74f61ceb",
+    "model/architecture.adl.txt": "sha256:1f1c5667b579c084c80f3b6938489508d501c8c92ba65d35f0e1787d0b25f25a",
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:9cc9be819d5cbd024981887bc7b787956c6c08ab7d4771cc753d699ec050175b",
+    "model/compile-proof.json": "sha256:0b7ef158b3c321dfa482957f33c12377c2b69df1c0421f650582cba55802f199",
+    "model/local-development.adl-binding.json": "sha256:67e985ee9fec48ec2ecc0b630233282f7d1d91b37f86711ec2b9e2594525a6a5"
+  }
+}

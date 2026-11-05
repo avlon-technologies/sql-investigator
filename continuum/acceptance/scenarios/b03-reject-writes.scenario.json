@@ -5,6 +5,7 @@
   "verifies": [
     "::SQLInvestigator.Investigation.InvestigateData.ReadOnly"
   ],
+  "test": "::SQLInvestigator.ReadOnlyEnforcement",
   "environment": "LocalDevelopment",
   "given": [
     {

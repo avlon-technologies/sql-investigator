@@ -1,23 +1,38 @@
-# SQL Investigator implementation handoff (authored; not generated)
+# SQL Investigator implementation handoff (hand-authored; complements the generated IMPLEMENTATION.md)
 
-**Status: not a verified Continuum package.** The authoritative intent is `VISION.md`; semantic architecture is `model/architecture.adl`; business meaning is `business/sql-investigator.bdl`; technology choices are `model/local-development.adl-binding.json`; scenarios are `acceptance/scenarios/`; decisions are in `decisions/` (candidate only).
+**Status:** the development package builds and checks clean (attestation `sha256:cc76d530…`, changeState `sha256:78a0887b…`, 0 compiler warnings, LocalDevelopment binding complete, 12 scenarios resolved). The acceptance adapter is scaffolded and every step is a stub, so 0 / 12 scenarios pass. The initial accepted state (S0) has not been recorded by the owner yet.
+
+Authority: `model/architecture.adl` governs; `IMPLEMENTATION.md` is its generated contract. This file adds delivery detail the model does not carry. If they disagree, the model wins.
 
 ## Required delivery
 
-1. Build a .NET 10 Windows console executable speaking MCP over stdio, with stdout reserved for protocol messages and structured redacted diagnostics on stderr. Claude Code is the sole conversational interface.
-2. Implement local interactive connection provisioning (never via MCP), DPAPI CurrentUser secret encryption, ACL-protected alias metadata, and atomic single-writer JSON persistence.
-3. Implement `connection_list`, `connection_remove`, `schema_inspect`, `sql_validate`, `sql_execute`, `investigation_start`, `investigation_record`, `investigation_get`, `knowledge_search`, `knowledge_propose`, and `knowledge_review` MCP operations. Keep names consistent in code and adapter.
-4. Use Microsoft.Data.SqlClient with independently authorized connection aliases and SQL Server read-only principals. Use ScriptDom for a strict allowlist of a single bounded SELECT statement. Reject any unsupported AST node, dynamic execution, linked server, OPENROWSET, cross-database reference, DDL/DML, or multiple batch.
-5. Apply configurable timeout, returned row/byte, concurrency and investigation limits; cancellation; truncation; exact SQL/query ID provenance; redaction; audit events. Never assume a SELECT is safe solely because it is syntactically read-only.
-6. Persist investigation question, hypotheses, query IDs, exact SQL, aliases, findings and uncertainty. Keep inferred relationships proposed until explicit review; preserve rejection evidence. Cache schema with source and freshness; refresh on drift.
-7. Add xUnit unit and disposable SQL Server integration tests. Bind all twelve acceptance scenarios through a real adapter; test the Claude Code MCP journey across two databases with ambiguous and missing keys.
+1. A .NET 10 Windows console executable (`LocalMCPServer`) speaking MCP over stdio, with stdout reserved for protocol messages and structured redacted diagnostics on stderr. Claude Code is the sole conversational interface.
+2. `QueryGateway` and `KnowledgeService` both run inside that executable.
+3. Local interactive connection provisioning (never via MCP), DPAPI CurrentUser encryption in `CredentialVault`, ACL-protected alias metadata, atomic single-writer JSON persistence.
+4. MCP operations: `connection_list`, `connection_remove`, `schema_inspect`, `sql_validate`, `sql_execute`, `investigation_start`, `investigation_record`, `investigation_get`, `knowledge_search`, `knowledge_propose`, `knowledge_review`. Keep names identical in code and in `acceptance/adapter.mjs`.
+5. Microsoft.Data.SqlClient with independently authorized connection aliases and read-only SQL Server principals. ScriptDom strict allowlist of a single bounded SELECT. Reject any unsupported AST node, dynamic execution, linked server, OPENROWSET, cross-database reference, DDL/DML, SELECT INTO or multiple batches.
+6. Configurable timeout, row/byte, concurrency and per-investigation query limits (recommended defaults in `development-package.json`: `MAX_QUERY_ROWS=500`, `SQL_TIMEOUT_SECONDS=15`); cancellation; truncation flags; exact SQL and query-id provenance; redaction; audit events. Never assume a SELECT is safe because it parses as read-only.
+7. Persist question, hypotheses, query ids, exact SQL, aliases, findings and uncertainty in `InvestigationHistory` (written only by QueryGateway). Do not retain raw result rows by default.
+8. Persist schema snapshots (with source and freshness) and inferred relationships (with provenance and review state) in `KnowledgeStore` (written only by KnowledgeService). Keep inferred relationships proposed until explicitly reviewed; keep rejection evidence. Refresh snapshots on drift.
+
+## Obligations from the bindings
+
+Both JSON stores are bound to `atomic-json-files`, which claims `retention-honored`, `erasure-capable`, `access-controlled` and `auditable`. The implementation must deliver all four: a retention rule that is enforced, a way to delete an investigation or knowledge entry, current-user-only file ACLs, and audit events for writes.
+
+## Tests
+
+- xUnit unit tests and disposable SQL Server integration tests.
+- Bind all 12 scenarios in `acceptance/adapter.mjs` against the real MCP process; test the Claude Code journey across two databases with ambiguous and missing keys.
+- The negative SQL corpus (scenarios B03/B04, test `ReadOnlyEnforcement`) must cover nested queries, CTE variations, SQL comments, parser ambiguity and SQL Server-specific escapes.
+- Prove DB-level write denial independently of the AST validator.
+- Use disposable databases and a read-only principal. Never production data.
 
 ## Hard gates
 
-- Workplace data-owner approval for what may be sent to cloud-hosted Claude Code. **No production connection until approved.**
-- Compiler-clean ADL and BDL, successful technology binding realization, generated package build/check, all executable acceptance scenarios passing, governed ADR decisions recorded with verified authority.
+- Data-owner approval for what may be sent to cloud-hosted Claude Code. **No production connection until approved.**
+- All 12 acceptance scenarios passing; `continuum package check continuum` intact; the CI architecture gate green.
 - No separate chat UI, generic database provider layer, SQLite, linked servers, hosted service, or Continuum runtime dependency.
 
-## Known architectural gaps
+## What the model leaves to the implementation
 
-The current ADL compiles with six warnings and is a partial semantic model. The native BDL compiles but covers only initial business capabilities. Binding realization has not been verified. This file is a transparent implementation guide, **not** a substitute for the generated `IMPLEMENTATION.md`.
+Recorded here so no one mistakes it for architecture: MCP tool schemas, the exact allowlist grammar, budget numbers, retention period, how SQL Server is reached (the model declares `SQLServer` and `ClaudeCode` as external systems but no edges to them), and the sensitive-data policy (open in the BDL as `SensitiveDataPolicy`). If any of these needs to become architecture, record a gap in `continuum/gaps/` and propose an `.adl-change`.

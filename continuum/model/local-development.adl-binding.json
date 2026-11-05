@@ -5,7 +5,7 @@
     "base": {
       "package": "avlon.sqlinvestigator",
       "version": "draft-1",
-      "canonicalModel": "sha256:7860e8c92732754ac81e7e642af82c297fc06571396eacf2df5ebf1988c88218"
+      "canonicalModel": "sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1"
     },
     "vocabularies": [
       {
@@ -20,7 +20,7 @@
     "bindings": [
       {
         "kind": "Binding",
-        "id": "b0000001-1111-4111-8111-111111111111",
+        "id": "5f4ffaae-e184-4a6f-b030-4030033a4f0a",
         "name": "BindLocalMCPServer",
         "attributes": {
           "vocabulary": "avlon.bindings.localdotnet",
@@ -41,7 +41,7 @@
       },
       {
         "kind": "Binding",
-        "id": "b0000002-1111-4111-8111-111111111111",
+        "id": "af3f1810-a6bb-4882-b6f7-dde8e0b6848f",
         "name": "BindQueryGateway",
         "attributes": {
           "vocabulary": "avlon.bindings.localdotnet",
@@ -55,13 +55,13 @@
         "relationships": {
           "binds": {
             "ref": "c1f771be-65f0-46b9-a3d1-514b26a8d027",
-            "hint": "SQLInvestigator.QueryGateway"
+            "hint": "SQLInvestigator.Investigation.QueryExecution.QueryGateway"
           }
         }
       },
       {
         "kind": "Binding",
-        "id": "b0000003-1111-4111-8111-111111111111",
+        "id": "c2e85525-908f-453d-a5fa-a288e033e3b5",
         "name": "BindKnowledgeService",
         "attributes": {
           "vocabulary": "avlon.bindings.localdotnet",
@@ -74,13 +74,13 @@
         "relationships": {
           "binds": {
             "ref": "1dca3692-e8e7-4b8c-864e-baf97ab2070b",
-            "hint": "SQLInvestigator.KnowledgeService"
+            "hint": "SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
           }
         }
       },
       {
         "kind": "Binding",
-        "id": "b0000004-1111-4111-8111-111111111111",
+        "id": "0b8293bf-7c6d-45cc-ab4d-b2168e60cbd0",
         "name": "BindInvestigationHistory",
         "attributes": {
           "vocabulary": "avlon.bindings.localdotnet",
@@ -94,13 +94,13 @@
         "relationships": {
           "binds": {
             "ref": "069e8309-22db-4048-8c43-341fa9586f57",
-            "hint": "SQLInvestigator.InvestigationHistory"
+            "hint": "SQLInvestigator.Investigation.QueryExecution.InvestigationHistory"
           }
         }
       },
       {
         "kind": "Binding",
-        "id": "b0000005-1111-4111-8111-111111111111",
+        "id": "3c3673ee-086f-4c42-9755-6586240892cc",
         "name": "BindCredentialVault",
         "attributes": {
           "vocabulary": "avlon.bindings.localdotnet",
@@ -113,7 +113,27 @@
         "relationships": {
           "binds": {
             "ref": "783fa850-ffb5-40e3-846c-4a215d12d393",
-            "hint": "SQLInvestigator.CredentialVault"
+            "hint": "SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "edf460d3-d403-4a43-bbc2-4607edf8da72",
+        "name": "BindKnowledgeStore",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "atomic-json-files",
+          "configuration": {
+            "serializer": "System.Text.Json",
+            "writes": "atomic-replace-single-writer",
+            "retention": "metadata-only-no-row-values"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "4ab9a12f-98de-44a1-b021-0d700f8361da",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.KnowledgeStore"
           }
         }
       }

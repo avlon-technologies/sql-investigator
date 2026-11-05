@@ -1,0 +1,20 @@
+adl-text/0.2
+model avlon.sqlinvestigator draft-1 core adl/1.7
+source sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1 (canonical-model attestation)
+
+system SQLInvestigator — "A single-user conversational investigation tool. Claude Code uses a local MCP server to inspect and query independently authorized SQL Server databases."
+  actor Developer [person] | owns: Investigation, Investigation.QueryExecution
+  deployable LocalMCPServer — "Windows .NET 10 executable, MCP over stdio."
+  domain Investigation (core)
+    bounded-context QueryExecution | realizes: InvestigateData
+      resource CredentialVault [secret-store] — "Windows DPAPI protected SQL credentials."
+      resource InvestigationHistory [data-store] — "Local JSON history with evidence and provenance."
+      resource KnowledgeStore [data-store] — "Local JSON schema snapshots with source and freshness, and inferred cross-database relationships with provenance and review state."
+      service KnowledgeService | deployedAs: ::SQLInvestigator.LocalMCPServer; writes: KnowledgeStore — "Maintains schema snapshots and proposed cross-database relationships."
+      service QueryGateway | deployedAs: ::SQLInvestigator.LocalMCPServer; reads: CredentialVault; realizes: ::SQLInvestigator.Investigation.InvestigateData; satisfies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly; writes: InvestigationHistory — "Local .NET MCP stdio service validating SQL and enforcing budgets before execution."
+    capability InvestigateData
+      requirement ReadOnly — "Only bounded, authorized read-only SQL queries may execute."
+  environment LocalDevelopment — "Local Windows developer workstation running Claude Code and the MCP stdio executable."
+  external-system ClaudeCode — "Employer-approved cloud agent host and conversational interface."
+  external-system SQLServer — "One or more independently authorized SQL Server databases."
+  test ReadOnlyEnforcement | verifies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway — "Negative security suite: writes, multiple batches, dynamic SQL, linked servers, OPENROWSET, cross-database references and unparseable SQL are rejected before execution, and a read-only SQL principal denies writes independently."

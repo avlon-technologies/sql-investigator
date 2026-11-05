@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+*.coverage
+artifacts/
+
+# Local secrets and runtime data (never commit)
+*.dpapi
+appsettings.*.local.json
+
+# >>> continuum >>>
+# Continuum — machine-local client state, written by `continuum install`.
+# The development package in continuum/ IS committed; this is not.
+.continuum/
+# <<< continuum <<<
