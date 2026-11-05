@@ -1,34 +1,36 @@
-# Bounded multi-database investigation — intended behavior
+# Bounded multi-database investigation (editorial sequence)
 
 ```mermaid
 sequenceDiagram
   actor D as Developer
   participant C as Claude Code
-  participant M as Local MCP server
-  participant A as SQL Server A
-  participant B as SQL Server B
-  participant H as JSON investigation history
-  D->>C: Ask investigation question
-  C->>M: investigation_start(question)
-  M->>H: Save question and hypotheses
-  C->>M: schema_inspect(alias A)
-  M->>A: Read authorized metadata
-  A-->>M: Bounded schema snapshot
-  M-->>C: Schema with freshness/provenance
-  C->>M: sql_validate / sql_execute(alias A, SELECT)
-  M->>M: Fail-closed ScriptDom AST + policy + budgets
-  M->>A: Bounded SELECT as read-only principal
-  A-->>M: Bounded result
-  M-->>C: Rows, query ID, exact SQL, truncation
-  C->>M: sql_validate / sql_execute(alias B, SELECT)
-  M->>M: Independent authorization and budgets
-  M->>B: Bounded SELECT
-  B-->>M: Bounded result
-  M-->>C: Evidence with provenance
-  C->>C: Correlate; retain ambiguous/unmatched cases
-  C->>M: investigation_record(findings, uncertainty)
-  M->>H: Atomic history update
-  C-->>D: Evidence-backed findings
+  participant Q as QueryGateway
+  participant K as KnowledgeService
+  participant A as SQL Server alias A
+  participant B as SQL Server alias B
+  participant H as InvestigationHistory
+  participant S as KnowledgeStore
+  D->>C: Ask an investigation question
+  C->>Q: investigation_start(question)
+  Q->>H: save question
+  C->>K: schema_inspect(A)
+  K->>A: Tsql.ReadCatalog
+  K->>S: save snapshot with source and capture time
+  K-->>C: SchemaSnapshot
+  C->>Q: sql_validate / sql_execute(A, SELECT)
+  Q->>Q: SelectOnlyAllowlist + QueryBudgets
+  Q->>A: Tsql.ExecuteSelect as read-only principal
+  Q->>H: query id, exact SQL, alias, timestamps (no rows)
+  Q-->>C: QueryEvidence (rows, truncation flag)
+  C->>Q: sql_execute(B, SELECT)
+  Q->>B: Tsql.ExecuteSelect
+  Q-->>C: QueryEvidence
+  C->>C: correlate; label unmatched and ambiguous records
+  C->>K: knowledge_propose(relationship, evidence)
+  K->>S: relationship stays proposed
+  C->>Q: investigation_record(hypothesis, finding, uncertainty)
+  Q->>H: atomic update
+  C-->>D: evidence-backed findings with uncertainty
 ```
 
-**Status:** Behavior design derived from Vision and B02/B06/B07, not a declared ADL Workflow or verified runtime trace.
+The model declares each **participant** and each **hop's endpoints** (`sends`, `handles`, `invokes`, `reads`, `writes`). It does **not** declare this ordering: there is no ADL Workflow, because Claude Code drives the investigation and the server only answers calls. `continuum preview` reports the declared causality as closed, with no underspecified findings. The order above is illustrative, taken from the Vision and scenarios B02, B06, B07 and B08. It is not a runtime trace.

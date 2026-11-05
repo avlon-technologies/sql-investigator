@@ -31,8 +31,8 @@ The implementation realizes all of the above — and is not in this package.
 | | |
 |---|---|
 | semantic package | `avlon.sqlinvestigator` `draft-1` (`adl/1.6`) |
-| attestation | `sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b` |
-| changeState | `sha256:579b103696bdc1f8c5cbabfca8fc24c5a588083a8912386579a49a888efe48e4` |
+| attestation | `sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77` |
+| changeState | `sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a` |
 | environment | `LocalDevelopment` |
 | scenarios | 12, resolved against the model; execute them with `package run` (adapter `acceptance/adapter.mjs`) |
 | compiler warnings | 0 |

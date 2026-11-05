@@ -1,7 +1,7 @@
 {
   "acceptance-scenario": "1",
   "name": "b03-reject-writes",
-  "purpose": "Reject all write, DDL, execution, SELECT INTO and multi-batch SQL",
+  "purpose": "Reject all write, DDL, execution, SELECT INTO and multi-batch SQL in the allowlist, and prove the read-only principal denies writes on its own",
   "verifies": [
     "::SQLInvestigator.Investigation.InvestigateData.ReadOnly",
     "::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist",
@@ -59,6 +59,19 @@
       "step": "sql.all-rejected-before-execution",
       "args": {},
       "text": "every statement is rejected before it reaches SQL Server, with an audited reason"
+    },
+    {
+      "step": "sql.principal-denies-writes",
+      "args": {
+        "alias": "alpha",
+        "statements": [
+          "INSERT INTO dbo.Orders DEFAULT VALUES",
+          "UPDATE dbo.Orders SET Id = Id",
+          "DELETE FROM dbo.Orders",
+          "CREATE TABLE dbo.Probe (Id int)"
+        ]
+      },
+      "text": "independently of the allowlist, the alias's SQL principal, connected directly to the fixture, is denied every write and DDL statement by SQL Server"
     }
   ]
 }

@@ -4,17 +4,20 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 
 ## Status
 
-**Ready for implementation. No application code exists yet.**
+**The development package is complete and verified. No application code exists yet. Two owner acts are still open (see the end of this file).**
 
 | Piece | State |
 |---|---|
-| Architecture model (`continuum/model/architecture.adl`) | Compiles, 0 errors, 0 warnings |
-| Technology bindings (LocalDevelopment) | Complete; `continuum package build` succeeds |
-| Development package (`continuum/`) | Built; `continuum package check continuum` reports it intact |
-| Acceptance scenarios (12) | All resolve against the model; adapter scaffolded; **0 / 12 passing** (every step is a stub) |
-| Business model (`continuum/business/*.bdl`) | Compiles; covers initial capabilities only |
-| ADRs (`continuum/decisions/`) | Candidates, not yet recorded in a governed decision ledger |
-| Initial accepted state (S0) | Not recorded yet; the owner records it (see below) |
+| Architecture model (`continuum/model/architecture.adl`, core adl/1.6) | Compiles: 0 errors, 0 warnings. Assessment: L1 attained. `continuum preview` shows closed causality |
+| Business model (`continuum/model/sql-investigator.bdl`) | Compiles: 0 errors, 3 explained warnings (forbidden actions have no performer, by design) |
+| Technology bindings (LocalDevelopment) | 8 bindings, complete; .NET 10, Microsoft.Data.SqlClient, ScriptDom, DPAPI CurrentUser, atomic JSON files |
+| Development package (`continuum/`) | `continuum package build` succeeds; `continuum package check continuum` reports it intact |
+| Acceptance scenarios (12) | All references resolve; adapter scaffolded; **0 / 12 passing**: every step is a stub until the implementation exists |
+| Diagrams | Atlas C1/C2/C3 and security views in `continuum/diagrams/atlas/`, checked against the model; Mermaid editorial supplements |
+| ADRs (`continuum/decisions/`) | ADR-001..006 **proposed** in a Host-governed decision space. **Not accepted**: acceptance is the owner's act |
+| Initial accepted state (S0) | Not recorded yet; the owner records it |
+
+The architecture guard (`pre-push`, CI) runs the full acceptance suite. It reports implementation drift until the scenarios pass, which is expected before any code exists.
 
 ## Prerequisites
 
@@ -39,12 +42,12 @@ continuum/                        the development package (the implementation co
   IMPLEMENTATION.md               generated build contract: start here
   IMPLEMENTATION-HANDOFF.md       hand-written delivery notes: MCP tool names, hard gates, test guidance
   BEHAVIOUR.md                    generated behavioural projection
-  model/                          semantic ADL (authority), bindings, vocabulary claims
-  business/                       BDL business model
+  model/                          semantic ADL (authority), BDL business model, bindings, vocabulary claims
   acceptance/scenarios/           12 executable Given/When/Then scenarios (B01-B12)
   acceptance/adapter.mjs          step bindings: replace each stub with a call into the implementation
-  decisions/                      ADR candidates
-  diagrams/                       hand-authored Mermaid diagrams
+  decisions/                      governed decision space: ADR-001..006 (proposed), signed record
+  diagrams/                       atlas/ generated views + hand-authored Mermaid supplements
+  handoff-reconciliation.md       agreed intent -> artifact -> scenario, with dispositions
 .githooks/, .github/workflows/    Continuum architecture guard (pre-commit, pre-push, CI)
 .claude/                          Continuum skills and agents for Claude Code
 ```
@@ -52,7 +55,7 @@ continuum/                        the development package (the implementation co
 Suggested source layout (a recommendation, not part of the model):
 
 ```
-src/SqlInvestigator.McpServer/    .NET 10 console exe: MCP stdio, QueryGateway, KnowledgeService
+src/SqlInvestigator.McpServer/    .NET 10 console exe: MCP stdio, ConnectionRegistry (+ provision subcommand), QueryGateway, KnowledgeService
 tests/SqlInvestigator.Tests/      xUnit unit tests (ScriptDom allowlist, budgets, redaction, JSON stores)
 tests/SqlInvestigator.IntegrationTests/  disposable SQL Server fixtures
 ```
@@ -74,6 +77,6 @@ Do not edit derived files (`IMPLEMENTATION.md`, `BEHAVIOUR.md`, `PACKAGE.json`, 
 
 ## Owner actions still open
 
-1. **Record the initial accepted state** once you have reviewed the model: `continuum package accept continuum --as <you> --verified-against HEAD`, then `continuum ledger record continuum --verified-against HEAD`.
-2. **Govern the six ADR candidates** in a Continuum decision space with an authority policy.
-3. **Get data-owner approval** before any non-fixture database is connected.
+1. **Decide the six ADRs.** Their alignment checks report "missing" because the expectations were written without the `::` root anchor (see `continuum/decisions/README.md`). Either accept them as proposed (`continuum decision accept ADR-001 --reason "<why>"`, and so on for each), or reject them so they can be re-proposed with anchored expectations.
+2. **Record the initial accepted state** once you have reviewed the model: `continuum package accept continuum --as <you> --verified-against HEAD`, then `continuum ledger record continuum --verified-against HEAD`.
+3. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).

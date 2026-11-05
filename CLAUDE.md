@@ -16,7 +16,7 @@ SQL Investigator: a local Windows .NET 10 MCP stdio server that lets Claude Code
 - After a model edit: `continuum package bind refresh continuum`, then `continuum package build continuum`, then `continuum package check continuum`.
 - Mint element and binding ids with the Continuum tools; never invent them.
 - Acceptance: `continuum package run continuum`. Bind steps in `continuum/acceptance/adapter.mjs` against the real MCP process, not an in-memory fake.
-- Each data store has exactly one writing service (`InvestigationHistory` ← QueryGateway, `KnowledgeStore` ← KnowledgeService). Keep it that way.
+- Each ordinary data store has exactly one writing service (`InvestigationHistory` ← QueryGateway, `KnowledgeStore` ← KnowledgeService, `ConnectionCatalog` ← ConnectionRegistry). `CredentialVault` is a secret-store that no service writes: secrets reach it only through the local interactive provision command. Keep it that way.
 
 ## Safety boundaries (non-negotiable)
 

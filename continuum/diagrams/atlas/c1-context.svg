@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024" font-family="Inter, 'Segoe UI', Arial, sans-serif">
+  <title>SQL Investigator — system context</title>
+  <desc>SQL Investigator is a single-user conversational investigation tool. Developer owns / uses SQL Investigator. Claude Code sends to SQL Investigator. SQL Investigator depends on / invokes SQL Server. All three relationships are declared; internal structure is hidden.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 14 14" refX="14" refY="7" markerWidth="14" markerHeight="14" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 14 7 L 0 14 Z" fill="#435363"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1536" height="1024" fill="#FFFFFF"/>
+
+  <text x="768" y="69" text-anchor="middle" font-size="52" font-weight="700" letter-spacing="-1.5" fill="#0D1B2B">SQL Investigator — system context</text>
+  <text x="768" y="115" text-anchor="middle" font-size="23" fill="#536276">
+    <tspan x="768" dy="0">1 actor and 2 external systems around SQL Investigator. Solid arrows are declared relationships;</tspan>
+    <tspan x="768" dy="33">an arrow between boxes stands for the declared relationships of what is inside them.</tspan>
+  </text>
+
+  <g class="domain" data-label="SQL Investigator" data-grade="declared">
+    <rect x="564" y="366" width="406" height="304" rx="16" fill="#E2EFFC" stroke="#0874D9" stroke-width="3"/>
+    <text x="767" y="524" text-anchor="middle" font-size="38" font-weight="700" letter-spacing="-1" fill="#0D1B2B">SQL Investigator</text>
+    <text x="767" y="565" text-anchor="middle" font-size="23" fill="#5B6C7E">
+      <tspan x="767" dy="0">A single-user conversational</tspan>
+      <tspan x="767" dy="30">investigation tool</tspan>
+    </text>
+  </g>
+
+  <g class="service" data-label="Claude Code" data-grade="declared">
+    <rect x="44" y="279" width="302" height="165" rx="10" fill="#EBEFF3" stroke="#7C8B9C" stroke-width="3"/>
+    <text x="70" y="332" font-size="29" font-weight="700" fill="#0D1B2B">Claude Code</text>
+    <text x="70" y="365" font-size="20" fill="#536276">
+      <tspan x="70" dy="0">Employer-approved cloud</tspan>
+      <tspan x="70" dy="26">agent host and the only</tspan>
+      <tspan x="70" dy="26">conversational interface</tspan>
+    </text>
+  </g>
+
+  <g class="actor" data-label="Developer" data-grade="declared">
+    <rect x="78" y="546" width="210" height="220" rx="12" fill="#FFFFFF" stroke="#D9E3ED" stroke-width="1.5"/>
+    <circle cx="183" cy="586" r="25" fill="#1767B5"/>
+    <path d="M 134 666 L 134 648 C 134 628 150 617 169 617 L 197 617 C 216 617 232 628 232 648 L 232 666 Q 232 672 226 672 L 140 672 Q 134 672 134 666 Z" fill="#1767B5"/>
+    <text x="183" y="712" text-anchor="middle" font-size="29" font-weight="700" fill="#0D1B2B">Developer</text>
+    <text x="183" y="744" text-anchor="middle" font-size="20" fill="#536276">The single local user</text>
+  </g>
+
+  <g class="service" data-label="SQL Server" data-grade="declared">
+    <rect x="1208" y="432" width="284" height="198" rx="10" fill="#EBEFF3" stroke="#7C8B9C" stroke-width="3"/>
+    <text x="1350" y="487" text-anchor="middle" font-size="29" font-weight="700" fill="#0D1B2B">SQL Server</text>
+    <text x="1228" y="520" font-size="19" fill="#536276">
+      <tspan x="1228" dy="0">One or more independently</tspan>
+      <tspan x="1228" dy="26">authorized SQL Server</tspan>
+      <tspan x="1228" dy="26">databases, each reached</tspan>
+      <tspan x="1228" dy="26">through its own alias and a…</tspan>
+    </text>
+  </g>
+
+  <g class="edge" data-from="Claude Code" data-to="SQL Investigator">
+    <path d="M 346 360 L 531 360 Q 539 360 539 368 L 539 387 Q 539 395 547 395 L 564 395" fill="none" stroke="#435363" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+    <text x="446" y="340" text-anchor="middle" font-size="23" fill="#0D1B2B" paint-order="stroke" stroke="#FFFFFF" stroke-width="6">sends</text>
+  </g>
+  <g class="edge" data-from="Developer" data-to="SQL Investigator">
+    <path d="M 288 629 L 564 629" fill="none" stroke="#435363" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="414" y="611" text-anchor="middle" font-size="23" fill="#0D1B2B" paint-order="stroke" stroke="#FFFFFF" stroke-width="6">owns / uses</text>
+  </g>
+  <g class="edge" data-from="SQL Investigator" data-to="SQL Server">
+    <path d="M 970 524 L 1208 524" fill="none" stroke="#435363" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="1089" y="502" text-anchor="middle" font-size="21" fill="#0D1B2B" paint-order="stroke" stroke="#FFFFFF" stroke-width="6">depends on / invokes</text>
+  </g>
+</svg>

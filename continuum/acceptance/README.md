@@ -22,7 +22,7 @@ export function createAdapter({ createFakeProvider, env }) {
 // ctx = { scenario, provider, state, assert, env, log }  — provider is the scenario's fake provider
 ```
 
-### Step vocabulary — 45 distinct keys (derived from the scenarios — bind every key)
+### Step vocabulary — 46 distinct keys (derived from the scenarios — bind every key)
 
 | step | phases | args | used by |
 |---|---|---|---|
@@ -67,6 +67,7 @@ export function createAdapter({ createFakeProvider, env }) {
 | `sql.exercise-failures` | when | `kinds` | 1 scenario |
 | `sql.has-query-id` | then | — | 1 scenario |
 | `sql.has-truncation-indicator` | then | — | 1 scenario |
+| `sql.principal-denies-writes` | then | `alias`, `statements` | 1 scenario |
 | `sql.reject-corpus` | when | `statements` | 1 scenario |
 | `sql.reject-policy-corpus` | when | `cases` | 1 scenario |
 | `sql.within-result-budget` | then | — | 1 scenario |
@@ -113,6 +114,7 @@ export function createAdapter({ createFakeProvider, env }) {
 - `sql.exercise-failures` — "queries fail in each way: unavailable-server, cancelled, invalid-credentials, malformed-sql"
 - `sql.has-query-id` — "the result carries a query id"
 - `sql.has-truncation-indicator` — "the result says whether it was truncated"
+- `sql.principal-denies-writes` — "independently of the allowlist, the alias's SQL principal, connected directly to the fixture, is denied every write and DDL statement by SQL Server"
 - `sql.reject-corpus` — "Claude Code submits each statement of the write and bypass corpus"
 - `sql.reject-policy-corpus` — "Claude Code submits each fail-closed policy case"
 - `sql.within-result-budget` — "the result stays within the row and byte budget"
@@ -167,7 +169,7 @@ Approved SELECT returns evidence and bounded results
 
 ### `b03-reject-writes`
 
-Reject all write, DDL, execution, SELECT INTO and multi-batch SQL
+Reject all write, DDL, execution, SELECT INTO and multi-batch SQL in the allowlist, and prove the read-only principal denies writes on its own
 
 - verifies: `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist` (Guardrail), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
 - realizes the declared Test `::SQLInvestigator.ReadOnlyEnforcement`
@@ -181,6 +183,7 @@ Reject all write, DDL, execution, SELECT INTO and multi-batch SQL
 
 **then**
 - every statement is rejected before it reaches SQL Server, with an audited reason `[sql.all-rejected-before-execution]`
+- independently of the allowlist, the alias's SQL principal, connected directly to the fixture, is denied every write and DDL statement by SQL Server `[sql.principal-denies-writes]`
 
 ### `b04-fail-closed-policy`
 

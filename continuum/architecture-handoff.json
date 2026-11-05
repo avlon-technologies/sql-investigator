@@ -1,0 +1,306 @@
+{
+  "profile": "continuum-architecture-handoff/0",
+  "generatedBy": "continuum-cli 0.28.7 inspect",
+  "baseline": {
+    "package": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "core": "adl/1.6",
+    "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+    "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+    "errors": 0,
+    "warnings": 0,
+    "contentDigest": "sha256:0efa71fdf91611587afa98f353dbae945851e4f3782712c247895ac0d9e86ea6",
+    "manifest": "continuum/model/architecture.adl-manifest.json"
+  },
+  "authority": {
+    "decisions": "Host-authorized — continuum-decision-record/1, EXPERIMENTAL; all 13 line(s) verified against the Host's published keys",
+    "record": "continuum/decisions/decisions.jsonl",
+    "head": "sha256:623b3bfe882db6c9d052f08b557a9db4f280f18161568184b1b89d2493c34a45",
+    "note": "each act below was judged and signed by the Host against the space's governed policy; an act by a workload names the person who delegated to it, and the delegation does not prove which model or process presented it"
+  },
+  "sources": {
+    "adl": "continuum/model/architecture.adl-manifest.json",
+    "bdl": "continuum/model/sql-investigator.bdl",
+    "bindings": [
+      "continuum/model/local-development.adl-binding.json"
+    ],
+    "brief": {
+      "path": "VISION.md",
+      "digest": "sha256:748ad6b286e909d31f293239108a36bdbfbe4839d12771b9fca4e22a2f53b13f"
+    }
+  },
+  "purpose": "A developer asks Claude Code a question about data in one or more SQL Server databases and receives a defensible answer: what was checked, which queries ran, what evidence supports the conclusion, what remains uncertain, and where the data came from. Investigation should feel conversational, iterative, and fast, without sacrificing control of database access.",
+  "commitments": {
+    "decisions": [],
+    "requirements": [
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.BoundedExecution",
+        "text": "Every query runs within configured timeout, row, byte, concurrency and per-investigation query budgets, can be cancelled, and reports when its result was truncated.",
+        "verifiedBy": [
+          "::SQLInvestigator.BudgetSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance",
+        "text": "Every executed query carries a query id, the exact SQL, the connection alias and timestamps; investigations persist questions, hypotheses, findings and uncertainty without raw result rows by default.",
+        "verifiedBy": [
+          "::SQLInvestigator.ProvenanceSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning",
+        "text": "Connections and their credentials are provisioned only through a local interactive command run by the developer; no MCP operation accepts or returns a credential.",
+        "verifiedBy": [
+          "::SQLInvestigator.ConnectionProvisioningSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure",
+        "text": "Credentials and connection secrets never appear in MCP output, diagnostics, investigation history or the knowledge store.",
+        "verifiedBy": [
+          "::SQLInvestigator.SecretRedactionSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.ReadOnly",
+        "text": "Only bounded, authorized read-only SQL queries may execute. The gateway accepts exactly one bounded SELECT per request, referencing only objects and columns within the alias's approved scope, through a fail-closed allowlist, and a dedicated read-only SQL principal denies writes independently of that validation.",
+        "verifiedBy": [
+          "::SQLInvestigator.ReadOnlyEnforcement"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships",
+        "text": "Inferred cross-database relationships stay proposed, with provenance, until explicitly reviewed; rejected relationships and their evidence are retained and never promoted.",
+        "verifiedBy": [
+          "::SQLInvestigator.RelationshipReviewSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.SafeFailure",
+        "text": "SQL errors, cancellation, schema drift and unreachable databases produce actionable, sanitized errors and never fabricated results.",
+        "verifiedBy": [
+          "::SQLInvestigator.SafeFailureSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.SchemaFreshness",
+        "text": "Schema snapshots record their source and capture time and are refreshed when drift is detected.",
+        "verifiedBy": [
+          "::SQLInvestigator.SchemaDriftSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.SeparatePerDatabaseQueries",
+        "text": "Each query targets exactly one connection alias. Cross-database correlation happens on the agent side over separate bounded results, never in cross-database or linked-server SQL.",
+        "verifiedBy": [
+          "::SQLInvestigator.CorrelationSuite"
+        ]
+      },
+      {
+        "name": "::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost",
+        "text": "Claude Code is the only conversational interface. The server speaks MCP over stdio, keeps stdout for protocol messages only, and offers no other chat, web or model surface.",
+        "verifiedBy": [
+          "::SQLInvestigator.ClaudeOnlySuite"
+        ]
+      }
+    ],
+    "businessRules": [],
+    "policies": [
+      {
+        "name": "::SQLInvestigator.Investigation.ProductionDataApproval",
+        "statement": "No production data reaches Claude Code until the data owner has approved the specific data classifications and environment."
+      }
+    ],
+    "structure": [
+      {
+        "service": "::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry",
+        "handles": [
+          "::SQLInvestigator.Investigation.QueryExecution.RemoveConnection",
+          "::SQLInvestigator.Investigation.QueryExecution.ListConnections",
+          "::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection"
+        ],
+        "publishes": [],
+        "writes": [
+          "::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog"
+        ],
+        "reads": [
+          "::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog",
+          "::SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+        ],
+        "deployedAs": [
+          "::SQLInvestigator.LocalMCPServer"
+        ]
+      },
+      {
+        "service": "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService",
+        "handles": [
+          "::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship",
+          "::SQLInvestigator.Investigation.QueryExecution.InspectSchema",
+          "::SQLInvestigator.Investigation.QueryExecution.ProposeRelationship",
+          "::SQLInvestigator.Investigation.QueryExecution.SearchKnowledge"
+        ],
+        "publishes": [],
+        "writes": [
+          "::SQLInvestigator.Investigation.QueryExecution.KnowledgeStore"
+        ],
+        "reads": [
+          "::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog",
+          "::SQLInvestigator.Investigation.QueryExecution.KnowledgeStore",
+          "::SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+        ],
+        "deployedAs": [
+          "::SQLInvestigator.LocalMCPServer"
+        ]
+      },
+      {
+        "service": "::SQLInvestigator.Investigation.QueryExecution.QueryGateway",
+        "handles": [
+          "::SQLInvestigator.Investigation.QueryExecution.GetInvestigation",
+          "::SQLInvestigator.Investigation.QueryExecution.RecordFinding",
+          "::SQLInvestigator.Investigation.QueryExecution.ExecuteSql",
+          "::SQLInvestigator.Investigation.QueryExecution.StartInvestigation",
+          "::SQLInvestigator.Investigation.QueryExecution.ValidateSql"
+        ],
+        "publishes": [],
+        "writes": [
+          "::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory"
+        ],
+        "reads": [
+          "::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory",
+          "::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog",
+          "::SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+        ],
+        "deployedAs": [
+          "::SQLInvestigator.LocalMCPServer"
+        ]
+      }
+    ]
+  },
+  "rejected": [],
+  "requiresApproval": [
+    {
+      "id": "ADR-001",
+      "title": "Claude Code as sole agent host",
+      "state": "proposed",
+      "options": [],
+      "why": "proposed, not accepted: do not implement either option as if decided"
+    },
+    {
+      "id": "ADR-002",
+      "title": "SQL Server and T-SQL only",
+      "state": "proposed",
+      "options": [],
+      "why": "proposed, not accepted: do not implement either option as if decided"
+    },
+    {
+      "id": "ADR-003",
+      "title": "Bounded autonomous read-only investigation",
+      "state": "proposed",
+      "options": [],
+      "why": "proposed, not accepted: do not implement either option as if decided"
+    },
+    {
+      "id": "ADR-004",
+      "title": "Local JSON and DPAPI, not SQLite",
+      "state": "proposed",
+      "options": [],
+      "why": "proposed, not accepted: do not implement either option as if decided"
+    },
+    {
+      "id": "ADR-005",
+      "title": "Separate queries and agent-side correlation",
+      "state": "proposed",
+      "options": [],
+      "why": "proposed, not accepted: do not implement either option as if decided"
+    },
+    {
+      "id": "ADR-006",
+      "title": "Continuum at design time, optional knowledge at runtime",
+      "state": "proposed",
+      "options": [],
+      "why": "proposed, not accepted: do not implement either option as if decided"
+    },
+    {
+      "rule": "any change to the model structure — an element added, removed or relinked — or anything that contradicts a commitment above"
+    }
+  ],
+  "freedoms": [
+    {
+      "what": "anything a binding's configuration leaves unstated",
+      "why": "bindings fix only the technology and configuration they name"
+    },
+    {
+      "what": "internal structure, algorithms, data layout and UI within a component",
+      "why": "the model is semantic; it declares components, messages, rules and requirements, not their implementation"
+    },
+    {
+      "what": "concurrency, interleaving and timing not fixed by a requirement or rule",
+      "why": "behaviour.preview marks these UNSPECIFIED: the implementation's, never stated by the model"
+    }
+  ],
+  "risks": [],
+  "assumptions": [
+    {
+      "label": "ASSUMED",
+      "what": "1 business domain(s) recorded as assumed, with no provenance",
+      "note": "Investigation"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "5 business capability(s) recorded as assumed, with no provenance",
+      "note": "ProvisionAuthorizedAccess, ExploreAuthorizedData, CorrelateEvidence, PreserveProvenance, CurateRelationshipKnowledge"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "6 business entity(s) recorded as assumed, with no provenance",
+      "note": "ConnectionAlias, SchemaSnapshot, InvestigationCase, QueryEvidence, Finding, InferredRelationship"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "1 business state-model(s) recorded as assumed, with no provenance",
+      "note": "RelationshipReviewLifecycle"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "2 business transition(s) recorded as assumed, with no provenance",
+      "note": "Accept, Reject"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "3 business enum(s) recorded as assumed, with no provenance",
+      "note": "EnvironmentClass, RelationshipState, Confidence"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "13 business action(s) recorded as assumed, with no provenance",
+      "note": "ProvisionConnection, RemoveConnection, ApproveAgentAccess, InspectSchema, StartInvestigation, ExecuteReadQuery, …"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "4 business fact(s) recorded as assumed, with no provenance",
+      "note": "ConnectionProvisioned, QueryExecuted, QueryRejected, RelationshipReviewed"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "6 business rule(s) recorded as assumed, with no provenance",
+      "note": "ProductionRequiresApproval, OneDatabasePerQuery, BoundedQueries, ReviewBeforeTrust, NoFabricatedResults, NoRawResultRetention"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "1 business invariant(s) recorded as assumed, with no provenance",
+      "note": "FindingStatesUncertainty"
+    },
+    {
+      "label": "ASSUMED",
+      "what": "3 business actor(s) recorded as assumed, with no provenance",
+      "note": "Investigator, InvestigationAgent, DataOwner"
+    }
+  ],
+  "unknowns": [],
+  "deviation": {
+    "rule": "Do not silently violate a commitment. If the work needs one changed, stop and propose it as a decision; implement only after it is accepted.",
+    "propose": "continuum decision propose --title <t> --decision <d> --rationale <why> --scope <qualifiedName> --model <manifest> --option <name>=<change.adl-change> --as <your acting-as>",
+    "amendOpen": "continuum decision amend <ADR> --reason <r> --option <name>=<change.adl-change>",
+    "inspect": "continuum inspect <manifest> --decisions <dir>"
+  }
+}

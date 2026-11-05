@@ -1,20 +1,17 @@
-# System context
+# System context (editorial)
 
 ```mermaid
 flowchart LR
-  developer[Developer / Investigator]
-  claude[Claude Code\nExternal agent host]
-  subgraph workstation[Windows workstation]
-    mcp[SQL Investigator\nLocal .NET 10 MCP stdio server]
-    store[(Local JSON history and schema)]
-    vault[(DPAPI CurrentUser credentials)]
-  end
-  sql[(Authorized SQL Server databases)]
-  developer --> claude
-  claude -. "MCP over stdio" .-> mcp
-  mcp --> store
-  mcp --> vault
-  mcp -. "Scoped read-only queries" .-> sql
+  developer[Developer]
+  claude[Claude Code\nexternal agent host]
+  sqli[SQL Investigator\nLocalMCPServer]
+  sql[(SQL Server\none alias per database,\nread-only principal)]
+  developer -- "uses / owns" --> sqli
+  developer -. "converses" .-> claude
+  claude -- "sends the 11 MCP operations" --> sqli
+  sqli -- "dependsOn / invokes Tsql.ExecuteSelect, Tsql.ReadCatalog" --> sql
 ```
 
-**Evidence:** Developer, Claude Code, SQL Server, LocalMCPServer, InvestigationHistory and CredentialVault are modeled. Connection routes are described in ADL/Vision, not explicitly declared as relationship edges.
+Solid arrows are declared in `model/architecture.adl`: `Developer uses ::SQLInvestigator`, `Developer owns Investigation`, `ClaudeCode sends` the 11 MCP messages, and the services' `dependsOn` / `invokes` edges to `SQLServer`. The dashed Developer → Claude Code arrow is **not** declared: ADL 1.6 has no Actor → ExternalSystem relationship, so the conversation is stated only in the element descriptions.
+
+The verified, generated version of this view is `atlas/c1-context.svg`.

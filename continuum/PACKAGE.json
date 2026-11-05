@@ -10,8 +10,8 @@
     "package": "avlon.sqlinvestigator",
     "version": "draft-1",
     "core": "adl/1.6",
-    "attestation": "sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b",
-    "changeState": "sha256:579b103696bdc1f8c5cbabfca8fc24c5a588083a8912386579a49a888efe48e4",
+    "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+    "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
     "manifest": "model/architecture.adl-manifest.json",
     "documents": [
       "model/architecture.adl"
@@ -26,14 +26,14 @@
     "name": "LocalDevelopment",
     "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
     "document": "model/local-development.adl-binding.json",
-    "bindingDigest": "sha256:e7c0d787eeabedbd0ed2656c50080964abba791fc6a18eab4a91911f558696fc"
+    "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
   },
   "environments": [
     {
       "name": "LocalDevelopment",
       "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
       "document": "model/local-development.adl-binding.json",
-      "bindingDigest": "sha256:e7c0d787eeabedbd0ed2656c50080964abba791fc6a18eab4a91911f558696fc"
+      "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
     }
   ],
   "bindings": [
@@ -82,12 +82,27 @@
     {
       "variable": "MAX_QUERY_ROWS",
       "default": "500",
-      "meaning": "Recommended maximum returned rows per query; enforce in gateway."
+      "meaning": "Recommended default, not architecture: maximum rows returned per query; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "MAX_RESULT_BYTES",
+      "default": "1048576",
+      "meaning": "Recommended default, not architecture: maximum serialized result size per query in bytes; the gateway truncates beyond it and sets the truncation flag."
     },
     {
       "variable": "SQL_TIMEOUT_SECONDS",
       "default": "15",
-      "meaning": "Recommended SQL command timeout; subject to environment review."
+      "meaning": "Recommended default, not architecture: SQL command timeout; the gateway cancels the command and reports a sanitized timeout error."
+    },
+    {
+      "variable": "MAX_CONCURRENT_QUERIES",
+      "default": "2",
+      "meaning": "Recommended default, not architecture: queries executing at once across all aliases; further requests are refused with an audited budget event."
+    },
+    {
+      "variable": "MAX_QUERIES_PER_INVESTIGATION",
+      "default": "50",
+      "meaning": "Recommended default, not architecture: executed queries allowed per investigation; further requests are refused with an audited budget event."
     }
   ],
   "generated": [
@@ -104,17 +119,17 @@
     "model/compile-proof.json"
   ],
   "files": {
-    "BEHAVIOUR.md": "sha256:0ca650858ca441ad5fc35f62d121d52826da533149634dcafef90d54aafa50b4",
+    "BEHAVIOUR.md": "sha256:65ce0a857465e39541a99363fef1c02bff624105f0211ab611ff0dcbad16e99c",
     "GOAL.md": "sha256:242c389a8bd6ca13518b6f7655dcdd7b5b379b5674982e9cb03ddec01f31b90b",
-    "IMPLEMENTATION.md": "sha256:09e96665817b40665a81bfdb95787925120523b7d0dd0b5fa91404fa41b40680",
-    "README.md": "sha256:a35e8a574df18cbe9120376595e271f01f15837864740b658f47cd531665b0e2",
-    "acceptance/README.md": "sha256:ab22da61eb821fcdf36f3465f925dd33c1b06b1f0726390c1a36cfff60797cdb",
-    "acceptance/adapter.mjs": "sha256:d8e8eb4209b31349b6e7c1c09cfaf952801a4bedc9117b6d7a2d1278b48b05a8",
+    "IMPLEMENTATION.md": "sha256:cc40325530c851dbfc2b80c224d3ade08840eabb7be9216f3f6ae1a99b997697",
+    "README.md": "sha256:92fb666e4c354e7492cff191dd171dfb21ad44c149f6d2d9a320562ee84586e1",
+    "acceptance/README.md": "sha256:219a628f6484e4b713f7a5da625b52389e38c28341b6456794ecce0310d2f441",
+    "acceptance/adapter.mjs": "sha256:780817551ec3694c5a5f0d65a269ed1354e0f719b49d364c840b3253e5e18a7e",
     "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
     "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
     "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:955c72804d756dd3283c725a910e0216828b9762ec8fa4fd3211f66bf26d89d8",
     "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:dd84c7da0a756adc3828fc7b1712b4288d91320507f1271d63f920d3f4d8d29d",
-    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:f9dad5ecf809e5970630b433755ae370657994c9d218644ad8878cfdae5523c0",
+    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:9206d39f7ebac837a6108d239114dadf2e6f27ca1a46c764cf700a3fc98d859e",
     "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:ac618940ef4a976fdccd24d524b0a4ebac18c917af90f055c35c29a7ae300b5c",
     "acceptance/scenarios/b05-resource-budgets.scenario.json": "sha256:82714c748ddc74b8de2bd41c7e25d6e579d866a9b963933b7f222f754a935965",
     "acceptance/scenarios/b06-cross-database-correlation.scenario.json": "sha256:bd2154d110d28c42b712bc6456ef3558272b8888109dbf0293c13fceed2e2d34",
@@ -127,13 +142,13 @@
     "acceptance/traces/b01-connection-provisioning.trace.json": "sha256:ef9f20dd75d83fe2da4443df3d7a48e63fa03d523ff9b4fcc3a8b930ab7c94f7",
     "acceptance/traces/b07-history.trace.json": "sha256:392632411cb815508f83da1877f5c73a5a27c1f538a47abce4846853749ff5fa",
     "acceptance/traces/b08-relationship-review.trace.json": "sha256:f2d7d74654772194dd1611d30ce7983eba6fccb17a08fb8ee4ba1c90e6c44f21",
-    "development-package.json": "sha256:a50f14ee24e2df90af5251d40d798532a9a1252e6228d990f34b22ae9464cce3",
-    "model/architecture.adl": "sha256:7b0be74f10b6bb34fec4d76c3a7e23607a1e3725ea8e659f9c8dcfaadf3ae98e",
+    "development-package.json": "sha256:3f772625969fe3b37a816f87883cb89ae0021d33de7744d6e9a39f3693f54180",
+    "model/architecture.adl": "sha256:a7845e458cff2c79a8e846521ef12db47dfdbd12c3016cbf2ddaa9dd144ebca1",
     "model/architecture.adl-manifest.json": "sha256:b50c9982c5a508a967ac05a6d4159d8ac37a8b6fc33e8a5e9de2a94b0514c450",
-    "model/architecture.adl.txt": "sha256:dead36447f0cedd8f0b2c268e08d1f7a1cf30cc7a6c01fcec159c1a5fa544817",
+    "model/architecture.adl.txt": "sha256:09e51d11fe68c196186a15fc34ddc2bae89efce3ab9cb583c2014b7621d3f3d1",
     "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:060216c3bd88966ea382d014a5fdfe5aa2329618b410229e2809ca9983554367",
-    "model/compile-proof.json": "sha256:e96a86fb5afdd4e097c55722b38703dc0d95f2956fba70e6cc3824a359d8a106",
-    "model/local-development.adl-binding.json": "sha256:1dbf372fb2ed21fbf1df856cda8e51bbbcb40d6694b3a9b848f3a3dc471ecc8f",
-    "model/sql-investigator.bdl": "sha256:02dc071c21e1cfed5c8195d5d5c9795c0b8071ac79d83f298b97bc76d9b0af0e"
+    "model/compile-proof.json": "sha256:6603a9f5957a39df6907cc548869a011f722b955ed7b7fc3742b8c6420c3a8e1",
+    "model/local-development.adl-binding.json": "sha256:b602265a873b3d839f8bf535f07c75b63e911132ae988216000cff20109d61c5",
+    "model/sql-investigator.bdl": "sha256:ce3b667ffb3ad537e20369623ed8ada53ee01360fbc94478e62b9391c2a3ddc8"
   }
 }

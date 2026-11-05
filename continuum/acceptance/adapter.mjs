@@ -148,6 +148,9 @@ export function createAdapter({ createFakeProvider, env }) {
       // sql.has-truncation-indicator  phases: then  args: none  used by 1 scenario
       //   "the result says whether it was truncated"
       'sql.has-truncation-indicator': async (ctx, args, step) => unimplemented('sql.has-truncation-indicator', args),
+      // sql.principal-denies-writes  phases: then  args: alias, statements  used by 1 scenario
+      //   "independently of the allowlist, the alias's SQL principal, connected directly to the fixture, is denied every write and DDL statement by SQL Server"
+      'sql.principal-denies-writes': async (ctx, args, step) => unimplemented('sql.principal-denies-writes', args),
       // sql.reject-corpus  phases: when  args: statements  used by 1 scenario
       //   "Claude Code submits each statement of the write and bypass corpus"
       'sql.reject-corpus': async (ctx, args, step) => unimplemented('sql.reject-corpus', args),

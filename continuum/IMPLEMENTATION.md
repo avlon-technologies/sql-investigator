@@ -18,8 +18,8 @@
 | | |
 |---|---|
 | package | `avlon.sqlinvestigator` version `draft-1` (core `adl/1.6`) |
-| attestation (canonical model) | `sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b` |
-| changeState (the digest a `.adl-change` base pin must name) | `sha256:579b103696bdc1f8c5cbabfca8fc24c5a588083a8912386579a49a888efe48e4` |
+| attestation (canonical model) | `sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77` |
+| changeState (the digest a `.adl-change` base pin must name) | `sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a` |
 | environment | `::SQLInvestigator.LocalDevelopment` (`model/local-development.adl-binding.json`) |
 
 A copy of the tool's compile result is `model/compile-proof.json`. Do not edit the semantic files: a byte changed there changes the attestation, every binding goes stale, and the package must be rebuilt.
@@ -85,7 +85,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` — Requirement
 
-> Only bounded, authorized read-only SQL queries may execute. The gateway accepts exactly one bounded SELECT per request through a fail-closed allowlist, and a dedicated read-only SQL principal denies writes independently of that validation.
+> Only bounded, authorized read-only SQL queries may execute. The gateway accepts exactly one bounded SELECT per request, referencing only objects and columns within the alias's approved scope, through a fail-closed allowlist, and a dedicated read-only SQL principal denies writes independently of that validation.
 
 #### `::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships` — Requirement
 
@@ -139,7 +139,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist` — Guardrail
 
-- statement = A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references and any unrecognised syntax are rejected before execution and audited.
+- statement = A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references, objects or columns outside the alias's approved scope, and any unrecognised syntax are rejected before execution and audited.
 - enforcement = input
 
 ### Commands (6)
@@ -228,7 +228,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog` — Resource [data-store]
 
-> Local JSON, current-user-only alias metadata: server, database, authentication mode and provisioning time. Never holds a secret.
+> Local JSON, current-user-only alias metadata: server, database, authentication mode, approved object and column scope, and provisioning time. Never holds a secret.
 
 #### `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` — Resource [secret-store]
 
@@ -494,13 +494,13 @@ Derived from the model's declarations, in the order a reader needs. Each line na
 - **`::SQLInvestigator.Investigation.QueryExecution.ApprovedEnvironmentsOnly`** (enforce = input): "A connection may be provisioned or queried only for an environment and data classification the data owner has approved; production data is refused until that approval exists." — enforce it at that point for every subject constrained by it.
 - **`::SQLInvestigator.Investigation.QueryExecution.QueryBudgets`** (enforce = action): "Every query is held to the configured timeout, row, byte, concurrency and per-investigation query budgets, and is cancelled or truncated, with an explicit indicator, when it exceeds them." — enforce it at that point for every subject constrained by it.
 - **`::SQLInvestigator.Investigation.QueryExecution.SecretRedaction`** (enforce = output): "No credential, connection secret or password ever appears in an MCP result, error, diagnostic, history entry or knowledge entry." — enforce it at that point for every subject constrained by it.
-- **`::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist`** (enforce = input): "A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references and any unrecognised syntax are rejected before execution and audited." — enforce it at that point for every subject constrained by it.
+- **`::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist`** (enforce = input): "A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references, objects or columns outside the alias's approved scope, and any unrecognised syntax are rejected before execution and audited." — enforce it at that point for every subject constrained by it.
 
 **Not declared by the model — and therefore not for the implementation to invent:** anything absent above. Where the implementation needs a behaviour, a message, a store, a consumer or an ordering the model does not declare, follow §6.
 
 ## 4. Technology realization — environment `LocalDevelopment`
 
-Source: `model/local-development.adl-binding.json` (applies to attestation `sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b`; environment completeness passed; binding digest `sha256:e7c0d787eeabedbd0ed2656c50080964abba791fc6a18eab4a91911f558696fc`).
+Source: `model/local-development.adl-binding.json` (applies to attestation `sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77`; environment completeness passed; binding digest `sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7`).
 
 | element | kind | technology | configuration |
 |---|---|---|---|
@@ -519,8 +519,11 @@ The semantic model declares none of these limits; they are implementation-level 
 
 | variable | recommended default | meaning |
 |---|---|---|
-| `MAX_QUERY_ROWS` | `500` | Recommended maximum returned rows per query; enforce in gateway. |
-| `SQL_TIMEOUT_SECONDS` | `15` | Recommended SQL command timeout; subject to environment review. |
+| `MAX_QUERY_ROWS` | `500` | Recommended default, not architecture: maximum rows returned per query; the gateway truncates beyond it and sets the truncation flag. |
+| `MAX_RESULT_BYTES` | `1048576` | Recommended default, not architecture: maximum serialized result size per query in bytes; the gateway truncates beyond it and sets the truncation flag. |
+| `SQL_TIMEOUT_SECONDS` | `15` | Recommended default, not architecture: SQL command timeout; the gateway cancels the command and reports a sanitized timeout error. |
+| `MAX_CONCURRENT_QUERIES` | `2` | Recommended default, not architecture: queries executing at once across all aliases; further requests are refused with an audited budget event. |
+| `MAX_QUERIES_PER_INVESTIGATION` | `50` | Recommended default, not architecture: executed queries allowed per investigation; further requests are refused with an audited budget event. |
 
 ## 5. Acceptance — how the implementation proves itself
 
@@ -528,7 +531,7 @@ The semantic model declares none of these limits; they are implementation-level 
 implementation  →  architecture / conformance scenarios (acceptance/)
 ```
 
-This model declares no Agent, so no model provider — fake or real — takes part: the scenarios run against your adapter over the implementation. `acceptance/README.md` is the contract: the step vocabulary the adapter must bind (45 distinct keys), the scenarios, what each verifies, and the derived traces.
+This model declares no Agent, so no model provider — fake or real — takes part: the scenarios run against your adapter over the implementation. `acceptance/README.md` is the contract: the step vocabulary the adapter must bind (46 distinct keys), the scenarios, what each verifies, and the derived traces.
 
 | scenario | verifies |
 |---|---|
@@ -567,7 +570,7 @@ If implementing requires a behaviour, message, store, consumer, ordering or rule
 3. Request an architecture change: a `.adl-change` whose `base` pins this package's state —
 
 ```
-base package avlon.sqlinvestigator version "draft-1" state "sha256:579b103696bdc1f8c5cbabfca8fc24c5a588083a8912386579a49a888efe48e4"
+base package avlon.sqlinvestigator version "draft-1" state "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
 ```
 
 4. When the change is accepted, the next package is built from the applied state (`node tools/development-package.mjs build … ` with `semantic.change`), and `node tools/development-package.mjs check <package> --change <file>` proves `package.changeState == change.base.state` before any work continues.

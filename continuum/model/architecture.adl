@@ -36,7 +36,7 @@ system SQLInvestigator #afccf3ce-8751-44dc-af76-be60c1034415 {
   classification = core
 
   capability InvestigateData #76dbe96b-b9bc-470c-a8ba-4ed85da2c1a9 {
-   requirement ReadOnly #8144081a-f7b9-4816-a724-cfcd5ea0542d { desc "Only bounded, authorized read-only SQL queries may execute. The gateway accepts exactly one bounded SELECT per request through a fail-closed allowlist, and a dedicated read-only SQL principal denies writes independently of that validation." }
+   requirement ReadOnly #8144081a-f7b9-4816-a724-cfcd5ea0542d { desc "Only bounded, authorized read-only SQL queries may execute. The gateway accepts exactly one bounded SELECT per request, referencing only objects and columns within the alias's approved scope, through a fail-closed allowlist, and a dedicated read-only SQL principal denies writes independently of that validation." }
    requirement LocalOnlyProvisioning #1a727deb-9cb0-4f6c-94dd-d284185d874e { desc "Connections and their credentials are provisioned only through a local interactive command run by the developer; no MCP operation accepts or returns a credential." }
    requirement NoSecretDisclosure #0be6e03e-8c33-451f-b6ec-99b94c9bacc3 { desc "Credentials and connection secrets never appear in MCP output, diagnostics, investigation history or the knowledge store." }
    requirement BoundedExecution #82294f43-d92c-42c7-a0d7-5dce57146074 { desc "Every query runs within configured timeout, row, byte, concurrency and per-investigation query budgets, can be cancelled, and reports when its result was truncated." }
@@ -90,10 +90,10 @@ system SQLInvestigator #afccf3ce-8751-44dc-af76-be60c1034415 {
    resource InvestigationHistory #069e8309-22db-4048-8c43-341fa9586f57 [data-store] { desc "Local JSON history with evidence and provenance." }
    resource KnowledgeStore #4ab9a12f-98de-44a1-b021-0d700f8361da [data-store] { desc "Local JSON schema snapshots with source and freshness, and inferred cross-database relationships with provenance and review state." }
    resource CredentialVault #783fa850-ffb5-40e3-846c-4a215d12d393 [secret-store] { desc "Windows DPAPI CurrentUser protected SQL credentials, one per alias, in current-user-only files. The developer places the secret here at the local provisioning console; ADL declares no service write to a secret store, and services only read it." }
-   resource ConnectionCatalog #44f2931e-21fa-4347-b2fb-6c61a8d65de3 [data-store] { desc "Local JSON, current-user-only alias metadata: server, database, authentication mode and provisioning time. Never holds a secret." }
+   resource ConnectionCatalog #44f2931e-21fa-4347-b2fb-6c61a8d65de3 [data-store] { desc "Local JSON, current-user-only alias metadata: server, database, authentication mode, approved object and column scope, and provisioning time. Never holds a secret." }
 
    guardrail SelectOnlyAllowlist #a949716a-427f-4f5f-9651-f02c0773062f {
-    statement "A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references and any unrecognised syntax are rejected before execution and audited."
+    statement "A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references, objects or columns outside the alias's approved scope, and any unrecognised syntax are rejected before execution and audited."
     enforce = input
    }
    guardrail QueryBudgets #79796908-68ba-4080-808a-7cf3798b5b33 {
