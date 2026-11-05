@@ -1,5 +1,5 @@
 # SQL Investigator
 
-Conversational SQL Server debugging prototype using Claude Code and a local .NET MCP server.
+Native Continuum development package is maintained in [`continuum/`](continuum/).
 
-The `docs/` directory contains the v0.3 development-package draft. **Not yet Continuum-verified or developer-ready.** Native ADL/BDL compilation, formal ADR recording, and security verification remain pending.
+Current status: initial ADL architecture compiled and attested by Continuum (0 errors, 6 warnings). This is **not yet a complete developer-ready package**: native BDL, technology bindings, governed ADRs, and full validation remain outstanding.
