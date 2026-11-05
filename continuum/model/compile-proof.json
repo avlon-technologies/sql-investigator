@@ -5,14 +5,14 @@
   "package": {
     "name": "avlon.sqlinvestigator",
     "version": "draft-1",
-    "core": "adl/1.7",
+    "core": "adl/1.6",
     "documents": [
       "architecture.adl"
     ]
   },
   "ok": true,
-  "attestation": "sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1",
-  "changeState": "sha256:78a0887bfc1e20092d2def2ab8d0a36bcb2d415904e2983b83c452cfc6f83155",
+  "attestation": "sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b",
+  "changeState": "sha256:579b103696bdc1f8c5cbabfca8fc24c5a588083a8912386579a49a888efe48e4",
   "ledger": {
     "passed": 78,
     "failed": 0,
@@ -24,19 +24,19 @@
     "manifest": {
       "name": "avlon.sqlinvestigator",
       "version": "draft-1",
-      "core": "adl/1.7",
+      "core": "adl/1.6",
       "imports": [],
       "extensions": [],
-      "digest": "sha256:59b0dae175582da20f1c75547f8121409d1e90e39946eb4a1ba90abd31b528b2"
+      "digest": "sha256:b50c9982c5a508a967ac05a6d4159d8ac37a8b6fc33e8a5e9de2a94b0514c450"
     },
     "documents": [
       {
         "path": "architecture.adl",
-        "digest": "sha256:ffaa29b24d5e796b09a13c9024ba5edddbef9a2beed12a81ba9b048b0e87cb3c",
-        "bytes": 2930
+        "digest": "sha256:7b0be74f10b6bb34fec4d76c3a7e23607a1e3725ea8e659f9c8dcfaadf3ae98e",
+        "bytes": 19762
       }
     ],
-    "inputSet": "sha256:5f78cbc0b413602d71efd2994a011ff52babe5a849c1a985a2898e4b6c878714",
+    "inputSet": "sha256:f4ea2a70ac37cd7c2cf3b696afc8a8ad82072381f50c925a3d8a85a17ef72cec",
     "note": "digests over the AUTHORED input bytes, distinct from the attestation (the engine's digest over canonical content)."
   },
   "verifier": {
@@ -53,14 +53,14 @@
         "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
         "document": "model/local-development.adl-binding.json",
         "completeness": "passed",
-        "bindingDigest": "sha256:e9c99a6caaf7b7081128db03e24d834927215691ed9b9db84f893546d4d7189e",
+        "bindingDigest": "sha256:e7c0d787eeabedbd0ed2656c50080964abba791fc6a18eab4a91911f558696fc",
         "notEvaluated": []
       }
     ],
     "claims": [
       {
         "vocabulary": "avlon.bindings.localdotnet draft-1",
-        "digest": "sha256:c5041a88de4546ec3477affca3a8af7f588e8e9daadb9136ee723015ed0f7da4"
+        "digest": "sha256:4daa47e4cc0b42a7ad645e1b25498194e73364f12a1fc6d8ab0169c957e63f9f"
       }
     ],
     "secretMaterial": {

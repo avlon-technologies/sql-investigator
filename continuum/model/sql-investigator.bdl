@@ -1,0 +1,233 @@
+model {
+  bdl         1.0
+  types       adl-type/1.0
+  expressions adl-expr/1.0
+  definition  "2026-11-05.2"
+}
+business SQLInvestigation #b-1001 {
+  description "Authorized developer investigations with evidence and confidentiality."
+  purpose {
+    "answer investigation questions with reproducible evidence"
+    "protect credentials and confidential data during investigations"
+  }
+  modality { epistemic stated }
+  provenance { source domain-expert, sourceReference "VISION.md", assertedBy "Product owner", assertedOn 2026-11-05 }
+
+  domain Investigation #d-1001 {
+    purpose { "Establish evidence-backed findings from authorized read-only observations" }
+
+    capability ProvisionAuthorizedAccess #c-1004 { purpose { "Register independently authorized database access without exposing credentials" } }
+    capability ExploreAuthorizedData #c-1001 { purpose { "Inspect approved data without changing it" } }
+    capability CorrelateEvidence #c-1002 { purpose { "Compare observations across independent systems" } }
+    capability PreserveProvenance #c-1003 { purpose { "Retain evidence and uncertainty for later review" } }
+    capability CurateRelationshipKnowledge #c-1005 { purpose { "Keep inferred relationships separate from reviewed ones" } }
+
+    enum EnvironmentClass #e-1001 { Development Test Production }
+    enum RelationshipState #e-1002 { Proposed Accepted Rejected }
+    enum Confidence #e-1003 { Low Medium High }
+
+    entity ConnectionAlias #en-1001 {
+      description "An independently authorized route to one database. The credential behind it is never part of the business record shown to the agent."
+      identity alias
+      alias: text
+      server: text
+      database: text
+      environment: EnvironmentClass
+      approvedForAgent: boolean
+    }
+
+    entity SchemaSnapshot #en-1002 {
+      description "What the schema of one database looked like, where that came from, and when."
+      identity snapshotId
+      snapshotId: text
+      connection: ConnectionAlias
+      source: text
+      capturedAt: text
+    }
+
+    entity InvestigationCase #en-1003 {
+      description "One question the investigator is answering, with its hypotheses, findings and remaining uncertainty."
+      identity investigationId
+      investigationId: text
+      question: text
+      startedAt: text
+    }
+
+    entity QueryEvidence #en-1004 {
+      description "One executed read-only query: the exact statement, the database it ran against and when. Raw result rows are not retained by default."
+      identity queryId
+      queryId: text
+      investigation: InvestigationCase
+      connection: ConnectionAlias
+      statement: text
+      executedAt: text
+      truncated: boolean
+    }
+
+    entity Finding #en-1005 {
+      description "A conclusion the investigation reached, the evidence it rests on and how sure it is."
+      identity findingId
+      findingId: text
+      investigation: InvestigationCase
+      hypothesis: text
+      conclusion: text
+      uncertainty: text
+      confidence: Confidence
+    }
+
+    entity InferredRelationship #en-1006 {
+      description "A suspected correspondence between records in two databases, with the evidence for it."
+      identity relationshipId
+      relationshipId: text
+      sourceObject: text
+      targetObject: text
+      evidence: text
+      provenance: text
+      state: RelationshipState
+
+      state-model RelationshipReviewLifecycle for state #sm-1001 {
+        initial Proposed
+        terminal Accepted Rejected
+        transition Accept #t-1001 {
+          from Proposed
+          to Accepted
+          triggeredBy ReviewRelationship
+          produces RelationshipReviewed
+        }
+        transition Reject #t-1002 {
+          description "A rejection is kept with its evidence, so the same wrong inference is not proposed as new."
+          from Proposed
+          to Rejected
+          triggeredBy ReviewRelationship
+          produces RelationshipReviewed
+        }
+      }
+    }
+
+    action ProvisionConnection [permitted] #ac-1005 {
+      description "Performed by the investigator at a local interactive console, never through the agent or chat."
+      mayPerform Investigator
+      exercises ProvisionAuthorizedAccess
+      creates ConnectionAlias
+      produces ConnectionProvisioned
+    }
+    action RemoveConnection [permitted] #ac-1006 {
+      mayPerform Investigator, InvestigationAgent
+      exercises ProvisionAuthorizedAccess
+      changes ConnectionAlias
+    }
+    action ApproveAgentAccess [permitted] #ac-1007 {
+      description "The data owner's approval of the data classifications and environment the agent may see."
+      mayPerform DataOwner
+      exercises ProvisionAuthorizedAccess
+      changes ConnectionAlias
+    }
+    action InspectSchema [permitted] #ac-1001 {
+      mayPerform Investigator, InvestigationAgent
+      exercises ExploreAuthorizedData
+      creates SchemaSnapshot
+    }
+    action StartInvestigation [permitted] #ac-1008 {
+      mayPerform Investigator, InvestigationAgent
+      exercises PreserveProvenance
+      creates InvestigationCase
+    }
+    action ExecuteReadQuery [permitted] #ac-1002 {
+      description "One bounded read-only query against one database, run autonomously by the agent within enforced policy."
+      mayPerform Investigator, InvestigationAgent
+      exercises ExploreAuthorizedData
+      creates QueryEvidence
+      produces QueryExecuted, QueryRejected
+    }
+    action CorrelateResults [permitted] #ac-1009 {
+      description "Comparing bounded results from separate queries, done by the agent; unmatched and ambiguous records are labelled, not guessed."
+      mayPerform InvestigationAgent
+      exercises CorrelateEvidence
+    }
+    action RecordFinding [permitted] #ac-1003 {
+      mayPerform Investigator, InvestigationAgent
+      exercises PreserveProvenance
+      creates Finding
+    }
+    action ProposeRelationship [permitted] #ac-1004 {
+      mayPerform Investigator, InvestigationAgent
+      exercises CorrelateEvidence
+      creates InferredRelationship
+      outcome { InferredRelationship.state == RelationshipState "Proposed" }
+    }
+    action ReviewRelationship [permitted] #ac-1010 {
+      description "The investigator's explicit decision. The agent may relay it but may not review on its own initiative."
+      mayPerform Investigator
+      exercises CurateRelationshipKnowledge
+      changes InferredRelationship
+      produces RelationshipReviewed
+    }
+    action ModifyInvestigatedData [forbidden] #ac-1011 {
+      description "Writing, deleting or altering data in an investigated database."
+      targets ConnectionAlias
+    }
+    action DiscloseCredential [forbidden] #ac-1012 {
+      description "Revealing a credential or connection secret to the agent, the chat, logs, history or knowledge."
+      targets ConnectionAlias
+    }
+    action QueryAcrossDatabases [forbidden] #ac-1013 {
+      description "A single query that reaches more than one database, including linked servers and cross-database references."
+      targets QueryEvidence
+    }
+
+    fact ConnectionProvisioned #f-1001 { alias: text }
+    fact QueryExecuted #f-1002 { queryId: text, alias: text, truncated: boolean }
+    fact QueryRejected #f-1003 { alias: text, reason: text }
+    fact RelationshipReviewed #f-1004 { relationshipId: text, accepted: boolean }
+
+    rule ProductionRequiresApproval #r-1001 {
+      scope ExecuteReadQuery, InspectSchema
+      condition ConnectionAlias.environment == EnvironmentClass "Production" && ConnectionAlias.approvedForAgent == false
+      assertion "No production data reaches the agent until the data owner has approved the data classifications and environment."
+    }
+    rule OneDatabasePerQuery #r-1002 {
+      scope ExecuteReadQuery
+      condition true
+      assertion "Every query targets exactly one connection alias; correlation happens over separate results."
+    }
+    rule BoundedQueries #r-1003 {
+      scope ExecuteReadQuery
+      condition true
+      assertion "Every query is held to time, row, byte, concurrency and per-investigation budgets, and a truncated result says so."
+    }
+    rule ReviewBeforeTrust #r-1004 {
+      scope ProposeRelationship, ReviewRelationship
+      condition true
+      assertion "An inferred relationship is not treated as verified until the investigator has accepted it."
+    }
+    rule NoFabricatedResults #r-1005 {
+      scope ExecuteReadQuery, InspectSchema, RecordFinding
+      condition true
+      assertion "Failures, cancellation, drift and unreachable databases are reported as such; no result is invented to fill the gap."
+    }
+    rule NoRawResultRetention #r-1006 {
+      scope RecordFinding, ExecuteReadQuery
+      condition true
+      assertion "Investigation history keeps statements, aliases, summaries and findings, not raw result rows, unless retention is explicitly chosen."
+    }
+
+    invariant FindingStatesUncertainty [element-scoped] #i-1001 {
+      governs Finding
+      assertion Finding.uncertainty != ""
+    }
+
+    unspecified SensitiveDataPolicy #u-1001 {
+      modality { epistemic underspecified }
+      question "Which production data classifications may be returned to the cloud agent?"
+      reason "Requires workplace approval for each environment."
+      accountable "Data owner"
+      alternatives
+        "approved development data only"
+        "approved production subsets after review"
+    }
+  }
+
+  actor Investigator [person] #a-1001 { description "The developer who asks the questions and owns the investigation." }
+  actor InvestigationAgent [system] #a-1002 { description "Claude Code acting for the investigator within enforced policy. A participant in the business, not a software element of this model." }
+  actor DataOwner [person] #a-1003 { description "Approves which data classifications and environments the agent may see." }
+}

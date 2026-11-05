@@ -1,0 +1,11 @@
+{
+  "continuum-project": "1",
+  "decisions": {
+    "default": "continuum/decisions",
+    "spaces": [
+      {
+        "path": "continuum/decisions"
+      }
+    ]
+  }
+}

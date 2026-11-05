@@ -3,8 +3,11 @@
   "name": "b07-history",
   "purpose": "Investigation history retains question, hypotheses, SQL, evidence and uncertainty",
   "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance",
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway",
     "::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory"
   ],
+  "test": "::SQLInvestigator.ProvenanceSuite",
   "environment": "LocalDevelopment",
   "given": [
     {
@@ -12,7 +15,7 @@
       "args": {
         "question": "Why is order 42 delayed?"
       },
-      "text": "investigation.start"
+      "text": "Claude Code starts an investigation: \"Why is order 42 delayed?\""
     }
   ],
   "when": [
@@ -26,19 +29,22 @@
         "finding": "unconfirmed",
         "uncertainty": "schema may be stale"
       },
-      "text": "investigation.record"
+      "text": "Claude Code records a hypothesis, the query evidence, a finding and its uncertainty"
     },
     {
       "step": "investigation.reopen",
       "args": {},
-      "text": "investigation.reopen"
+      "text": "the investigation is reopened with investigation_get"
     }
   ],
   "then": [
     {
       "step": "investigation.history-complete",
       "args": {},
-      "text": "investigation.history-complete"
+      "text": "the question, hypothesis, query id, exact SQL, alias, finding and uncertainty are all present, and no raw result rows"
     }
-  ]
+  ],
+  "trace": {
+    "from": "::SQLInvestigator.Investigation.QueryExecution.RecordFinding"
+  }
 }

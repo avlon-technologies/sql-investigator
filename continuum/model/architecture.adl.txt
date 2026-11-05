@@ -1,20 +1,86 @@
 adl-text/0.2
-model avlon.sqlinvestigator draft-1 core adl/1.7
-source sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1 (canonical-model attestation)
+model avlon.sqlinvestigator draft-1 core adl/1.6
+source sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b (canonical-model attestation)
 
 system SQLInvestigator — "A single-user conversational investigation tool. Claude Code uses a local MCP server to inspect and query independently authorized SQL Server databases."
-  actor Developer [person] | owns: Investigation, Investigation.QueryExecution
-  deployable LocalMCPServer — "Windows .NET 10 executable, MCP over stdio."
+  actor Developer [person] | owns: Investigation, Investigation.QueryExecution; uses: ::SQLInvestigator — "The single local user. Converses with Claude Code and provisions connections at a local interactive console."
+  deployable LocalMCPServer | satisfies: ::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost — "Windows .NET 10 executable. Started by Claude Code, it speaks MCP over stdio; run by the developer with the provisioning subcommand, it offers the local interactive console."
   domain Investigation (core)
     bounded-context QueryExecution | realizes: InvestigateData
-      resource CredentialVault [secret-store] — "Windows DPAPI protected SQL credentials."
+      command ProposeRelationship payload=RelationshipProposal — "MCP knowledge_propose. The relationship enters as proposed."
+      command ProvisionConnection payload=ConnectionProfile — "Local interactive console command run by the developer; the secret is entered at the console, never carried in an MCP payload."
+      command RecordFinding payload=InvestigationEntry — "MCP investigation_record."
+      command RemoveConnection payload=AliasRef — "MCP connection_remove."
+      command ReviewRelationship payload=RelationshipReview — "MCP knowledge_review. Accepts or rejects a proposed relationship and keeps the evidence either way."
+      command StartInvestigation payload=InvestigationRequest — "MCP investigation_start."
+      guardrail ApprovedEnvironmentsOnly "A connection may be provisioned or queried only for an environment and data classification the data owner has approved; production data is refused until that approval exists." enforce=input | realizes: Investigation.ProductionDataApproval
+      guardrail QueryBudgets "Every query is held to the configured timeout, row, byte, concurrency and per-investigation query budgets, and is cancelled or truncated, with an explicit indicator, when it exceeds them." enforce=action
+      guardrail SecretRedaction "No credential, connection secret or password ever appears in an MCP result, error, diagnostic, history entry or knowledge entry." enforce=output
+      guardrail SelectOnlyAllowlist "A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references and any unrecognised syntax are rejected before execution and audited." enforce=input
+      query ExecuteSql payload=SqlRequest result=QueryEvidence — "MCP sql_execute. Validates, enforces budgets, executes one bounded SELECT against one alias and records the evidence."
+      query GetInvestigation payload=InvestigationRef result=InvestigationRecord — "MCP investigation_get."
+      query InspectSchema payload=SchemaRequest result=SchemaSnapshot — "MCP schema_inspect. Returns the current snapshot, capturing or refreshing it from the catalog when absent, stale or drifted."
+      query ListConnections payload=AliasRef result=ConnectionList — "MCP connection_list. Returns aliases and non-secret metadata only."
+      query SearchKnowledge payload=KnowledgeQuery result=KnowledgeResults — "MCP knowledge_search."
+      query ValidateSql payload=SqlRequest result=ValidationVerdict — "MCP sql_validate. Validates without executing."
+      resource ConnectionCatalog [data-store] — "Local JSON, current-user-only alias metadata: server, database, authentication mode and provisioning time. Never holds a secret."
+      resource CredentialVault [secret-store] — "Windows DPAPI CurrentUser protected SQL credentials, one per alias, in current-user-only files. The developer places the secret here at the local provisioning console; ADL declares no service write to a secret store, and services only read it."
       resource InvestigationHistory [data-store] — "Local JSON history with evidence and provenance."
       resource KnowledgeStore [data-store] — "Local JSON schema snapshots with source and freshness, and inferred cross-database relationships with provenance and review state."
-      service KnowledgeService | deployedAs: ::SQLInvestigator.LocalMCPServer; writes: KnowledgeStore — "Maintains schema snapshots and proposed cross-database relationships."
-      service QueryGateway | deployedAs: ::SQLInvestigator.LocalMCPServer; reads: CredentialVault; realizes: ::SQLInvestigator.Investigation.InvestigateData; satisfies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly; writes: InvestigationHistory — "Local .NET MCP stdio service validating SQL and enforcing budgets before execution."
+      service ConnectionRegistry | constrainedBy: ApprovedEnvironmentsOnly, SecretRedaction; deployedAs: ::SQLInvestigator.LocalMCPServer; governedBy: Investigation.ProductionDataApproval; handles: ListConnections, ProvisionConnection, RemoveConnection; reads: ConnectionCatalog, CredentialVault; realizes: ::SQLInvestigator.Investigation.InvestigateData; satisfies: ::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning, ::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure; writes: ConnectionCatalog — "Provisions connection aliases through the local interactive console, lists them without secrets, and removes them. The only writer of ConnectionCatalog."
+        on ProvisionConnection -> none
+        on RemoveConnection -> none
+      service KnowledgeService | constrainedBy: ApprovedEnvironmentsOnly, SecretRedaction; dependsOn: ::SQLInvestigator.SQLServer; deployedAs: ::SQLInvestigator.LocalMCPServer; governedBy: Investigation.ProductionDataApproval; handles: InspectSchema, ProposeRelationship, ReviewRelationship, SearchKnowledge; invokes: ::SQLInvestigator.SQLServer.Tsql.ReadCatalog; reads: ConnectionCatalog, CredentialVault, KnowledgeStore; realizes: ::SQLInvestigator.Investigation.InvestigateData; satisfies: ::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure, ::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships, ::SQLInvestigator.Investigation.InvestigateData.SafeFailure, ::SQLInvestigator.Investigation.InvestigateData.SchemaFreshness; writes: KnowledgeStore — "Maintains schema snapshots and proposed cross-database relationships. The only writer of KnowledgeStore."
+        on ProposeRelationship -> none
+        on ReviewRelationship -> none
+      service QueryGateway | constrainedBy: ApprovedEnvironmentsOnly, QueryBudgets, SecretRedaction, SelectOnlyAllowlist; dependsOn: ::SQLInvestigator.SQLServer; deployedAs: ::SQLInvestigator.LocalMCPServer; governedBy: Investigation.ProductionDataApproval; handles: ExecuteSql, GetInvestigation, RecordFinding, StartInvestigation, ValidateSql; invokes: ::SQLInvestigator.SQLServer.Tsql.ExecuteSelect; reads: ConnectionCatalog, CredentialVault, InvestigationHistory; realizes: ::SQLInvestigator.Investigation.InvestigateData; satisfies: ::SQLInvestigator.Investigation.InvestigateData.BoundedExecution, ::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance, ::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure, ::SQLInvestigator.Investigation.InvestigateData.ReadOnly, ::SQLInvestigator.Investigation.InvestigateData.SafeFailure, ::SQLInvestigator.Investigation.InvestigateData.SeparatePerDatabaseQueries; writes: InvestigationHistory — "Local .NET MCP stdio service validating SQL and enforcing budgets before execution. The only writer of InvestigationHistory."
+        on RecordFinding -> none
+        on StartInvestigation -> none
+      record AliasRef v1 { alias: text }
+      record ConnectionInfo v1 { alias: text, database: text, provisionedAt: text, server: text }
+      record ConnectionList v1 { connections: list(ConnectionInfo) }
+      record ConnectionProfile v1 { alias: text, authentication: text, database: text, server: text }
+      record InvestigationEntry v1 { aliases: list(text), finding: text, hypothesis: text, investigationId: text, queryIds: list(text), uncertainty: text }
+      record InvestigationRecord v1 { entries: list(InvestigationEntry), investigationId: text, question: text, startedAt: text }
+      record InvestigationRef v1 { investigationId: text }
+      record InvestigationRequest v1 { question: text }
+      record KnowledgeQuery v1 { alias: optional(text), text: text }
+      record KnowledgeResults v1 { relationships: list(Relationship), snapshots: list(SchemaSnapshot) }
+      record QueryEvidence v1 { alias: text, columns: list(text), completedAt: text, queryId: text, rowCount: int32, rows: list(list(text)), sql: text, startedAt: text, truncated: boolean }
+      record Relationship v1 { evidence: text, provenance: text, relationshipId: text, source: text, state: ReviewState, target: text }
+      record RelationshipProposal v1 { evidence: text, provenance: text, source: text, target: text }
+      record RelationshipReview v1 { rationale: text, relationshipId: text, verdict: ReviewVerdict }
+      enum ReviewState v1 = accepted | proposed | rejected
+      enum ReviewVerdict v1 = accepted | rejected
+      record SchemaRequest v1 { alias: text, refresh: boolean, scope: optional(text) }
+      record SchemaSnapshot v1 { alias: text, capturedAt: text, objects: list(text), source: text }
+      record SqlRequest v1 { alias: text, investigationId: optional(text), sql: text }
+      record ValidationVerdict v1 { accepted: boolean, reasons: list(text) }
     capability InvestigateData
-      requirement ReadOnly — "Only bounded, authorized read-only SQL queries may execute."
-  environment LocalDevelopment — "Local Windows developer workstation running Claude Code and the MCP stdio executable."
-  external-system ClaudeCode — "Employer-approved cloud agent host and conversational interface."
-  external-system SQLServer — "One or more independently authorized SQL Server databases."
-  test ReadOnlyEnforcement | verifies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway — "Negative security suite: writes, multiple batches, dynamic SQL, linked servers, OPENROWSET, cross-database references and unparseable SQL are rejected before execution, and a read-only SQL principal denies writes independently."
+      requirement BoundedExecution — "Every query runs within configured timeout, row, byte, concurrency and per-investigation query budgets, can be cancelled, and reports when its result was truncated."
+      requirement EvidenceProvenance — "Every executed query carries a query id, the exact SQL, the connection alias and timestamps; investigations persist questions, hypotheses, findings and uncertainty without raw result rows by default."
+      requirement LocalOnlyProvisioning — "Connections and their credentials are provisioned only through a local interactive command run by the developer; no MCP operation accepts or returns a credential."
+      requirement NoSecretDisclosure — "Credentials and connection secrets never appear in MCP output, diagnostics, investigation history or the knowledge store."
+      requirement ReadOnly — "Only bounded, authorized read-only SQL queries may execute. The gateway accepts exactly one bounded SELECT per request through a fail-closed allowlist, and a dedicated read-only SQL principal denies writes independently of that validation."
+      requirement ReviewedRelationships — "Inferred cross-database relationships stay proposed, with provenance, until explicitly reviewed; rejected relationships and their evidence are retained and never promoted."
+      requirement SafeFailure — "SQL errors, cancellation, schema drift and unreachable databases produce actionable, sanitized errors and never fabricated results."
+      requirement SchemaFreshness — "Schema snapshots record their source and capture time and are refreshed when drift is detected."
+      requirement SeparatePerDatabaseQueries — "Each query targets exactly one connection alias. Cross-database correlation happens on the agent side over separate bounded results, never in cross-database or linked-server SQL."
+      requirement SoleConversationalHost — "Claude Code is the only conversational interface. The server speaks MCP over stdio, keeps stdout for protocol messages only, and offers no other chat, web or model surface."
+    policy ProductionDataApproval — "No production data reaches Claude Code until the data owner has approved the specific data classifications and environment."
+  environment LocalDevelopment — "Local Windows developer workstation running Claude Code and the MCP stdio executable against disposable SQL Server databases."
+  external-system ClaudeCode | sends: Investigation.QueryExecution.ExecuteSql, Investigation.QueryExecution.GetInvestigation, Investigation.QueryExecution.InspectSchema, Investigation.QueryExecution.ListConnections, Investigation.QueryExecution.ProposeRelationship, Investigation.QueryExecution.RecordFinding, Investigation.QueryExecution.RemoveConnection, Investigation.QueryExecution.ReviewRelationship, Investigation.QueryExecution.SearchKnowledge, Investigation.QueryExecution.StartInvestigation, Investigation.QueryExecution.ValidateSql — "Employer-approved cloud agent host and the only conversational interface. Launches LocalMCPServer as an MCP stdio child process and calls its tools; correlates results across databases on the agent side."
+  external-system SQLServer — "One or more independently authorized SQL Server databases, each reached through its own alias and a dedicated least-privilege read-only principal."
+    api Tsql
+      operation ExecuteSelect in=Investigation.QueryExecution.SqlRequest out=Investigation.QueryExecution.QueryEvidence
+      operation ReadCatalog in=Investigation.QueryExecution.SchemaRequest out=Investigation.QueryExecution.SchemaSnapshot
+  test BudgetSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.BoundedExecution, ::SQLInvestigator.Investigation.QueryExecution.QueryBudgets — "Queries exceeding timeout, row, byte, concurrency or per-investigation budgets are cancelled or truncated with an indicator and audited."
+  test ClaudeOnlySuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost — "The executable speaks MCP over stdio with protocol-only stdout and exposes no other conversational, web or model surface."
+  test ConnectionProvisioningSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning, ::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry, ::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection — "A connection is provisioned only at the local console, its secret is DPAPI CurrentUser protected, and no MCP operation accepts or returns it."
+  test CorrelationSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.SeparatePerDatabaseQueries, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway — "Two databases are correlated through separate single-alias queries; unmatched and ambiguous records are labelled and no cross-database SQL runs."
+  test ProvenanceSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway — "Executed queries carry query id, exact SQL, alias and timestamps; a reopened investigation shows hypotheses, findings and uncertainty without raw rows."
+  test ReadOnlyEnforcement | verifies: ::SQLInvestigator.Investigation.InvestigateData.ReadOnly, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway, ::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist — "Negative security suite: writes, multiple batches, dynamic SQL, linked servers, OPENROWSET, cross-database references and unparseable SQL are rejected before execution, and a read-only SQL principal denies writes independently."
+  test RelationshipReviewSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships, ::SQLInvestigator.Investigation.QueryExecution.KnowledgeService — "A proposed relationship stays proposed until reviewed; a rejected one keeps its evidence and is never promoted."
+  test SafeFailureSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.SafeFailure, ::SQLInvestigator.Investigation.QueryExecution.KnowledgeService, ::SQLInvestigator.Investigation.QueryExecution.QueryGateway — "SQL errors, cancellation and unreachable databases yield actionable sanitized errors and no fabricated results."
+  test SchemaDriftSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.SchemaFreshness, ::SQLInvestigator.Investigation.QueryExecution.KnowledgeService — "Snapshots record source and capture time, and a changed fixture schema is visible after refresh."
+  test SecretRedactionSuite | verifies: ::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure, ::SQLInvestigator.Investigation.QueryExecution.SecretRedaction — "A provisioned secret never appears in MCP output, errors, logs, history, knowledge or plaintext storage."

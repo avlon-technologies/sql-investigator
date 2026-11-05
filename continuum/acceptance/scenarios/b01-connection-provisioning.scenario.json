@@ -3,8 +3,12 @@
   "name": "b01-connection-provisioning",
   "purpose": "Registration separates alias metadata from DPAPI protected credentials",
   "verifies": [
-    "::SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+    "::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning",
+    "::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry",
+    "::SQLInvestigator.Investigation.QueryExecution.CredentialVault",
+    "::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog"
   ],
+  "test": "::SQLInvestigator.ConnectionProvisioningSuite",
   "environment": "LocalDevelopment",
   "given": [
     {
@@ -13,14 +17,14 @@
         "alias": "alpha",
         "credential": "fixture-secret"
       },
-      "text": "connection.provision"
+      "text": "the developer provisions alias \"alpha\" at the local console, typing the secret there"
     }
   ],
   "when": [
     {
       "step": "connection.list",
       "args": {},
-      "text": "connection.list"
+      "text": "Claude Code calls connection_list"
     }
   ],
   "then": [
@@ -29,21 +33,24 @@
       "args": {
         "alias": "alpha"
       },
-      "text": "connection.metadata-has-no-secret"
+      "text": "the listed metadata for \"alpha\" contains no secret"
     },
     {
       "step": "credential.dpapi-current-user",
       "args": {
         "alias": "alpha"
       },
-      "text": "credential.dpapi-current-user"
+      "text": "the credential for \"alpha\" is stored DPAPI CurrentUser protected in a current-user-only file"
     },
     {
       "step": "output.excludes-secret",
       "args": {
         "value": "fixture-secret"
       },
-      "text": "output.excludes-secret"
+      "text": "no MCP output contains the secret \"fixture-secret\""
     }
-  ]
+  ],
+  "trace": {
+    "from": "::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection"
+  }
 }

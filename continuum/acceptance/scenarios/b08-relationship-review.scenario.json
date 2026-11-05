@@ -3,14 +3,17 @@
   "name": "b08-relationship-review",
   "purpose": "Inferred relationships remain proposed until reviewed; rejected knowledge persists",
   "verifies": [
-    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+    "::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships",
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService",
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeStore"
   ],
+  "test": "::SQLInvestigator.RelationshipReviewSuite",
   "environment": "LocalDevelopment",
   "given": [
     {
       "step": "knowledge.empty",
       "args": {},
-      "text": "knowledge.empty"
+      "text": "the knowledge store holds no relationships"
     }
   ],
   "when": [
@@ -21,24 +24,27 @@
         "target": "beta.Shipments.OrderId",
         "evidence": "fixture-q1"
       },
-      "text": "knowledge.propose"
+      "text": "Claude Code proposes that alpha.Orders.OrderId relates to beta.Shipments.OrderId, citing fixture-q1"
     },
     {
       "step": "knowledge.reject",
       "args": {},
-      "text": "knowledge.reject"
+      "text": "the developer rejects the proposal through knowledge_review"
     }
   ],
   "then": [
     {
       "step": "knowledge.rejected-not-promoted",
       "args": {},
-      "text": "knowledge.rejected-not-promoted"
+      "text": "the relationship is rejected and never reported as verified"
     },
     {
       "step": "knowledge.negative-knowledge-retained",
       "args": {},
-      "text": "knowledge.negative-knowledge-retained"
+      "text": "the rejection and its evidence are kept"
     }
-  ]
+  ],
+  "trace": {
+    "from": "::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship"
+  }
 }

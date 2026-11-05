@@ -3,7 +3,9 @@
   "name": "b03-reject-writes",
   "purpose": "Reject all write, DDL, execution, SELECT INTO and multi-batch SQL",
   "verifies": [
-    "::SQLInvestigator.Investigation.InvestigateData.ReadOnly"
+    "::SQLInvestigator.Investigation.InvestigateData.ReadOnly",
+    "::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist",
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
   ],
   "test": "::SQLInvestigator.ReadOnlyEnforcement",
   "environment": "LocalDevelopment",
@@ -14,7 +16,7 @@
         "alias": "alpha",
         "scope": "dbo.Orders"
       },
-      "text": "connection.fixture"
+      "text": "alias \"alpha\" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal"
     }
   ],
   "when": [
@@ -31,17 +33,32 @@
           "ALTER TABLE dbo.Orders ADD Evil int",
           "EXEC sp_who",
           "SELECT OrderId INTO dbo.Copy FROM dbo.Orders",
-          "SELECT 1; SELECT 2"
+          "SELECT 1; SELECT 2",
+          "TRUNCATE TABLE dbo.Orders",
+          "GRANT SELECT ON dbo.Orders TO public",
+          "BULK INSERT dbo.Orders FROM 'c:\\temp\\x.csv'",
+          "WITH x AS (SELECT OrderId FROM dbo.Orders) DELETE FROM x",
+          "SELECT OrderId FROM dbo.Orders -- trailing comment\nDROP TABLE dbo.Orders",
+          "/* comment */ UPDATE dbo.Orders SET OrderId = 3",
+          "SELECT OrderId FROM (SELECT OrderId FROM dbo.Orders) AS t; EXEC('DROP TABLE dbo.Orders')",
+          "EXEC('SELECT 1')",
+          "DECLARE @s nvarchar(100) = N'DROP TABLE dbo.Orders'; EXEC sp_executesql @s",
+          "SELECT 1\nGO\nSELECT 2",
+          "WAITFOR DELAY '00:01:00'",
+          "SELECT * FROM [linked].[db].[dbo].[Orders]",
+          "SELECT * FROM OPENQUERY(linked, 'SELECT 1')",
+          "SELECT * FROM OtherDb.dbo.Orders",
+          "SHUTDOWN"
         ]
       },
-      "text": "sql.reject-corpus"
+      "text": "Claude Code submits each statement of the write and bypass corpus"
     }
   ],
   "then": [
     {
       "step": "sql.all-rejected-before-execution",
       "args": {},
-      "text": "sql.all-rejected-before-execution"
+      "text": "every statement is rejected before it reaches SQL Server, with an audited reason"
     }
   ]
 }

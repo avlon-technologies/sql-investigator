@@ -3,8 +3,10 @@
   "name": "b06-cross-database-correlation",
   "purpose": "Correlate independently queried databases with ambiguity retained",
   "verifies": [
-    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+    "::SQLInvestigator.Investigation.InvestigateData.SeparatePerDatabaseQueries",
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
   ],
+  "test": "::SQLInvestigator.CorrelationSuite",
   "environment": "LocalDevelopment",
   "given": [
     {
@@ -13,7 +15,7 @@
         "alias": "alpha",
         "scope": "dbo.Orders"
       },
-      "text": "connection.fixture"
+      "text": "alias \"alpha\" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal"
     },
     {
       "step": "connection.fixture",
@@ -21,7 +23,7 @@
         "alias": "beta",
         "scope": "dbo.Shipments"
       },
-      "text": "connection.fixture"
+      "text": "alias \"beta\" points at a disposable SQL Server fixture, scoped to dbo.Shipments, through a read-only principal"
     }
   ],
   "when": [
@@ -34,19 +36,19 @@
         ],
         "key": "OrderId"
       },
-      "text": "investigation.correlate-separate"
+      "text": "Claude Code queries alpha and beta separately and correlates on OrderId"
     }
   ],
   "then": [
     {
       "step": "investigation.no-cross-database-sql",
       "args": {},
-      "text": "investigation.no-cross-database-sql"
+      "text": "no executed statement references more than one database"
     },
     {
       "step": "investigation.labels-unmatched-and-ambiguous",
       "args": {},
-      "text": "investigation.labels-unmatched-and-ambiguous"
+      "text": "unmatched and ambiguous records are labelled as such"
     }
   ]
 }

@@ -21,13 +21,6 @@
           "policy": "atom"
         }
       },
-      "dotnet-service": {
-        "claims": [],
-        "configuration": {
-          "runtime": "atom",
-          "persistence": "atom"
-        }
-      },
       "atomic-json-files": {
         "claims": [
           "retention-honored",
@@ -46,6 +39,23 @@
         "configuration": {
           "protection": "atom",
           "acl": "atom"
+        }
+      },
+      "dotnet-console-provisioning": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "entry": "atom",
+          "secretEntry": "atom",
+          "protection": "atom"
+        }
+      },
+      "dotnet-sqlclient-service": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "persistence": "atom",
+          "driver": "atom"
         }
       }
     }

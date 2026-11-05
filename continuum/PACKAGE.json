@@ -9,9 +9,9 @@
   "semantic": {
     "package": "avlon.sqlinvestigator",
     "version": "draft-1",
-    "core": "adl/1.7",
-    "attestation": "sha256:cc76d5304397375c9481517f747f37e4948ef99deec085d0fccdeb2f35fce6b1",
-    "changeState": "sha256:78a0887bfc1e20092d2def2ab8d0a36bcb2d415904e2983b83c452cfc6f83155",
+    "core": "adl/1.6",
+    "attestation": "sha256:fb4565be760be1bbc9cca34f73d6fe88cc3bb326c1a0bd26138f9f083328237b",
+    "changeState": "sha256:579b103696bdc1f8c5cbabfca8fc24c5a588083a8912386579a49a888efe48e4",
     "manifest": "model/architecture.adl-manifest.json",
     "documents": [
       "model/architecture.adl"
@@ -26,14 +26,14 @@
     "name": "LocalDevelopment",
     "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
     "document": "model/local-development.adl-binding.json",
-    "bindingDigest": "sha256:e9c99a6caaf7b7081128db03e24d834927215691ed9b9db84f893546d4d7189e"
+    "bindingDigest": "sha256:e7c0d787eeabedbd0ed2656c50080964abba791fc6a18eab4a91911f558696fc"
   },
   "environments": [
     {
       "name": "LocalDevelopment",
       "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
       "document": "model/local-development.adl-binding.json",
-      "bindingDigest": "sha256:e9c99a6caaf7b7081128db03e24d834927215691ed9b9db84f893546d4d7189e"
+      "bindingDigest": "sha256:e7c0d787eeabedbd0ed2656c50080964abba791fc6a18eab4a91911f558696fc"
     }
   ],
   "bindings": [
@@ -62,7 +62,11 @@
       "b11-safe-failures",
       "b12-claude-only"
     ],
-    "traces": [],
+    "traces": [
+      "acceptance/traces/b01-connection-provisioning.trace.json",
+      "acceptance/traces/b07-history.trace.json",
+      "acceptance/traces/b08-relationship-review.trace.json"
+    ],
     "executed": false,
     "results": null,
     "uncoveredRequirements": []
@@ -70,7 +74,7 @@
   "implementation": "IMPLEMENTATION.md",
   "behaviour": {
     "document": "BEHAVIOUR.md",
-    "starts": 0,
+    "starts": 3,
     "underspecified": 0
   },
   "readme": "README.md",
@@ -93,36 +97,43 @@
     "acceptance/README.md",
     "acceptance/fake-model-provider.mjs",
     "acceptance/run.mjs",
+    "acceptance/traces/b01-connection-provisioning.trace.json",
+    "acceptance/traces/b07-history.trace.json",
+    "acceptance/traces/b08-relationship-review.trace.json",
     "model/architecture.adl.txt",
     "model/compile-proof.json"
   ],
   "files": {
-    "BEHAVIOUR.md": "sha256:6d45d37581d38be8ae14770459dd2b95793d83a30d1c7472a7d8d2760da67b5b",
+    "BEHAVIOUR.md": "sha256:0ca650858ca441ad5fc35f62d121d52826da533149634dcafef90d54aafa50b4",
     "GOAL.md": "sha256:242c389a8bd6ca13518b6f7655dcdd7b5b379b5674982e9cb03ddec01f31b90b",
-    "IMPLEMENTATION.md": "sha256:7ee50c204bb41c2fcbc334feb4c229704e4f872005fbbe1e4857edd6d97fe402",
-    "README.md": "sha256:4b3e7cf6f717d94a4ebb495bf970c4557b2ce3509cec1b07756ecf5f32949101",
-    "acceptance/README.md": "sha256:4db1ad8c511285657cd8860fb053c84e8e9784514d174dedd5d3ce20ab3ad54f",
-    "acceptance/adapter.mjs": "sha256:47a260982e58d27635ed77fb5b0ff558861712c3deffc1fab357879645221172",
+    "IMPLEMENTATION.md": "sha256:09e96665817b40665a81bfdb95787925120523b7d0dd0b5fa91404fa41b40680",
+    "README.md": "sha256:a35e8a574df18cbe9120376595e271f01f15837864740b658f47cd531665b0e2",
+    "acceptance/README.md": "sha256:ab22da61eb821fcdf36f3465f925dd33c1b06b1f0726390c1a36cfff60797cdb",
+    "acceptance/adapter.mjs": "sha256:d8e8eb4209b31349b6e7c1c09cfaf952801a4bedc9117b6d7a2d1278b48b05a8",
     "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
     "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
-    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:274ef87e6cd6b3a14f82208c5d591c4afc3d2777472e886e5d851df4bd557ef6",
-    "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:171bea3590a6dad4532e2c98a19c4bc20da3a36a3e4826bdee32f6060ce9a863",
-    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:dfe355639f26cae33fc08e7eafe86cffac13dfb3663cab9efbd5392951416af7",
-    "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:662fa6b47f754d2018ea401c90d08744ace7209296975bee1f4bb93efbfbe899",
-    "acceptance/scenarios/b05-resource-budgets.scenario.json": "sha256:99f98a45333b3b6e7c2369d1f84252153e73256dea7f3e542722576301d607bf",
-    "acceptance/scenarios/b06-cross-database-correlation.scenario.json": "sha256:0eeb48f9ebed2866eb987becf93f52a822c8625c5145780a34f3975bd6d44b19",
-    "acceptance/scenarios/b07-history.scenario.json": "sha256:9e9a2f1616b9c143396a02c347202e31171daa467d22791d65de96ad52d3c8cd",
-    "acceptance/scenarios/b08-relationship-review.scenario.json": "sha256:de655868385ce10b7f5444e7320e013b933d9a8bd4ee00c1d07b9d35288e40c6",
-    "acceptance/scenarios/b09-secret-redaction.scenario.json": "sha256:223c542b74d59627816ff48c781e61222684dbd4b1d3c334a87c1faa651e9988",
-    "acceptance/scenarios/b10-schema-drift.scenario.json": "sha256:ad1be20fd08c0f6833a70a97b054b836db92721ad9c753efdc6e493b918110d3",
-    "acceptance/scenarios/b11-safe-failures.scenario.json": "sha256:7e0f1387826a0ec3c2dbb1b81406769fb4b94aa3b247775c5eeb67b6aa451d7a",
-    "acceptance/scenarios/b12-claude-only.scenario.json": "sha256:06c6a1c17c319f0f29322141a3ea9d024479d54d21a969ad41d704deb99872e9",
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:955c72804d756dd3283c725a910e0216828b9762ec8fa4fd3211f66bf26d89d8",
+    "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:dd84c7da0a756adc3828fc7b1712b4288d91320507f1271d63f920d3f4d8d29d",
+    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:f9dad5ecf809e5970630b433755ae370657994c9d218644ad8878cfdae5523c0",
+    "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:ac618940ef4a976fdccd24d524b0a4ebac18c917af90f055c35c29a7ae300b5c",
+    "acceptance/scenarios/b05-resource-budgets.scenario.json": "sha256:82714c748ddc74b8de2bd41c7e25d6e579d866a9b963933b7f222f754a935965",
+    "acceptance/scenarios/b06-cross-database-correlation.scenario.json": "sha256:bd2154d110d28c42b712bc6456ef3558272b8888109dbf0293c13fceed2e2d34",
+    "acceptance/scenarios/b07-history.scenario.json": "sha256:95752b3d6434f2a3877c77c99db54a6dc14c5f5db2ba7e5c318b3cb9c86bd63c",
+    "acceptance/scenarios/b08-relationship-review.scenario.json": "sha256:fdc906111455064027bdfbc717034dede58fbb992d8765d4a5a12b0e48f3a316",
+    "acceptance/scenarios/b09-secret-redaction.scenario.json": "sha256:06a91929b4722ec3d7f371c9e1090d2f17693cdb05fdeed13e21873bafb7ff2c",
+    "acceptance/scenarios/b10-schema-drift.scenario.json": "sha256:598bb48a7e738e58435cc890245c669d888a4154241d9ff452a2239b6c53c215",
+    "acceptance/scenarios/b11-safe-failures.scenario.json": "sha256:8e38c665f881885b83793591903f096e339f4fa4e3c0e9bf2da02d11b979a077",
+    "acceptance/scenarios/b12-claude-only.scenario.json": "sha256:b029d5fa960b13b4b2acdc806aac616d88cd8a02f4cdf5cde259b15e8b99e52e",
+    "acceptance/traces/b01-connection-provisioning.trace.json": "sha256:ef9f20dd75d83fe2da4443df3d7a48e63fa03d523ff9b4fcc3a8b930ab7c94f7",
+    "acceptance/traces/b07-history.trace.json": "sha256:392632411cb815508f83da1877f5c73a5a27c1f538a47abce4846853749ff5fa",
+    "acceptance/traces/b08-relationship-review.trace.json": "sha256:f2d7d74654772194dd1611d30ce7983eba6fccb17a08fb8ee4ba1c90e6c44f21",
     "development-package.json": "sha256:a50f14ee24e2df90af5251d40d798532a9a1252e6228d990f34b22ae9464cce3",
-    "model/architecture.adl": "sha256:fb5df5f24eeb95cef9950e35a178e8bfbd8e9a490d640342189d8035fb2a0e43",
-    "model/architecture.adl-manifest.json": "sha256:4ac02691d8b094729b7f1c5f7fc9fd58a94ae504cf6e61277d75f3bc74f61ceb",
-    "model/architecture.adl.txt": "sha256:1f1c5667b579c084c80f3b6938489508d501c8c92ba65d35f0e1787d0b25f25a",
-    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:9cc9be819d5cbd024981887bc7b787956c6c08ab7d4771cc753d699ec050175b",
-    "model/compile-proof.json": "sha256:0b7ef158b3c321dfa482957f33c12377c2b69df1c0421f650582cba55802f199",
-    "model/local-development.adl-binding.json": "sha256:67e985ee9fec48ec2ecc0b630233282f7d1d91b37f86711ec2b9e2594525a6a5"
+    "model/architecture.adl": "sha256:7b0be74f10b6bb34fec4d76c3a7e23607a1e3725ea8e659f9c8dcfaadf3ae98e",
+    "model/architecture.adl-manifest.json": "sha256:b50c9982c5a508a967ac05a6d4159d8ac37a8b6fc33e8a5e9de2a94b0514c450",
+    "model/architecture.adl.txt": "sha256:dead36447f0cedd8f0b2c268e08d1f7a1cf30cc7a6c01fcec159c1a5fa544817",
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:060216c3bd88966ea382d014a5fdfe5aa2329618b410229e2809ca9983554367",
+    "model/compile-proof.json": "sha256:e96a86fb5afdd4e097c55722b38703dc0d95f2956fba70e6cc3824a359d8a106",
+    "model/local-development.adl-binding.json": "sha256:1dbf372fb2ed21fbf1df856cda8e51bbbcb40d6694b3a9b848f3a3dc471ecc8f",
+    "model/sql-investigator.bdl": "sha256:02dc071c21e1cfed5c8195d5d5c9795c0b8071ac79d83f298b97bc76d9b0af0e"
   }
 }

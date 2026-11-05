@@ -22,7 +22,7 @@ export function createAdapter({ createFakeProvider, env }) {
 // ctx = { scenario, provider, state, assert, env, log }  — provider is the scenario's fake provider
 ```
 
-### Step vocabulary — 43 distinct keys (derived from the scenarios — bind every key)
+### Step vocabulary — 45 distinct keys (derived from the scenarios — bind every key)
 
 | step | phases | args | used by |
 |---|---|---|---|
@@ -49,6 +49,8 @@ export function createAdapter({ createFakeProvider, env }) {
 | `logs.exclude-secret` | then | `value` | 1 scenario |
 | `mcp.exercise-routine-tools` | when | — | 1 scenario |
 | `mcp.start-stdio` | given | — | 1 scenario |
+| `mcp.stdout-protocol-only` | then | — | 1 scenario |
+| `mcp.tool-surface-exact` | then | — | 1 scenario |
 | `output.excludes-secret` | then | `value` | 3 scenarios |
 | `schema.changed-column-visible` | then | — | 1 scenario |
 | `schema.fixture-change` | when | `alias`, `change` | 1 scenario |
@@ -70,49 +72,51 @@ export function createAdapter({ createFakeProvider, env }) {
 | `sql.within-result-budget` | then | — | 1 scenario |
 | `storage.excludes-plaintext-secret` | then | `value` | 1 scenario |
 
-- `audit.has-budget-events` — "audit.has-budget-events"
-- `connection.exercise-error-paths` — "connection.exercise-error-paths"
-- `connection.fixture` — "connection.fixture"
-- `connection.list` — "connection.list"
-- `connection.metadata-has-no-secret` — "connection.metadata-has-no-secret"
-- `connection.provision` — "connection.provision"
-- `connection.verify-local-only-provisioning` — "connection.verify-local-only-provisioning"
-- `credential.dpapi-current-user` — "credential.dpapi-current-user"
-- `investigation.correlate-separate` — "investigation.correlate-separate"
-- `investigation.history-complete` — "investigation.history-complete"
-- `investigation.labels-unmatched-and-ambiguous` — "investigation.labels-unmatched-and-ambiguous"
-- `investigation.no-cross-database-sql` — "investigation.no-cross-database-sql"
-- `investigation.record` — "investigation.record"
-- `investigation.reopen` — "investigation.reopen"
-- `investigation.start` — "investigation.start"
-- `knowledge.empty` — "knowledge.empty"
-- `knowledge.negative-knowledge-retained` — "knowledge.negative-knowledge-retained"
-- `knowledge.propose` — "knowledge.propose"
-- `knowledge.reject` — "knowledge.reject"
-- `knowledge.rejected-not-promoted` — "knowledge.rejected-not-promoted"
-- `logs.exclude-secret` — "logs.exclude-secret"
-- `mcp.exercise-routine-tools` — "mcp.exercise-routine-tools"
-- `mcp.start-stdio` — "mcp.start-stdio"
-- `output.excludes-secret` — "output.excludes-secret"
-- `schema.changed-column-visible` — "schema.changed-column-visible"
-- `schema.fixture-change` — "schema.fixture-change"
-- `schema.has-source-and-time` — "schema.has-source-and-time"
-- `schema.no-fabricated-results` — "schema.no-fabricated-results"
-- `schema.refresh-after-drift` — "schema.refresh-after-drift"
-- `schema.snapshot` — "schema.snapshot"
-- `sql.actionable-sanitized-errors` — "sql.actionable-sanitized-errors"
-- `sql.all-rejected-before-execution` — "sql.all-rejected-before-execution"
-- `sql.budgets-enforced` — "sql.budgets-enforced"
-- `sql.exact-statement` — "sql.exact-statement"
-- `sql.execute` — "sql.execute"
-- `sql.exercise-budgets` — "sql.exercise-budgets"
-- `sql.exercise-failures` — "sql.exercise-failures"
-- `sql.has-query-id` — "sql.has-query-id"
-- `sql.has-truncation-indicator` — "sql.has-truncation-indicator"
-- `sql.reject-corpus` — "sql.reject-corpus"
-- `sql.reject-policy-corpus` — "sql.reject-policy-corpus"
-- `sql.within-result-budget` — "sql.within-result-budget"
-- `storage.excludes-plaintext-secret` — "storage.excludes-plaintext-secret"
+- `audit.has-budget-events` — "an audit event is written for every budget enforcement"
+- `connection.exercise-error-paths` — "connection errors are provoked (wrong password, unreachable server)"
+- `connection.fixture` — "alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal" / "alias "beta" points at a disposable SQL Server fixture, scoped to dbo.Shipments, through a read-only principal"
+- `connection.list` — "Claude Code calls connection_list"
+- `connection.metadata-has-no-secret` — "the listed metadata for "alpha" contains no secret"
+- `connection.provision` — "the developer provisions alias "alpha" at the local console, typing the secret there"
+- `connection.verify-local-only-provisioning` — "no MCP tool accepts or returns a credential, and provisioning is not an MCP tool"
+- `credential.dpapi-current-user` — "the credential for "alpha" is stored DPAPI CurrentUser protected in a current-user-only file"
+- `investigation.correlate-separate` — "Claude Code queries alpha and beta separately and correlates on OrderId"
+- `investigation.history-complete` — "the question, hypothesis, query id, exact SQL, alias, finding and uncertainty are all present, and no raw result rows"
+- `investigation.labels-unmatched-and-ambiguous` — "unmatched and ambiguous records are labelled as such"
+- `investigation.no-cross-database-sql` — "no executed statement references more than one database"
+- `investigation.record` — "Claude Code records a hypothesis, the query evidence, a finding and its uncertainty"
+- `investigation.reopen` — "the investigation is reopened with investigation_get"
+- `investigation.start` — "Claude Code starts an investigation: "Why is order 42 delayed?""
+- `knowledge.empty` — "the knowledge store holds no relationships"
+- `knowledge.negative-knowledge-retained` — "the rejection and its evidence are kept"
+- `knowledge.propose` — "Claude Code proposes that alpha.Orders.OrderId relates to beta.Shipments.OrderId, citing fixture-q1"
+- `knowledge.reject` — "the developer rejects the proposal through knowledge_review"
+- `knowledge.rejected-not-promoted` — "the relationship is rejected and never reported as verified"
+- `logs.exclude-secret` — "no stderr diagnostic contains "fixture-secret""
+- `mcp.exercise-routine-tools` — "Claude Code calls each routine tool"
+- `mcp.start-stdio` — "Claude Code starts LocalMCPServer as an MCP stdio child process"
+- `mcp.stdout-protocol-only` — "everything written to stdout is a well-formed MCP protocol message"
+- `mcp.tool-surface-exact` — "the advertised tools are exactly connection_list, connection_remove, schema_inspect, sql_validate, sql_execute, investigation_start, investigation_record, investigation_get, knowledge_search, knowledge_propose and knowledge_review"
+- `output.excludes-secret` — "no MCP output contains the secret "fixture-secret""
+- `schema.changed-column-visible` — "the changed column is visible"
+- `schema.fixture-change` — "the fixture schema of "alpha" changes (rename-column)"
+- `schema.has-source-and-time` — "the snapshot states its source and capture time"
+- `schema.no-fabricated-results` — "no stale or invented object is reported"
+- `schema.refresh-after-drift` — "Claude Code inspects "alpha" again and the snapshot refreshes"
+- `schema.snapshot` — "a schema snapshot of "alpha" exists"
+- `sql.actionable-sanitized-errors` — "each failure returns an actionable, sanitized error and no result rows"
+- `sql.all-rejected-before-execution` — "every statement is rejected before it reaches SQL Server, with an audited reason"
+- `sql.budgets-enforced` — "each over-budget query is cancelled, refused or truncated with an indicator"
+- `sql.exact-statement` — "the result carries the exact SQL that ran"
+- `sql.execute` — "Claude Code calls sql_execute on "alpha" with: SELECT OrderId FROM dbo.Orders"
+- `sql.exercise-budgets` — "queries exceed each budget: timeout, row, byte, concurrency, investigation"
+- `sql.exercise-failures` — "queries fail in each way: unavailable-server, cancelled, invalid-credentials, malformed-sql"
+- `sql.has-query-id` — "the result carries a query id"
+- `sql.has-truncation-indicator` — "the result says whether it was truncated"
+- `sql.reject-corpus` — "Claude Code submits each statement of the write and bypass corpus"
+- `sql.reject-policy-corpus` — "Claude Code submits each fail-closed policy case"
+- `sql.within-result-budget` — "the result stays within the row and byte budget"
+- `storage.excludes-plaintext-secret` — "no file on disk contains "fixture-secret" in plaintext"
 
 ## Scenarios
 
@@ -120,217 +124,258 @@ export function createAdapter({ createFakeProvider, env }) {
 
 Registration separates alias metadata from DPAPI protected credentials
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` (Resource)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry` (Service), `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` (Resource), `::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog` (Resource)
+- realizes the declared Test `::SQLInvestigator.ConnectionProvisioningSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.provision `[connection.provision]`
+- the developer provisions alias "alpha" at the local console, typing the secret there `[connection.provision]`
 
 **when**
-- connection.list `[connection.list]`
+- Claude Code calls connection_list `[connection.list]`
 
 **then**
-- connection.metadata-has-no-secret `[connection.metadata-has-no-secret]`
-- credential.dpapi-current-user `[credential.dpapi-current-user]`
-- output.excludes-secret `[output.excludes-secret]`
+- the listed metadata for "alpha" contains no secret `[connection.metadata-has-no-secret]`
+- the credential for "alpha" is stored DPAPI CurrentUser protected in a current-user-only file `[credential.dpapi-current-user]`
+- no MCP output contains the secret "fixture-secret" `[output.excludes-secret]`
+
+**Derived trace from `::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection`** (the compiler's process graph; weakest hop: correlated; declared causal closure: closed — never a runtime claim)
+
+```
+::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection
+  → ::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry [declared sink: -> none]
+```
 
 ### `b02-bounded-select`
 
 Approved SELECT returns evidence and bounded results
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` (Requirement), `::SQLInvestigator.Investigation.InvestigateData.BoundedExecution` (Requirement), `::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.fixture `[connection.fixture]`
+- alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal `[connection.fixture]`
 
 **when**
-- sql.execute `[sql.execute]`
+- Claude Code calls sql_execute on "alpha" with: SELECT OrderId FROM dbo.Orders `[sql.execute]`
 
 **then**
-- sql.has-query-id `[sql.has-query-id]`
-- sql.exact-statement `[sql.exact-statement]`
-- sql.within-result-budget `[sql.within-result-budget]`
-- sql.has-truncation-indicator `[sql.has-truncation-indicator]`
+- the result carries a query id `[sql.has-query-id]`
+- the result carries the exact SQL that ran `[sql.exact-statement]`
+- the result stays within the row and byte budget `[sql.within-result-budget]`
+- the result says whether it was truncated `[sql.has-truncation-indicator]`
 
 ### `b03-reject-writes`
 
 Reject all write, DDL, execution, SELECT INTO and multi-batch SQL
 
-- verifies: `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` (Requirement)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist` (Guardrail), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
 - realizes the declared Test `::SQLInvestigator.ReadOnlyEnforcement`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.fixture `[connection.fixture]`
+- alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal `[connection.fixture]`
 
 **when**
-- sql.reject-corpus `[sql.reject-corpus]`
+- Claude Code submits each statement of the write and bypass corpus `[sql.reject-corpus]`
 
 **then**
-- sql.all-rejected-before-execution `[sql.all-rejected-before-execution]`
+- every statement is rejected before it reaches SQL Server, with an audited reason `[sql.all-rejected-before-execution]`
 
 ### `b04-fail-closed-policy`
 
 Ambiguous parsing and unauthorized objects or aliases fail closed
 
-- verifies: `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` (Requirement)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist` (Guardrail), `::SQLInvestigator.Investigation.QueryExecution.ApprovedEnvironmentsOnly` (Guardrail), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
 - realizes the declared Test `::SQLInvestigator.ReadOnlyEnforcement`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.fixture `[connection.fixture]`
+- alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal `[connection.fixture]`
 
 **when**
-- sql.reject-policy-corpus `[sql.reject-policy-corpus]`
+- Claude Code submits each fail-closed policy case `[sql.reject-policy-corpus]`
 
 **then**
-- sql.all-rejected-before-execution `[sql.all-rejected-before-execution]`
+- every statement is rejected before it reaches SQL Server, with an audited reason `[sql.all-rejected-before-execution]`
 
 ### `b05-resource-budgets`
 
 Enforce timeout, row, byte, concurrency and investigation budgets
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.BoundedExecution` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.QueryBudgets` (Guardrail), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
+- realizes the declared Test `::SQLInvestigator.BudgetSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.fixture `[connection.fixture]`
+- alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal `[connection.fixture]`
 
 **when**
-- sql.exercise-budgets `[sql.exercise-budgets]`
+- queries exceed each budget: timeout, row, byte, concurrency, investigation `[sql.exercise-budgets]`
 
 **then**
-- sql.budgets-enforced `[sql.budgets-enforced]`
-- audit.has-budget-events `[audit.has-budget-events]`
+- each over-budget query is cancelled, refused or truncated with an indicator `[sql.budgets-enforced]`
+- an audit event is written for every budget enforcement `[audit.has-budget-events]`
 
 ### `b06-cross-database-correlation`
 
 Correlate independently queried databases with ambiguity retained
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` (Service)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.SeparatePerDatabaseQueries` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
+- realizes the declared Test `::SQLInvestigator.CorrelationSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.fixture `[connection.fixture]`
-- connection.fixture `[connection.fixture]`
+- alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal `[connection.fixture]`
+- alias "beta" points at a disposable SQL Server fixture, scoped to dbo.Shipments, through a read-only principal `[connection.fixture]`
 
 **when**
-- investigation.correlate-separate `[investigation.correlate-separate]`
+- Claude Code queries alpha and beta separately and correlates on OrderId `[investigation.correlate-separate]`
 
 **then**
-- investigation.no-cross-database-sql `[investigation.no-cross-database-sql]`
-- investigation.labels-unmatched-and-ambiguous `[investigation.labels-unmatched-and-ambiguous]`
+- no executed statement references more than one database `[investigation.no-cross-database-sql]`
+- unmatched and ambiguous records are labelled as such `[investigation.labels-unmatched-and-ambiguous]`
 
 ### `b07-history`
 
 Investigation history retains question, hypotheses, SQL, evidence and uncertainty
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory` (Resource)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service), `::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory` (Resource)
+- realizes the declared Test `::SQLInvestigator.ProvenanceSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- investigation.start `[investigation.start]`
+- Claude Code starts an investigation: "Why is order 42 delayed?" `[investigation.start]`
 
 **when**
-- investigation.record `[investigation.record]`
-- investigation.reopen `[investigation.reopen]`
+- Claude Code records a hypothesis, the query evidence, a finding and its uncertainty `[investigation.record]`
+- the investigation is reopened with investigation_get `[investigation.reopen]`
 
 **then**
-- investigation.history-complete `[investigation.history-complete]`
+- the question, hypothesis, query id, exact SQL, alias, finding and uncertainty are all present, and no raw result rows `[investigation.history-complete]`
+
+**Derived trace from `::SQLInvestigator.Investigation.QueryExecution.RecordFinding`** (the compiler's process graph; weakest hop: correlated; declared causal closure: closed — never a runtime claim)
+
+```
+::SQLInvestigator.Investigation.QueryExecution.RecordFinding
+  → ::SQLInvestigator.Investigation.QueryExecution.QueryGateway [declared sink: -> none]
+```
 
 ### `b08-relationship-review`
 
 Inferred relationships remain proposed until reviewed; rejected knowledge persists
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` (Service)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` (Service), `::SQLInvestigator.Investigation.QueryExecution.KnowledgeStore` (Resource)
+- realizes the declared Test `::SQLInvestigator.RelationshipReviewSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- knowledge.empty `[knowledge.empty]`
+- the knowledge store holds no relationships `[knowledge.empty]`
 
 **when**
-- knowledge.propose `[knowledge.propose]`
-- knowledge.reject `[knowledge.reject]`
+- Claude Code proposes that alpha.Orders.OrderId relates to beta.Shipments.OrderId, citing fixture-q1 `[knowledge.propose]`
+- the developer rejects the proposal through knowledge_review `[knowledge.reject]`
 
 **then**
-- knowledge.rejected-not-promoted `[knowledge.rejected-not-promoted]`
-- knowledge.negative-knowledge-retained `[knowledge.negative-knowledge-retained]`
+- the relationship is rejected and never reported as verified `[knowledge.rejected-not-promoted]`
+- the rejection and its evidence are kept `[knowledge.negative-knowledge-retained]`
+
+**Derived trace from `::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship`** (the compiler's process graph; weakest hop: correlated; declared causal closure: closed — never a runtime claim)
+
+```
+::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship
+  → ::SQLInvestigator.Investigation.QueryExecution.KnowledgeService [declared sink: -> none]
+```
 
 ### `b09-secret-redaction`
 
 Credentials never appear in metadata, logs, exceptions or MCP output
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` (Resource)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.SecretRedaction` (Guardrail), `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` (Resource)
+- realizes the declared Test `::SQLInvestigator.SecretRedactionSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.provision `[connection.provision]`
+- the developer provisions alias "alpha" at the local console, typing the secret there `[connection.provision]`
 
 **when**
-- connection.exercise-error-paths `[connection.exercise-error-paths]`
+- connection errors are provoked (wrong password, unreachable server) `[connection.exercise-error-paths]`
 
 **then**
-- output.excludes-secret `[output.excludes-secret]`
-- logs.exclude-secret `[logs.exclude-secret]`
-- storage.excludes-plaintext-secret `[storage.excludes-plaintext-secret]`
+- no MCP output contains the secret "fixture-secret" `[output.excludes-secret]`
+- no stderr diagnostic contains "fixture-secret" `[logs.exclude-secret]`
+- no file on disk contains "fixture-secret" in plaintext `[storage.excludes-plaintext-secret]`
 
 ### `b10-schema-drift`
 
 Schema cache records provenance and refreshes on drift
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` (Service)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.SchemaFreshness` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` (Service)
+- realizes the declared Test `::SQLInvestigator.SchemaDriftSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- schema.snapshot `[schema.snapshot]`
+- a schema snapshot of "alpha" exists `[schema.snapshot]`
 
 **when**
-- schema.fixture-change `[schema.fixture-change]`
-- schema.refresh-after-drift `[schema.refresh-after-drift]`
+- the fixture schema of "alpha" changes (rename-column) `[schema.fixture-change]`
+- Claude Code inspects "alpha" again and the snapshot refreshes `[schema.refresh-after-drift]`
 
 **then**
-- schema.has-source-and-time `[schema.has-source-and-time]`
-- schema.changed-column-visible `[schema.changed-column-visible]`
-- schema.no-fabricated-results `[schema.no-fabricated-results]`
+- the snapshot states its source and capture time `[schema.has-source-and-time]`
+- the changed column is visible `[schema.changed-column-visible]`
+- no stale or invented object is reported `[schema.no-fabricated-results]`
 
 ### `b11-safe-failures`
 
 Unavailable server, invalid credentials, cancellation and malformed SQL fail safely
 
-- verifies: `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.SafeFailure` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` (Service), `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` (Service)
+- realizes the declared Test `::SQLInvestigator.SafeFailureSuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- connection.fixture `[connection.fixture]`
+- alias "alpha" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal `[connection.fixture]`
 
 **when**
-- sql.exercise-failures `[sql.exercise-failures]`
+- queries fail in each way: unavailable-server, cancelled, invalid-credentials, malformed-sql `[sql.exercise-failures]`
 
 **then**
-- sql.actionable-sanitized-errors `[sql.actionable-sanitized-errors]`
-- output.excludes-secret `[output.excludes-secret]`
+- each failure returns an actionable, sanitized error and no result rows `[sql.actionable-sanitized-errors]`
+- no MCP output contains the secret "fixture-secret" `[output.excludes-secret]`
 
 ### `b12-claude-only`
 
 Routine workflow is MCP-accessible; credential entry remains local
 
-- verifies: `::SQLInvestigator.LocalMCPServer` (Deployable)
+- verifies: `::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost` (Requirement), `::SQLInvestigator.LocalMCPServer` (Deployable)
+- realizes the declared Test `::SQLInvestigator.ClaudeOnlySuite`
 - environment: `::SQLInvestigator.LocalDevelopment`
 
 **given**
-- mcp.start-stdio `[mcp.start-stdio]`
+- Claude Code starts LocalMCPServer as an MCP stdio child process `[mcp.start-stdio]`
 
 **when**
-- mcp.exercise-routine-tools `[mcp.exercise-routine-tools]`
+- Claude Code calls each routine tool `[mcp.exercise-routine-tools]`
 
 **then**
-- connection.verify-local-only-provisioning `[connection.verify-local-only-provisioning]`
+- no MCP tool accepts or returns a credential, and provisioning is not an MCP tool `[connection.verify-local-only-provisioning]`
+- everything written to stdout is a well-formed MCP protocol message `[mcp.stdout-protocol-only]`
+- the advertised tools are exactly connection_list, connection_remove, schema_inspect, sql_validate, sql_execute, investigation_start, investigation_record, investigation_get, knowledge_search, knowledge_propose and knowledge_review `[mcp.tool-surface-exact]`
 
 ## Coverage
 
 | requirement | scenarios |
 |---|---|
-| `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` | `b03-reject-writes`, `b04-fail-closed-policy` |
+| `::SQLInvestigator.Investigation.InvestigateData.BoundedExecution` | `b02-bounded-select`, `b05-resource-budgets` |
+| `::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance` | `b02-bounded-select`, `b07-history` |
+| `::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning` | `b01-connection-provisioning` |
+| `::SQLInvestigator.Investigation.InvestigateData.NoSecretDisclosure` | `b09-secret-redaction` |
+| `::SQLInvestigator.Investigation.InvestigateData.ReadOnly` | `b02-bounded-select`, `b03-reject-writes`, `b04-fail-closed-policy` |
+| `::SQLInvestigator.Investigation.InvestigateData.ReviewedRelationships` | `b08-relationship-review` |
+| `::SQLInvestigator.Investigation.InvestigateData.SafeFailure` | `b11-safe-failures` |
+| `::SQLInvestigator.Investigation.InvestigateData.SchemaFreshness` | `b10-schema-drift` |
+| `::SQLInvestigator.Investigation.InvestigateData.SeparatePerDatabaseQueries` | `b06-cross-database-correlation` |
+| `::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost` | `b12-claude-only` |
 
 Environment under test: `::SQLInvestigator.LocalDevelopment`.

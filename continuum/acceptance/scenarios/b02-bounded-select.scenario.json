@@ -3,6 +3,9 @@
   "name": "b02-bounded-select",
   "purpose": "Approved SELECT returns evidence and bounded results",
   "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.ReadOnly",
+    "::SQLInvestigator.Investigation.InvestigateData.BoundedExecution",
+    "::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance",
     "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
   ],
   "environment": "LocalDevelopment",
@@ -13,7 +16,7 @@
         "alias": "alpha",
         "scope": "dbo.Orders"
       },
-      "text": "connection.fixture"
+      "text": "alias \"alpha\" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal"
     }
   ],
   "when": [
@@ -23,29 +26,29 @@
         "alias": "alpha",
         "sql": "SELECT OrderId FROM dbo.Orders"
       },
-      "text": "sql.execute"
+      "text": "Claude Code calls sql_execute on \"alpha\" with: SELECT OrderId FROM dbo.Orders"
     }
   ],
   "then": [
     {
       "step": "sql.has-query-id",
       "args": {},
-      "text": "sql.has-query-id"
+      "text": "the result carries a query id"
     },
     {
       "step": "sql.exact-statement",
       "args": {},
-      "text": "sql.exact-statement"
+      "text": "the result carries the exact SQL that ran"
     },
     {
       "step": "sql.within-result-budget",
       "args": {},
-      "text": "sql.within-result-budget"
+      "text": "the result stays within the row and byte budget"
     },
     {
       "step": "sql.has-truncation-indicator",
       "args": {},
-      "text": "sql.has-truncation-indicator"
+      "text": "the result says whether it was truncated"
     }
   ]
 }

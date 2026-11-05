@@ -3,8 +3,11 @@
   "name": "b11-safe-failures",
   "purpose": "Unavailable server, invalid credentials, cancellation and malformed SQL fail safely",
   "verifies": [
-    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
+    "::SQLInvestigator.Investigation.InvestigateData.SafeFailure",
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway",
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
   ],
+  "test": "::SQLInvestigator.SafeFailureSuite",
   "environment": "LocalDevelopment",
   "given": [
     {
@@ -13,7 +16,7 @@
         "alias": "alpha",
         "scope": "dbo.Orders"
       },
-      "text": "connection.fixture"
+      "text": "alias \"alpha\" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal"
     }
   ],
   "when": [
@@ -27,21 +30,21 @@
           "malformed-sql"
         ]
       },
-      "text": "sql.exercise-failures"
+      "text": "queries fail in each way: unavailable-server, cancelled, invalid-credentials, malformed-sql"
     }
   ],
   "then": [
     {
       "step": "sql.actionable-sanitized-errors",
       "args": {},
-      "text": "sql.actionable-sanitized-errors"
+      "text": "each failure returns an actionable, sanitized error and no result rows"
     },
     {
       "step": "output.excludes-secret",
       "args": {
         "value": "fixture-secret"
       },
-      "text": "output.excludes-secret"
+      "text": "no MCP output contains the secret \"fixture-secret\""
     }
   ]
 }

@@ -3,7 +3,7 @@
   "manifest": {
     "name": "avlon.sqlinvestigator",
     "version": "draft-1",
-    "core": "adl/1.7",
+    "core": "adl/1.6",
     "imports": [],
     "extensions": [],
     "documents": [

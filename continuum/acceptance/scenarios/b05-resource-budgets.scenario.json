@@ -3,8 +3,11 @@
   "name": "b05-resource-budgets",
   "purpose": "Enforce timeout, row, byte, concurrency and investigation budgets",
   "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.BoundedExecution",
+    "::SQLInvestigator.Investigation.QueryExecution.QueryBudgets",
     "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
   ],
+  "test": "::SQLInvestigator.BudgetSuite",
   "environment": "LocalDevelopment",
   "given": [
     {
@@ -13,7 +16,7 @@
         "alias": "alpha",
         "scope": "dbo.Orders"
       },
-      "text": "connection.fixture"
+      "text": "alias \"alpha\" points at a disposable SQL Server fixture, scoped to dbo.Orders, through a read-only principal"
     }
   ],
   "when": [
@@ -28,19 +31,19 @@
           "investigation"
         ]
       },
-      "text": "sql.exercise-budgets"
+      "text": "queries exceed each budget: timeout, row, byte, concurrency, investigation"
     }
   ],
   "then": [
     {
       "step": "sql.budgets-enforced",
       "args": {},
-      "text": "sql.budgets-enforced"
+      "text": "each over-budget query is cancelled, refused or truncated with an indicator"
     },
     {
       "step": "audit.has-budget-events",
       "args": {},
-      "text": "audit.has-budget-events"
+      "text": "an audit event is written for every budget enforcement"
     }
   ]
 }
