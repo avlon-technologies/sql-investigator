@@ -1,9 +1,10 @@
-# Native Continuum package — in progress
+# SQL Investigator Continuum sources
 
-`architecture.adl` was authored and compiled using Continuum Architecture's hosted workspace compiler on 2026-11-05.
+- `../VISION.md`: product intent
+- `business/sql-investigator.bdl`: native BDL, compiled successfully on 2026-11-05 with zero diagnostics
+- `model/architecture.adl`: semantic model compiled and attested on 2026-11-05; six outstanding architectural warnings
+- `model/local-development.adl-binding.json`: authored technology bindings pinned to the compiled ADL attestation; **binding realization/build not yet verified**
+- `model/avlon.bindings.localdotnet.vocabulary-claims.json`: custom vocabulary claims; **not yet verified by package build**
+- `decisions/`: six authored ADR candidates; **not yet recorded in a governed Host ledger**
 
-Compiler verdict: `compiled: true`, `attested: true`, `errors: 0`, `warnings: 6`.
-
-This is an **initial architectural skeleton**, not the complete development package. It does not yet express all agreed requirements, detailed contracts, BDL, technology bindings or formally recorded ADRs. The six warnings are unresolved design-review obligations, not claimed as resolved.
-
-The earlier `docs/` material is background only. Do not treat it as native Continuum models.
+This is not yet a verified development package. BDL compilation does not establish ADL realization; the 12 behavioral acceptance scenarios remain to be made executable, and diagrams remain to be generated. Do not connect to production data before workplace security approval.

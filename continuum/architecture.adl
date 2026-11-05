@@ -16,5 +16,6 @@ system SQLInvestigator #afccf3ce-8751-44dc-af76-be60c1034415 {
   }
  }
  deployable LocalMCPServer #6ae994a4-5c93-4913-a298-8e93a51a0d32 { desc "Windows .NET 10 executable, MCP over stdio." }
+ environment LocalDevelopment #a2eaf960-60d0-4a93-a7c6-4e61e672983a { desc "Local Windows developer workstation running Claude Code and the MCP stdio executable." }
 }
 }

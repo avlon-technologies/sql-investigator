@@ -1,0 +1,48 @@
+{
+  "adl-json": "adl-json/1.0",
+  "vocabulary-claims": {
+    "vocabulary": "avlon.bindings.localdotnet",
+    "version": "draft-1",
+    "technologies": {
+      "dotnet-10-mcp-stdio": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "language": "atom",
+          "transport": "atom",
+          "os": "atom"
+        }
+      },
+      "sqlclient-scriptdom": {
+        "claims": [],
+        "configuration": {
+          "driver": "atom",
+          "validator": "atom",
+          "policy": "atom"
+        }
+      },
+      "dotnet-service": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "persistence": "atom"
+        }
+      },
+      "atomic-json-files": {
+        "claims": [],
+        "configuration": {
+          "serializer": "atom",
+          "writes": "atom",
+          "retention": "atom"
+        }
+      },
+      "windows-dpapi-currentuser": {
+        "claims": [],
+        "configuration": {
+          "protection": "atom",
+          "acl": "atom"
+        }
+      }
+    }
+  }
+}

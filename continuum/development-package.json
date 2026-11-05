@@ -1,0 +1,17 @@
+{
+  "development-package": "1",
+  "name": "sql-investigator",
+  "environment": "LocalDevelopment",
+  "controls": [
+    {
+      "variable": "MAX_QUERY_ROWS",
+      "default": "500",
+      "meaning": "Recommended maximum returned rows per query; enforce in gateway."
+    },
+    {
+      "variable": "SQL_TIMEOUT_SECONDS",
+      "default": "15",
+      "meaning": "Recommended SQL command timeout; subject to environment review."
+    }
+  ]
+}
