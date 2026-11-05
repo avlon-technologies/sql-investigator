@@ -1,0 +1,30 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b12-claude-only",
+  "purpose": "Routine workflow is MCP-accessible; credential entry remains local",
+  "verifies": [
+    "::SQLInvestigator.LocalMCPServer"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "mcp.start-stdio",
+      "args": {},
+      "text": "mcp.start-stdio"
+    }
+  ],
+  "when": [
+    {
+      "step": "mcp.exercise-routine-tools",
+      "args": {},
+      "text": "mcp.exercise-routine-tools"
+    }
+  ],
+  "then": [
+    {
+      "step": "connection.verify-local-only-provisioning",
+      "args": {},
+      "text": "connection.verify-local-only-provisioning"
+    }
+  ]
+}

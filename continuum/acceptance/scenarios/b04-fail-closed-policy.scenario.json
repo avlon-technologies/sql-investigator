@@ -1,0 +1,43 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b04-fail-closed-policy",
+  "purpose": "Ambiguous parsing and unauthorized objects or aliases fail closed",
+  "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.ReadOnly"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "alpha",
+        "scope": "dbo.Orders"
+      },
+      "text": "connection.fixture"
+    }
+  ],
+  "when": [
+    {
+      "step": "sql.reject-policy-corpus",
+      "args": {
+        "cases": [
+          "parser-ambiguity",
+          "policy-unavailable",
+          "forbidden-table",
+          "forbidden-column",
+          "unauthorized-alias",
+          "openrowset",
+          "cross-database-reference"
+        ]
+      },
+      "text": "sql.reject-policy-corpus"
+    }
+  ],
+  "then": [
+    {
+      "step": "sql.all-rejected-before-execution",
+      "args": {},
+      "text": "sql.all-rejected-before-execution"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b11-safe-failures",
+  "purpose": "Unavailable server, invalid credentials, cancellation and malformed SQL fail safely",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "alpha",
+        "scope": "dbo.Orders"
+      },
+      "text": "connection.fixture"
+    }
+  ],
+  "when": [
+    {
+      "step": "sql.exercise-failures",
+      "args": {
+        "kinds": [
+          "unavailable-server",
+          "cancelled",
+          "invalid-credentials",
+          "malformed-sql"
+        ]
+      },
+      "text": "sql.exercise-failures"
+    }
+  ],
+  "then": [
+    {
+      "step": "sql.actionable-sanitized-errors",
+      "args": {},
+      "text": "sql.actionable-sanitized-errors"
+    },
+    {
+      "step": "output.excludes-secret",
+      "args": {
+        "value": "fixture-secret"
+      },
+      "text": "output.excludes-secret"
+    }
+  ]
+}

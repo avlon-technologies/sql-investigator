@@ -1,0 +1,44 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b07-history",
+  "purpose": "Investigation history retains question, hypotheses, SQL, evidence and uncertainty",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "investigation.start",
+      "args": {
+        "question": "Why is order 42 delayed?"
+      },
+      "text": "investigation.start"
+    }
+  ],
+  "when": [
+    {
+      "step": "investigation.record",
+      "args": {
+        "hypothesis": "Shipment missing",
+        "sql": "SELECT OrderId FROM dbo.Orders",
+        "alias": "alpha",
+        "queryId": "fixture-q1",
+        "finding": "unconfirmed",
+        "uncertainty": "schema may be stale"
+      },
+      "text": "investigation.record"
+    },
+    {
+      "step": "investigation.reopen",
+      "args": {},
+      "text": "investigation.reopen"
+    }
+  ],
+  "then": [
+    {
+      "step": "investigation.history-complete",
+      "args": {},
+      "text": "investigation.history-complete"
+    }
+  ]
+}

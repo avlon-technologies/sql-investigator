@@ -1,0 +1,51 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b02-bounded-select",
+  "purpose": "Approved SELECT returns evidence and bounded results",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "alpha",
+        "scope": "dbo.Orders"
+      },
+      "text": "connection.fixture"
+    }
+  ],
+  "when": [
+    {
+      "step": "sql.execute",
+      "args": {
+        "alias": "alpha",
+        "sql": "SELECT OrderId FROM dbo.Orders"
+      },
+      "text": "sql.execute"
+    }
+  ],
+  "then": [
+    {
+      "step": "sql.has-query-id",
+      "args": {},
+      "text": "sql.has-query-id"
+    },
+    {
+      "step": "sql.exact-statement",
+      "args": {},
+      "text": "sql.exact-statement"
+    },
+    {
+      "step": "sql.within-result-budget",
+      "args": {},
+      "text": "sql.within-result-budget"
+    },
+    {
+      "step": "sql.has-truncation-indicator",
+      "args": {},
+      "text": "sql.has-truncation-indicator"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b03-reject-writes",
+  "purpose": "Reject all write, DDL, execution, SELECT INTO and multi-batch SQL",
+  "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.ReadOnly"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "alpha",
+        "scope": "dbo.Orders"
+      },
+      "text": "connection.fixture"
+    }
+  ],
+  "when": [
+    {
+      "step": "sql.reject-corpus",
+      "args": {
+        "statements": [
+          "INSERT INTO dbo.Orders DEFAULT VALUES",
+          "UPDATE dbo.Orders SET OrderId = 2",
+          "DELETE FROM dbo.Orders",
+          "MERGE dbo.Orders AS t USING dbo.Orders AS s ON 1=0 WHEN NOT MATCHED THEN INSERT DEFAULT VALUES;",
+          "CREATE TABLE dbo.Evil (Id int)",
+          "DROP TABLE dbo.Orders",
+          "ALTER TABLE dbo.Orders ADD Evil int",
+          "EXEC sp_who",
+          "SELECT OrderId INTO dbo.Copy FROM dbo.Orders",
+          "SELECT 1; SELECT 2"
+        ]
+      },
+      "text": "sql.reject-corpus"
+    }
+  ],
+  "then": [
+    {
+      "step": "sql.all-rejected-before-execution",
+      "args": {},
+      "text": "sql.all-rejected-before-execution"
+    }
+  ]
+}

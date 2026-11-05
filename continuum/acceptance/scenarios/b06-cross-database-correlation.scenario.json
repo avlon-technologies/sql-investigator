@@ -1,0 +1,52 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b06-cross-database-correlation",
+  "purpose": "Correlate independently queried databases with ambiguity retained",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "alpha",
+        "scope": "dbo.Orders"
+      },
+      "text": "connection.fixture"
+    },
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "beta",
+        "scope": "dbo.Shipments"
+      },
+      "text": "connection.fixture"
+    }
+  ],
+  "when": [
+    {
+      "step": "investigation.correlate-separate",
+      "args": {
+        "aliases": [
+          "alpha",
+          "beta"
+        ],
+        "key": "OrderId"
+      },
+      "text": "investigation.correlate-separate"
+    }
+  ],
+  "then": [
+    {
+      "step": "investigation.no-cross-database-sql",
+      "args": {},
+      "text": "investigation.no-cross-database-sql"
+    },
+    {
+      "step": "investigation.labels-unmatched-and-ambiguous",
+      "args": {},
+      "text": "investigation.labels-unmatched-and-ambiguous"
+    }
+  ]
+}

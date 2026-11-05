@@ -1,0 +1,49 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b01-connection-provisioning",
+  "purpose": "Registration separates alias metadata from DPAPI protected credentials",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.provision",
+      "args": {
+        "alias": "alpha",
+        "credential": "fixture-secret"
+      },
+      "text": "connection.provision"
+    }
+  ],
+  "when": [
+    {
+      "step": "connection.list",
+      "args": {},
+      "text": "connection.list"
+    }
+  ],
+  "then": [
+    {
+      "step": "connection.metadata-has-no-secret",
+      "args": {
+        "alias": "alpha"
+      },
+      "text": "connection.metadata-has-no-secret"
+    },
+    {
+      "step": "credential.dpapi-current-user",
+      "args": {
+        "alias": "alpha"
+      },
+      "text": "credential.dpapi-current-user"
+    },
+    {
+      "step": "output.excludes-secret",
+      "args": {
+        "value": "fixture-secret"
+      },
+      "text": "output.excludes-secret"
+    }
+  ]
+}

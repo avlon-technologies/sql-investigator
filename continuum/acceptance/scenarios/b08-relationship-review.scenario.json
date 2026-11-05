@@ -1,0 +1,44 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b08-relationship-review",
+  "purpose": "Inferred relationships remain proposed until reviewed; rejected knowledge persists",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "knowledge.empty",
+      "args": {},
+      "text": "knowledge.empty"
+    }
+  ],
+  "when": [
+    {
+      "step": "knowledge.propose",
+      "args": {
+        "source": "alpha.Orders.OrderId",
+        "target": "beta.Shipments.OrderId",
+        "evidence": "fixture-q1"
+      },
+      "text": "knowledge.propose"
+    },
+    {
+      "step": "knowledge.reject",
+      "args": {},
+      "text": "knowledge.reject"
+    }
+  ],
+  "then": [
+    {
+      "step": "knowledge.rejected-not-promoted",
+      "args": {},
+      "text": "knowledge.rejected-not-promoted"
+    },
+    {
+      "step": "knowledge.negative-knowledge-retained",
+      "args": {},
+      "text": "knowledge.negative-knowledge-retained"
+    }
+  ]
+}

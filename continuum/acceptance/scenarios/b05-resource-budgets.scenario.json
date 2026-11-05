@@ -1,0 +1,46 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b05-resource-budgets",
+  "purpose": "Enforce timeout, row, byte, concurrency and investigation budgets",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "connection.fixture",
+      "args": {
+        "alias": "alpha",
+        "scope": "dbo.Orders"
+      },
+      "text": "connection.fixture"
+    }
+  ],
+  "when": [
+    {
+      "step": "sql.exercise-budgets",
+      "args": {
+        "kinds": [
+          "timeout",
+          "row",
+          "byte",
+          "concurrency",
+          "investigation"
+        ]
+      },
+      "text": "sql.exercise-budgets"
+    }
+  ],
+  "then": [
+    {
+      "step": "sql.budgets-enforced",
+      "args": {},
+      "text": "sql.budgets-enforced"
+    },
+    {
+      "step": "audit.has-budget-events",
+      "args": {},
+      "text": "audit.has-budget-events"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b10-schema-drift",
+  "purpose": "Schema cache records provenance and refreshes on drift",
+  "verifies": [
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+  ],
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "schema.snapshot",
+      "args": {
+        "alias": "alpha"
+      },
+      "text": "schema.snapshot"
+    }
+  ],
+  "when": [
+    {
+      "step": "schema.fixture-change",
+      "args": {
+        "alias": "alpha",
+        "change": "rename-column"
+      },
+      "text": "schema.fixture-change"
+    },
+    {
+      "step": "schema.refresh-after-drift",
+      "args": {
+        "alias": "alpha"
+      },
+      "text": "schema.refresh-after-drift"
+    }
+  ],
+  "then": [
+    {
+      "step": "schema.has-source-and-time",
+      "args": {},
+      "text": "schema.has-source-and-time"
+    },
+    {
+      "step": "schema.changed-column-visible",
+      "args": {},
+      "text": "schema.changed-column-visible"
+    },
+    {
+      "step": "schema.no-fabricated-results",
+      "args": {},
+      "text": "schema.no-fabricated-results"
+    }
+  ]
+}
