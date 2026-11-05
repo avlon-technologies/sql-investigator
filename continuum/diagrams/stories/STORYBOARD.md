@@ -96,4 +96,8 @@ Claude is capable and well-meaning, and it will still sometimes write the wrong 
 
 ## Rendered stories
 
-Not yet rendered. Each scene has been sent to the Continuum Diagram composer against snapshot `snp_a5ef35dbb3cf9bf0fb0895c4babb5a65` (attestation `sha256:df885cef…3d77`). The rendered pictures, their run ids, and what in each is declared or inferred will be added here when the renders complete.
+| Scene | Picture | Run | Grades |
+|---|---|---|---|
+| 1. The password that never enters the conversation | [svg](01-password-never-enters-conversation.svg) · [png](01-password-never-enters-conversation.png) | `7003b11e-a4ed-4440-b3a8-13f0d9d271b3` | 12 declared, 3 inferred (developer types password at console; console seals it into the vault; alias list returned to Claude). SVG geometry check passed; not visually accepted by the server. |
+
+The remaining scenes are not yet rendered. Each scene has been sent to the Continuum Diagram composer against snapshot `snp_a5ef35dbb3cf9bf0fb0895c4babb5a65` (attestation `sha256:df885cef…3d77`). The rendered pictures, their run ids, and what in each is declared or inferred will be added here when the renders complete.
