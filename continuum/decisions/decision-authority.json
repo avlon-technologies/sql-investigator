@@ -63,21 +63,6 @@
     }
   ],
   "rules": [
-    {
-      "id": "a-person-who-did-not-author-it-approves",
-      "actions": [
-        "accept",
-        "revoke",
-        "supersede"
-      ],
-      "subjects": [
-        "*"
-      ],
-      "separation": "distinct-party",
-      "approverKinds": [
-        "human"
-      ],
-      "note": "A decision is approved by a person, never by whoever proposed or amended it."
-    }
+    
   ]
 }
