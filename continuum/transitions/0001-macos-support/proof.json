@@ -1,0 +1,32 @@
+{
+  "incremental-change-package-proof": "1",
+  "normative": false,
+  "transitionId": "sha256:5b00b33401cea2fa973f70ea95c6a46aeea4888919b587b6c7260a5007525fbf",
+  "base": {
+    "package": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+    "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+    "sequence": 2
+  },
+  "delta": {
+    "semantic": "changed",
+    "bindings": "changed",
+    "acceptance": "changed"
+  },
+  "result": {
+    "changeState": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031",
+    "attestation": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005"
+  },
+  "coverage": {
+    "base": 0,
+    "result": 0,
+    "regressed": false
+  },
+  "acceptance": {
+    "count": 12,
+    "executed": false
+  },
+  "mode": "sanctioned",
+  "materialized": "result"
+}

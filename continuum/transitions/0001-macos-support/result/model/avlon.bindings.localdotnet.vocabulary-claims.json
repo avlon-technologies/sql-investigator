@@ -1,0 +1,71 @@
+{
+  "adl-json": "adl-json/1.0",
+  "vocabulary-claims": {
+    "vocabulary": "avlon.bindings.localdotnet",
+    "version": "draft-1",
+    "technologies": {
+      "dotnet-10-mcp-stdio": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "language": "atom",
+          "transport": "atom",
+          "os": "atom"
+        }
+      },
+      "sqlclient-scriptdom": {
+        "claims": [],
+        "configuration": {
+          "driver": "atom",
+          "validator": "atom",
+          "policy": "atom"
+        }
+      },
+      "atomic-json-files": {
+        "claims": [
+          "retention-honored",
+          "erasure-capable",
+          "access-controlled",
+          "auditable"
+        ],
+        "configuration": {
+          "serializer": "atom",
+          "writes": "atom",
+          "retention": "atom"
+        }
+      },
+      "windows-dpapi-currentuser": {
+        "claims": [],
+        "configuration": {
+          "protection": "atom",
+          "acl": "atom"
+        }
+      },
+      "dotnet-console-provisioning": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "entry": "atom",
+          "secretEntry": "atom",
+          "protection": "atom"
+        }
+      },
+      "dotnet-sqlclient-service": {
+        "claims": [],
+        "configuration": {
+          "runtime": "atom",
+          "persistence": "atom",
+          "driver": "atom"
+        }
+      },
+      "os-user-secret-store": {
+        "claims": [],
+        "configuration": {
+          "windows": "atom",
+          "macos": "atom",
+          "acl": "atom"
+        }
+      }
+    }
+  }
+}

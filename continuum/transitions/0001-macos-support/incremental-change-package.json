@@ -15,7 +15,12 @@
     "acceptance": "changed"
   },
   "semantic": {
-    "change": "changes/macos-support.adl-change"
+    "change": "changes/macos-support.adl-change",
+    "result": {
+      "changeState": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031",
+      "attestation": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005",
+      "changeDigest": "sha256:f7f987908fe0bc7f282792e43ec677933a5bdcffb856b86b77de145d7dfbb25a"
+    }
   },
   "bindings": {
     "documents": [

@@ -1,0 +1,10 @@
+change macosSupport core adl/1.6 {
+  desc "Run SQL Investigator on macOS as well as Windows. Only descriptions change: the deployable, the environment, the credential vault and the provisioning test no longer name Windows or DPAPI, because the operating-system mechanism is a technology choice and lives in the binding. No element, edge, owner or constraint is added, removed or moved: the vault is still a secret-store no service writes, and secrets still enter only at the local console. Draft for ADR-007; not proposed."
+  base package avlon.sqlinvestigator version "draft-1" state "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
+  result state "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031"
+
+  modify #6ae994a4-5c93-4913-a298-8e93a51a0d32 description = ".NET 10 executable for the developer's workstation, on Windows or macOS. Started by Claude Code, it speaks MCP over stdio; run by the developer with the provisioning subcommand, it offers the local interactive console."
+  modify #a2eaf960-60d0-4a93-a7c6-4e61e672983a description = "Local developer workstation, Windows x64 or macOS, running Claude Code and the MCP stdio executable against disposable SQL Server databases."
+  modify #783fa850-ffb5-40e3-846c-4a215d12d393 description = "SQL credentials, one per alias, encrypted for the current operating-system user and readable only by that user. The developer places the secret here at the local provisioning console; ADL declares no service write to a secret store, and services only read it."
+  modify #efc4bf63-2e57-449d-a043-55fdfbb3a7b7 description = "A connection is provisioned only at the local console, its secret is protected for the current operating-system user, and no MCP operation accepts or returns it."
+}

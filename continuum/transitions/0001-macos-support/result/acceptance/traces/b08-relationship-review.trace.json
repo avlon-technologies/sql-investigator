@@ -1,0 +1,30 @@
+{
+  "development-package-trace": "1",
+  "normative": false,
+  "note": "derived from the compiler's process graph; declared causality only — never a runtime claim",
+  "scenario": "b08-relationship-review",
+  "from": "::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship",
+  "ok": true,
+  "hops": [],
+  "sinks": [
+    {
+      "participant": "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService",
+      "consumed": "::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship"
+    }
+  ],
+  "openConsumptions": [],
+  "productions": [],
+  "cycles": [],
+  "messagesReached": [
+    "::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship"
+  ],
+  "participantsReached": [
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+  ],
+  "weakestStrength": "correlated",
+  "declaredCausalClosure": {
+    "closed": true,
+    "meaning": "every consumption reached along declared hops carries a declaration (sinks included); NOT runtime completion, success, or that any Event occurs"
+  },
+  "expected": null
+}
