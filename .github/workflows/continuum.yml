@@ -40,7 +40,7 @@ on:
 jobs:
   architecture:
     name: Architecture gate
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64, sqlinv-local]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
