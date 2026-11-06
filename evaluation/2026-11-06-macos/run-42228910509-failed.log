@@ -1,0 +1,60 @@
+macOS osx-arm64	Unit tests	﻿2026-11-06T13:51:59.5813210Z ##[group]Run dotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5813870Z ^[[36;1mdotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults^[[0m
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5841950Z shell: /bin/bash -e {0}
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5842110Z env:
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5842270Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5842430Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5842770Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5843120Z   RID: osx-arm64
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5843260Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5843490Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.5843650Z ##[endgroup]
+macOS osx-arm64	Unit tests	2026-11-06T13:51:59.9120070Z Test run for /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/bin/Release/net10.0/osx-arm64/SqlInvestigator.Tests.dll (.NETCoreApp,Version=v10.0)
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.1196350Z A total of 1 test files matched the specified pattern.
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5670010Z [xUnit.net 00:00:00.17]     SqlInvestigator.Tests.StoreTests.The_default_data_home_on_macos_is_under_application_support [FAIL]
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5676520Z   Failed SqlInvestigator.Tests.StoreTests.The_default_data_home_on_macos_is_under_application_support [14 ms]
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5677050Z   Error Message:
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5677700Z    System.IO.DirectoryNotFoundException : Could not find a part of the path '/var/folders/2s/vty41l455yv698g4xkgfv7z00000gn/T/sqlinv-unit-9ed14aab030a41f88c8182e4350382b1'.
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5678390Z   Stack Trace:
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5678830Z      at System.IO.FileSystem.RemoveEmptyDirectory(String fullPath, Boolean topLevel, Boolean throwWhenNotEmpty)
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5679350Z    at System.IO.Directory.Delete(String path, Boolean recursive)
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5680150Z    at SqlInvestigator.Tests.StoreTests.Dispose() in /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/InfrastructureTests.cs:line 135
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.5681460Z    at ReflectionAbstractionExtensions.DisposeTestClass(ITest test, Object testClass, IMessageBus messageBus, ExecutionTimer timer, CancellationTokenSource cancellationTokenSource) in /_/src/xunit.execution/Extensions/ReflectionAbstractionExtensions.cs:line 79
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.6656870Z [xUnit.net 00:00:00.28]     SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [SKIP]
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.6880430Z [xUnit.net 00:00:00.30]     SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [SKIP]
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.7123900Z   Skipped SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [1 ms]
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.7124610Z   Skipped SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [1 ms]
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.9992640Z Results File: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/TestResults/_lvl10-bj363-642e7640-8231-4a1e-8ecb-411b9003fcd8-568B9A16EC39_2026-11-06_13_52_00_net10.0.trx
+macOS osx-arm64	Unit tests	2026-11-06T13:52:00.9993730Z 
+macOS osx-arm64	Unit tests	2026-11-06T13:52:01.0012850Z Failed!  - Failed:     1, Passed:   130, Skipped:     2, Total:   133, Duration: 424 ms - SqlInvestigator.Tests.dll (net10.0)
+macOS osx-arm64	Unit tests	2026-11-06T13:52:01.0172860Z ##[error]Process completed with exit code 1.
+macOS osx-x64	Unit tests	﻿2026-11-06T13:53:14.8822760Z ##[group]Run dotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.8838730Z ^[[36;1mdotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults^[[0m
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9176310Z shell: /bin/bash -e {0}
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9177960Z env:
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9178800Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9179520Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9181010Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9182600Z   RID: osx-x64
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9183300Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9184610Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Unit tests	2026-11-06T13:53:14.9187940Z ##[endgroup]
+macOS osx-x64	Unit tests	2026-11-06T13:53:18.0226040Z Test run for /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/bin/Release/net10.0/osx-x64/SqlInvestigator.Tests.dll (.NETCoreApp,Version=v10.0)
+macOS osx-x64	Unit tests	2026-11-06T13:53:18.3803240Z A total of 1 test files matched the specified pattern.
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.0563700Z [xUnit.net 00:00:00.89]     SqlInvestigator.Tests.StoreTests.The_default_data_home_on_macos_is_under_application_support [FAIL]
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.0568320Z   Failed SqlInvestigator.Tests.StoreTests.The_default_data_home_on_macos_is_under_application_support [64 ms]
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.0613750Z   Error Message:
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.0658310Z    System.IO.DirectoryNotFoundException : Could not find a part of the path '/var/folders/20/jp1_0n3n7kndh6rnbqb5344m0000gn/T/sqlinv-unit-b1beb26bcc0a4e73b6856dc84bfedba5'.
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.0853180Z   Stack Trace:
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.0924980Z      at System.IO.FileSystem.RemoveEmptyDirectory(String fullPath, Boolean topLevel, Boolean throwWhenNotEmpty)
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.1025550Z    at System.IO.Directory.Delete(String path, Boolean recursive)
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.1171980Z    at SqlInvestigator.Tests.StoreTests.Dispose() in /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/InfrastructureTests.cs:line 135
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.1339660Z    at ReflectionAbstractionExtensions.DisposeTestClass(ITest test, Object testClass, IMessageBus messageBus, ExecutionTimer timer, CancellationTokenSource cancellationTokenSource) in /_/src/xunit.execution/Extensions/ReflectionAbstractionExtensions.cs:line 79
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.2585480Z [xUnit.net 00:00:01.12]     SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [SKIP]
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.4461370Z [xUnit.net 00:00:01.31]     SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [SKIP]
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.5720390Z   Skipped SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [1 ms]
+macOS osx-x64	Unit tests	2026-11-06T13:53:20.5782260Z   Skipped SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [1 ms]
+macOS osx-x64	Unit tests	2026-11-06T13:53:21.5163330Z Results File: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/TestResults/_iad01-dz249-d3fac881-ef78-4113-8a8d-edd151c7140b-5A79A45AC6F9_2026-11-06_13_53_20_net10.0.trx
+macOS osx-x64	Unit tests	2026-11-06T13:53:21.5245300Z 
+macOS osx-x64	Unit tests	2026-11-06T13:53:21.5278840Z Failed!  - Failed:     1, Passed:   130, Skipped:     2, Total:   133, Duration: 1 s - SqlInvestigator.Tests.dll (net10.0)
+macOS osx-x64	Unit tests	2026-11-06T13:53:21.6389220Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,854 @@
+macOS osx-arm64	Set up job	﻿2026-11-06T13:55:27.1679200Z Current runner version: '2.338.2'
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1691780Z ##[group]Runner Image Provisioner
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1692260Z Hosted Compute Agent
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1692600Z Version: 20261103.629
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1692980Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1693410Z Build Date: 2026-11-03T17:26:59Z
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1693800Z Worker ID: {6da01951-543d-4ed4-bf83-48e144e9fd94}
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1694250Z Region: westus
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1694560Z Cloud: MacCloud
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1694890Z ##[endgroup]
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1695590Z ##[group]Operating System
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1695950Z macOS
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1696260Z 15.8.2
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1696560Z 24H232
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1696850Z ##[endgroup]
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1697190Z ##[group]Runner Image
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1732670Z Image: macos-15-arm64
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1733010Z Version: 20261104.0514.1
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1733810Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20261104.0514/images/macos/macos-15-arm64-Readme.md
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1734820Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20261104.0514
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1735410Z ##[endgroup]
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1736030Z ##[group]GITHUB_TOKEN Permissions
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1736890Z Contents: read
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1737220Z Metadata: read
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1737530Z ##[endgroup]
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1738730Z Secret source: Actions
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1739230Z Cache mode: write
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.1739610Z Prepare workflow directory
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.2028830Z Prepare all required actions
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.2059990Z Getting action download info
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.3763380Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+macOS osx-arm64	Set up job	2026-11-06T13:55:27.5653940Z Download action repository 'actions/setup-dotnet@v5' (SHA:26b0ec14cb23fa6904739307f278c14f94c95bf1)
+macOS osx-arm64	Set up job	2026-11-06T13:55:28.2891150Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+macOS osx-arm64	Set up job	2026-11-06T13:55:28.3701960Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+macOS osx-arm64	Set up job	2026-11-06T13:55:28.5338630Z Complete job name: macOS osx-arm64
+macOS osx-arm64	Run actions/checkout@v5	﻿2026-11-06T13:55:28.5822360Z ##[group]Run actions/checkout@v5
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5822870Z with:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5823210Z   repository: mikekangdev/sql-investigator-macos
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5825860Z   token: ***
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5826140Z   ssh-strict: true
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5826440Z   ssh-user: git
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5826740Z   persist-credentials: true
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5827070Z   clean: true
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5827370Z   sparse-checkout-cone-mode: true
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5827720Z   fetch-depth: 1
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5828020Z   fetch-tags: false
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5828320Z   show-progress: true
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5828620Z   lfs: false
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5828900Z   submodules: false
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5829220Z   set-safe-directory: true
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5829580Z   allow-unsafe-pr-checkout: false
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5830040Z env:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5830320Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5830620Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5831200Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5831800Z   RID: osx-arm64
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5832110Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.5832460Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7461040Z Syncing repository: mikekangdev/sql-investigator-macos
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7462660Z ##[group]Getting Git version info
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7463310Z Working directory is '/Users/runner/work/sql-investigator-macos/sql-investigator-macos'
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7464300Z [command]/opt/homebrew/bin/git version
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7721070Z git version 2.56.0
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7737670Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7748470Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/9e7356bb-d482-41a4-9a68-c09291df6413/.gitconfig'
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7752260Z Temporarily overriding HOME='/Users/runner/work/_temp/9e7356bb-d482-41a4-9a68-c09291df6413' before making global git config changes
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7754470Z Adding repository directory to the temporary git global config as a safe directory
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7756800Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/sql-investigator-macos/sql-investigator-macos
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7855730Z Deleting the contents of '/Users/runner/work/sql-investigator-macos/sql-investigator-macos'
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7858350Z ##[group]Initializing the repository
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.7860910Z [command]/opt/homebrew/bin/git init /Users/runner/work/sql-investigator-macos/sql-investigator-macos
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8067800Z hint: Using 'master' as the name for the initial branch. This default branch name
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8070050Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8071730Z hint: to use in all of your new repositories, which will suppress this warning,
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8073100Z hint: call:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8073910Z hint:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8074920Z hint: 	git config --global init.defaultBranch <name>
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8076270Z hint:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8077470Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8078240Z hint: 'development'. The just-created branch can be renamed via this command:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8078930Z hint:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8079260Z hint: 	git branch -m <name>
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8079620Z hint:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8080220Z hint: Disable this message with "git config set advice.defaultBranchName false"
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8081040Z Initialized empty Git repository in /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.git/
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8082950Z [command]/opt/homebrew/bin/git remote add origin https://github.com/mikekangdev/sql-investigator-macos
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8146410Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8147080Z ##[group]Disabling automatic garbage collection
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8153930Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8213710Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8214280Z ##[group]Setting up auth
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8217670Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.8288970Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.9127440Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.9181790Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.9834020Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:28.9882100Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.1028550Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.1030880Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.1031560Z ##[group]Fetching the repository
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9811920Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5835cd81fcf4cabbcf6fb60ac262ced480b1cb86:refs/remotes/origin/main
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9813230Z From https://github.com/mikekangdev/sql-investigator-macos
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9813810Z  * [new ref]         5835cd81fcf4cabbcf6fb60ac262ced480b1cb86 -> origin/main
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9815310Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9815810Z ##[group]Determining the checkout info
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9816960Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9818470Z [command]/opt/homebrew/bin/git sparse-checkout disable
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9882170Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9932130Z ##[group]Checking out the ref
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:29.9934430Z [command]/opt/homebrew/bin/git checkout --progress --force -B main refs/remotes/origin/main
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:30.0306050Z Switched to a new branch 'main'
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:30.0406640Z branch 'main' set up to track 'origin/main'.
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:30.0722340Z ##[endgroup]
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:30.1025420Z [command]/opt/homebrew/bin/git log -1 --format=%H
+macOS osx-arm64	Run actions/checkout@v5	2026-11-06T13:55:30.1126300Z 5835cd81fcf4cabbcf6fb60ac262ced480b1cb86
+macOS osx-arm64	Run actions/setup-dotnet@v5	﻿2026-11-06T13:55:30.1320410Z ##[group]Run actions/setup-dotnet@v5
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1320770Z with:
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1321040Z   dotnet-version: 10.0.x
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1321310Z   cache: false
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1321570Z env:
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1321800Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1322090Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1322560Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1323040Z   RID: osx-arm64
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1323300Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.1323610Z ##[endgroup]
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.2466510Z [command]/Users/runner/work/_actions/actions/setup-dotnet/v5/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.5863310Z dotnet-install: .NET Core Runtime with version '10.0.14' is already installed.
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.5878960Z [command]/Users/runner/work/_actions/actions/setup-dotnet/v5/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+macOS osx-arm64	Run actions/setup-dotnet@v5	2026-11-06T13:55:30.8827320Z dotnet-install: .NET Core SDK with version '10.0.403' is already installed.
+macOS osx-arm64	Run actions/cache@v4	﻿2026-11-06T13:55:30.9820960Z ##[group]Run actions/cache@v4
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9821270Z with:
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9821430Z   path: .nuget/packages
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9821750Z   key: nuget-osx-arm64-4e18582c553793611bfeba7b8a1529a0b171198752bf977a9393b95d3e538f35
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9822130Z   enableCrossOsArchive: false
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9822340Z   fail-on-cache-miss: false
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9822530Z   lookup-only: false
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9822700Z   save-always: false
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9822860Z env:
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9823000Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9823200Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9823590Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9823950Z   RID: osx-arm64
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9824120Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9824320Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:30.9824520Z ##[endgroup]
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:31.0693530Z (node:3944) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:31.0694330Z (Use `node --trace-deprecation ...` to show where the warning was created)
+macOS osx-arm64	Run actions/cache@v4	2026-11-06T13:55:31.1442180Z Cache not found for input keys: nuget-osx-arm64-4e18582c553793611bfeba7b8a1529a0b171198752bf977a9393b95d3e538f35
+macOS osx-arm64	Machine	﻿2026-11-06T13:55:31.1512940Z ##[group]Run sw_vers
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1513210Z ^[[36;1msw_vers^[[0m
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1513370Z ^[[36;1muname -m^[[0m
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1513530Z ^[[36;1mdotnet --version^[[0m
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1513740Z ^[[36;1mnode --version^[[0m
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1547150Z shell: /bin/bash -e {0}
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1547370Z env:
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1547590Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1547810Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1548190Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1548560Z   RID: osx-arm64
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1548740Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1548950Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1549200Z ##[endgroup]
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1927750Z ProductName:		macOS
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1928870Z ProductVersion:		15.8.2
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1929110Z BuildVersion:		24H232
+macOS osx-arm64	Machine	2026-11-06T13:55:31.1948880Z arm64
+macOS osx-arm64	Machine	2026-11-06T13:55:31.5003950Z 10.0.403
+macOS osx-arm64	Machine	2026-11-06T13:55:31.5989450Z v22.23.4
+macOS osx-arm64	Temporary login keychain	﻿2026-11-06T13:55:31.6052570Z ##[group]Run KC="$RUNNER_TEMP/sqlinv-ci.keychain-db"
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6053030Z ^[[36;1mKC="$RUNNER_TEMP/sqlinv-ci.keychain-db"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6053290Z ^[[36;1mPW="$(openssl rand -hex 16)"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6053600Z ^[[36;1msecurity create-keychain -p "$PW" "$KC"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6053950Z ^[[36;1msecurity set-keychain-settings -lut 21600 "$KC"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6054330Z ^[[36;1msecurity unlock-keychain -p "$PW" "$KC"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6054690Z ^[[36;1msecurity list-keychains -d user -s "$KC"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6055010Z ^[[36;1msecurity default-keychain -d user -s "$KC"^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6055320Z ^[[36;1msecurity default-keychain -d user^[[0m
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6085380Z shell: /bin/bash -e {0}
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6085580Z env:
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6085740Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6085910Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6086270Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6086670Z   RID: osx-arm64
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6086870Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6087090Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6087310Z ##[endgroup]
+macOS osx-arm64	Temporary login keychain	2026-11-06T13:55:31.6940500Z     "/Users/runner/work/_temp/sqlinv-ci.keychain-db"
+macOS osx-arm64	Build (warnings are errors)	﻿2026-11-06T13:55:31.6975690Z ##[group]Run dotnet build SqlInvestigator.slnx -c Release
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.6976010Z ^[[36;1mdotnet build SqlInvestigator.slnx -c Release^[[0m
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7004950Z shell: /bin/bash -e {0}
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7005140Z env:
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7005300Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7005480Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7005840Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7006240Z   RID: osx-arm64
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7006410Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7006740Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:31.7006940Z ##[endgroup]
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:33.1697570Z   Determining projects to restore...
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:36.0674420Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/SqlInvestigator.Testing.csproj (in 2.61 sec).
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:36.0681500Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/SqlInvestigator.FixtureTool.csproj (in 2.61 sec).
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:36.0759260Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj (in 2.63 sec).
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:36.0928750Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.IntegrationTests/SqlInvestigator.IntegrationTests.csproj (in 2.64 sec).
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:36.0930080Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/SqlInvestigator.Tests.csproj (in 2.64 sec).
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:37.8807790Z   SqlInvestigator.Testing -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/bin/Release/net10.0/osx-arm64/SqlInvestigator.Testing.dll
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.0718760Z   SqlInvestigator.McpServer -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/bin/Release/net10.0/osx-arm64/SqlInvestigator.dll
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.1657310Z   SqlInvestigator.FixtureTool -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/bin/Release/net10.0/osx-arm64/SqlInvestigator.FixtureTool.dll
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.3793610Z   SqlInvestigator.Tests -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/bin/Release/net10.0/osx-arm64/SqlInvestigator.Tests.dll
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5021730Z   SqlInvestigator.IntegrationTests -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.IntegrationTests/bin/Release/net10.0/osx-arm64/SqlInvestigator.IntegrationTests.dll
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5265160Z 
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5266510Z Build succeeded.
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5269140Z     0 Warning(s)
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5272960Z     0 Error(s)
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5273400Z 
+macOS osx-arm64	Build (warnings are errors)	2026-11-06T13:55:38.5273800Z Time Elapsed 00:00:05.92
+macOS osx-arm64	Unit tests	﻿2026-11-06T13:55:38.5398310Z ##[group]Run dotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5398950Z ^[[36;1mdotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults^[[0m
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5429330Z shell: /bin/bash -e {0}
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5429480Z env:
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5429630Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5429770Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5430150Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5430490Z   RID: osx-arm64
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5430630Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5430810Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.5430980Z ##[endgroup]
+macOS osx-arm64	Unit tests	2026-11-06T13:55:38.8803730Z Test run for /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/bin/Release/net10.0/osx-arm64/SqlInvestigator.Tests.dll (.NETCoreApp,Version=v10.0)
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.0398540Z A total of 1 test files matched the specified pattern.
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.5339360Z [xUnit.net 00:00:00.28]     SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [SKIP]
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.5538860Z [xUnit.net 00:00:00.30]     SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [SKIP]
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.5796370Z   Skipped SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [1 ms]
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.5797250Z   Skipped SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [1 ms]
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.8459990Z Results File: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/TestResults/_lvl04-dm351-da3ca92d-9024-4024-b20b-2a3809286e17-FE38B98C3E5A_2026-11-06_13_55_39_net10.0.trx
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.8462880Z 
+macOS osx-arm64	Unit tests	2026-11-06T13:55:39.8482880Z Passed!  - Failed:     0, Passed:   131, Skipped:     2, Total:   133, Duration: 393 ms - SqlInvestigator.Tests.dll (net10.0)
+macOS osx-arm64	Publish (self-contained, single file)	﻿2026-11-06T13:55:39.8656310Z ##[group]Run dotnet publish src/SqlInvestigator.McpServer -c Release -r "$RID" --self-contained true \
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8656880Z ^[[36;1mdotnet publish src/SqlInvestigator.McpServer -c Release -r "$RID" --self-contained true \^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8657500Z ^[[36;1m  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none \^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8658160Z ^[[36;1m  -p:ContinuousIntegrationBuild=true -p:SourceRevisionId=$GITHUB_SHA -o publish/app^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8658670Z ^[[36;1mdotnet publish tests/SqlInvestigator.FixtureTool -c Release -r "$RID" --self-contained true \^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8659310Z ^[[36;1m  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -o publish/fixture^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8659840Z ^[[36;1mls -l publish/app^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8660060Z ^[[36;1mfile publish/app/SqlInvestigator^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8660380Z ^[[36;1mcodesign -dv publish/app/SqlInvestigator 2>&1 || true^[[0m
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8690440Z shell: /bin/bash -e {0}
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8690600Z env:
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8690720Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8690870Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8691200Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8691540Z   RID: osx-arm64
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8691910Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8692110Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:39.8692290Z ##[endgroup]
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:40.2542630Z   Determining projects to restore...
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:42.9001440Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj (in 2.5 sec).
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:44.3228870Z   SqlInvestigator.McpServer -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/bin/Release/net10.0/osx-arm64/SqlInvestigator.dll
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:45.0266820Z   SqlInvestigator.McpServer -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/publish/app/
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:45.3630600Z   Determining projects to restore...
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:45.6937960Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/SqlInvestigator.FixtureTool.csproj (in 161 ms).
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:45.6938970Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/SqlInvestigator.Testing.csproj (in 161 ms).
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.0580540Z   SqlInvestigator.Testing -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/bin/Release/net10.0/osx-arm64/SqlInvestigator.Testing.dll
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.2477440Z   SqlInvestigator.FixtureTool -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/bin/Release/net10.0/osx-arm64/SqlInvestigator.FixtureTool.dll
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7393050Z   SqlInvestigator.FixtureTool -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/publish/fixture/
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7585600Z total 189024
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7586060Z -rwxr-xr-x  1 runner  staff  96779344 Nov  6 13:55 SqlInvestigator
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7664450Z publish/app/SqlInvestigator: Mach-O 64-bit executable arm64
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7781470Z Executable=/Users/runner/work/sql-investigator-macos/sql-investigator-macos/publish/app/SqlInvestigator
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7782620Z Identifier=SqlInvestigator
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7783100Z Format=Mach-O thin (arm64)
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7784150Z CodeDirectory v=20400 size=750408 flags=0x2(adhoc) hashes=23445+2 location=embedded
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7785040Z Signature=adhoc
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7785450Z Info.plist=not bound
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7785910Z TeamIdentifier=not set
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7794770Z Sealed Resources=none
+macOS osx-arm64	Publish (self-contained, single file)	2026-11-06T13:55:46.7795070Z Internal requirements count=0 size=12
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	﻿2026-11-06T13:55:46.7827080Z ##[group]Run node eng/macos-smoke.mjs "$PWD/publish/app/SqlInvestigator" "$PWD/publish/fixture/SqlInvestigator.FixtureTool"
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7827970Z ^[[36;1mnode eng/macos-smoke.mjs "$PWD/publish/app/SqlInvestigator" "$PWD/publish/fixture/SqlInvestigator.FixtureTool"^[[0m
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7862750Z shell: /bin/bash -e {0}
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7862970Z env:
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7863120Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7863310Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7863700Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7864080Z   RID: osx-arm64
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7864250Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7864490Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:46.7864680Z ##[endgroup]
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.0057310Z PASS  the executable starts (--version)  — 1.0.0+5835cd81fcf4cabbcf6fb60ac262ced480b1cb86
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.0291840Z PASS  --help prints the console usage
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.1090350Z PASS  provision stores the alias (secret on stdin)  — Provisioned alias "smoke": 127.0.0.1,1433/SmokeDb, fixture, scope dbo.Orders.
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.1090890Z PASS  the console never prints the secret
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.1091800Z PASS  the data home is 0700  — 700
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.1092760Z PASS  catalog.json is 0600  — 600
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.1096980Z PASS  nothing under the data home holds the secret
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.1097770Z PASS  no vault folder: the secret is not a file on macOS
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.2492800Z PASS  a login-keychain item exists for the alias  — {"ok":true,"mechanism":"keychain-login","present":true,"protectedForUser":true,"boundToAlias":true,"storeCurrentUserOnly":true,"detail":"another application's read answered OSStatus -25293"}
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.2500150Z PASS  another application cannot read it without approval  — another application's read answered OSStatus -25293
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.2517850Z PASS  the data home is current-user-only (stat)
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.3330450Z PASS  provision --replace updates the item  — Provisioned alias "smoke": 127.0.0.1,1433/SmokeDb, fixture, scope dbo.Orders.
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.5212700Z PASS  the MCP server initializes over stdio  — ""
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.5213070Z PASS  it lists the 11 tools  — 11
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.5213320Z PASS  connection_list shows the alias without a secret
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.5213580Z PASS  stdout carries only JSON-RPC
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.5213860Z PASS  no MCP output or diagnostic holds the secret
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.5789680Z PASS  remove deletes the keychain item  — Removed alias "smoke" and its stored secret.
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.6227900Z PASS  the item is gone  — {"ok":true,"mechanism":"keychain-login","present":false,"protectedForUser":false,"boundToAlias":false,"storeCurrentUserOnly":false,"detail":"no keychain item (OSStatus -25300)"}
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.6789530Z PASS  a second remove has nothing to delete  — Alias "smoke" was not provisioned.
+macOS osx-arm64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:55:47.7362400Z smoke: all checks passed
+macOS osx-arm64	SQL Server connectivity not verified	﻿2026-11-06T13:55:47.7426060Z ##[group]Run echo "::warning::No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on ${RID}."
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7426890Z ^[[36;1mecho "::warning::No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on ${RID}."^[[0m
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7453750Z shell: /bin/bash -e {0}
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7453900Z env:
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7454010Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7454140Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7454450Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7454770Z   RID: osx-arm64
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7454900Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7455070Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7455220Z ##[endgroup]
+macOS osx-arm64	SQL Server connectivity not verified	2026-11-06T13:55:47.7702400Z ##[warning]No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on osx-arm64.
+macOS osx-arm64	Package	﻿2026-11-06T13:55:47.7738720Z ##[group]Run VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
+macOS osx-arm64	Package	2026-11-06T13:55:47.7739420Z ^[[36;1mVERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7739880Z ^[[36;1mNAME="SqlInvestigator-$VERSION-$RID"^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7740130Z ^[[36;1mcp docs/USER-GUIDE.md publish/app/README.md^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7740680Z ^[[36;1mprintf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7741290Z ^[[36;1m  "$VERSION" "$GITHUB_SHA" "$RID" > publish/app/VERSION.txt^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7741540Z ^[[36;1mmkdir -p artifacts^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7741760Z ^[[36;1mtar -C publish/app -czf "artifacts/$NAME.tar.gz" .^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7742080Z ^[[36;1mshasum -a 256 "artifacts/$NAME.tar.gz" | tee "artifacts/$NAME.tar.gz.sha256"^[[0m
+macOS osx-arm64	Package	2026-11-06T13:55:47.7767020Z shell: /bin/bash -e {0}
+macOS osx-arm64	Package	2026-11-06T13:55:47.7767160Z env:
+macOS osx-arm64	Package	2026-11-06T13:55:47.7767300Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Package	2026-11-06T13:55:47.7767430Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Package	2026-11-06T13:55:47.7767770Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Package	2026-11-06T13:55:47.7768290Z   RID: osx-arm64
+macOS osx-arm64	Package	2026-11-06T13:55:47.7768440Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Package	2026-11-06T13:55:47.7768730Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Package	2026-11-06T13:55:47.7768890Z ##[endgroup]
+macOS osx-arm64	Package	2026-11-06T13:55:50.9241620Z 00478012ef2563812f3aac02ff92467554706b8b2ddf7ff2783d3725f146b4ab  artifacts/SqlInvestigator-1.0.0-osx-arm64.tar.gz
+macOS osx-arm64	Run actions/upload-artifact@v4	﻿2026-11-06T13:55:50.9542550Z ##[group]Run actions/upload-artifact@v4
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9542790Z with:
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9542910Z   name: macos-osx-arm64
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543060Z   path: artifacts
+macOS osx-arm64	Run actions/upload-artifact@v4	TestResults
+macOS osx-arm64	Run actions/upload-artifact@v4	
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543230Z   if-no-files-found: ignore
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543380Z   retention-days: 14
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543530Z   compression-level: 6
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543660Z   overwrite: false
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543800Z   include-hidden-files: false
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9543950Z env:
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9544060Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9544190Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9544600Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9544930Z   RID: osx-arm64
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9545060Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9545230Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:50.9545400Z ##[endgroup]
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1104600Z (node:4329) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1105290Z (Use `node --trace-deprecation ...` to show where the warning was created)
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1154520Z Multiple search paths detected. Calculating the least common ancestor of all paths
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1156760Z The least common ancestor is /Users/runner/work/sql-investigator-macos/sql-investigator-macos. This will be the root directory of the artifact
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1158270Z With the provided path, there will be 3 files uploaded
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1159310Z Artifact name is valid!
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.1159620Z Root directory input is valid!
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.3238950Z Beginning upload of artifact content to blob storage
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.5241840Z (node:4329) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.7574280Z Uploaded bytes 8388608
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:51.9493720Z Uploaded bytes 16777216
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.1705570Z Uploaded bytes 25165824
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.3257060Z Uploaded bytes 33554432
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.3700170Z Uploaded bytes 35400198
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.3879910Z Finished uploading artifact content to blob storage!
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.3881840Z SHA256 digest of uploaded artifact zip is 7a9e899d39216648e686876033833cf9cb6c6f88bd89214f43fa0bb1b4602ced
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.3886090Z Finalizing artifact upload
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.8325390Z Artifact macos-osx-arm64.zip successfully finalized. Artifact ID 13507167396
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.8326110Z Artifact macos-osx-arm64 has been successfully uploaded! Final size is 35400198 bytes. Artifact ID is 13507167396
+macOS osx-arm64	Run actions/upload-artifact@v4	2026-11-06T13:55:52.8334860Z Artifact download URL: https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42229416496/artifacts/13507167396
+macOS osx-arm64	Remove the temporary keychain	﻿2026-11-06T13:55:52.8421250Z ##[group]Run security default-keychain -d user -s login.keychain-db 2>/dev/null || true
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8421870Z ^[[36;1msecurity default-keychain -d user -s login.keychain-db 2>/dev/null || true^[[0m
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8422310Z ^[[36;1msecurity list-keychains -d user -s login.keychain-db 2>/dev/null || true^[[0m
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8422750Z ^[[36;1msecurity delete-keychain "$RUNNER_TEMP/sqlinv-ci.keychain-db" 2>/dev/null || true^[[0m
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8455800Z shell: /bin/bash -e {0}
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8456000Z env:
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8456160Z   DOTNET_NOLOGO: 1
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8456330Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8456690Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8457320Z   RID: osx-arm64
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8457480Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8457680Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-arm64	Remove the temporary keychain	2026-11-06T13:55:52.8457860Z ##[endgroup]
+macOS osx-arm64	Post Run actions/cache@v4	﻿2026-11-06T13:55:53.3576580Z Post job cleanup.
+macOS osx-arm64	Post Run actions/cache@v4	2026-11-06T13:55:53.4585980Z (node:4344) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+macOS osx-arm64	Post Run actions/cache@v4	2026-11-06T13:55:53.4587550Z (Use `node --trace-deprecation ...` to show where the warning was created)
+macOS osx-arm64	Post Run actions/cache@v4	2026-11-06T13:55:53.4736180Z [command]/opt/homebrew/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/sql-investigator-macos/sql-investigator-macos --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+macOS osx-arm64	Post Run actions/cache@v4	2026-11-06T13:55:54.2430610Z (node:4344) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+macOS osx-arm64	Post Run actions/cache@v4	2026-11-06T13:55:55.0551850Z Sent 213350544 of 213350544 (100.0%), 248.4 MBs/sec
+macOS osx-arm64	Post Run actions/cache@v4	2026-11-06T13:55:55.1948970Z Cache saved with key: nuget-osx-arm64-4e18582c553793611bfeba7b8a1529a0b171198752bf977a9393b95d3e538f35
+macOS osx-arm64	Post Run actions/setup-dotnet@v5	﻿2026-11-06T13:55:55.2161840Z Post job cleanup.
+macOS osx-arm64	Post Run actions/checkout@v5	﻿2026-11-06T13:55:55.3351270Z Post job cleanup.
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4077500Z [command]/opt/homebrew/bin/git version
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4122200Z git version 2.56.0
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4137510Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/e920f527-cdfb-43ae-90f3-444da9c71a0d/.gitconfig'
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4143970Z Temporarily overriding HOME='/Users/runner/work/_temp/e920f527-cdfb-43ae-90f3-444da9c71a0d' before making global git config changes
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4144750Z Adding repository directory to the temporary git global config as a safe directory
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4146850Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/sql-investigator-macos/sql-investigator-macos
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4190940Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4231360Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4808740Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4845530Z http.https://github.com/.extraheader
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4851160Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.4896060Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.5424890Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+macOS osx-arm64	Post Run actions/checkout@v5	2026-11-06T13:55:55.5465860Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+macOS osx-arm64	Complete job	﻿2026-11-06T13:55:55.6023150Z Cleaning up orphan processes
+macOS osx-arm64	Complete job	2026-11-06T13:56:01.2673480Z Terminate orphan process: pid (3987) (VBCSCompiler)
+macOS osx-arm64	Complete job	2026-11-06T13:56:01.3276050Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+macOS osx-x64	Set up job	﻿2026-11-06T13:55:28.6056660Z Current runner version: '2.338.2'
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6084830Z ##[group]Runner Image Provisioner
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6085880Z Hosted Compute Agent
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6086530Z Version: 20260819.586
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6087250Z Commit: 3cc4a88dfa507ef76119ad1bb3eccc6378bb2b76
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6088120Z Build Date: 2026-08-18T23:20:18Z
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6088890Z Worker ID: {21e87b61-71aa-434c-92e1-976c8298e3fa}
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6089730Z Azure Region: westus
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6090360Z ##[endgroup]
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6092200Z ##[group]Operating System
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6092920Z macOS
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6093480Z 15.7.9
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6094050Z 24G830
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6094610Z ##[endgroup]
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6095240Z ##[group]Runner Image
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6095890Z Image: macos-15
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6096520Z Version: 20260824.0482.1
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6097920Z Included Software: https://github.com/actions/runner-images/blob/macos-15/20260824.0482/images/macos/macos-15-Readme.md
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6100130Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15%2F20260824.0482
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6101400Z ##[endgroup]
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6102830Z ##[group]GITHUB_TOKEN Permissions
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6105020Z Contents: read
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6105710Z Metadata: read
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6106390Z ##[endgroup]
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6109450Z Secret source: Actions
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6110700Z Cache mode: write
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6111520Z Prepare workflow directory
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6808470Z Prepare all required actions
+macOS osx-x64	Set up job	2026-11-06T13:55:28.6868330Z Getting action download info
+macOS osx-x64	Set up job	2026-11-06T13:55:29.1489220Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+macOS osx-x64	Set up job	2026-11-06T13:55:29.3181200Z Download action repository 'actions/setup-dotnet@v5' (SHA:26b0ec14cb23fa6904739307f278c14f94c95bf1)
+macOS osx-x64	Set up job	2026-11-06T13:55:29.8521360Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+macOS osx-x64	Set up job	2026-11-06T13:55:29.9504180Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+macOS osx-x64	Set up job	2026-11-06T13:55:30.2020890Z Complete job name: macOS osx-x64
+macOS osx-x64	Run actions/checkout@v5	﻿2026-11-06T13:55:30.2902130Z ##[group]Run actions/checkout@v5
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2903370Z with:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2904080Z   repository: mikekangdev/sql-investigator-macos
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2910500Z   token: ***
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2911080Z   ssh-strict: true
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2911740Z   ssh-user: git
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2912350Z   persist-credentials: true
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2913030Z   clean: true
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2913650Z   sparse-checkout-cone-mode: true
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2914380Z   fetch-depth: 1
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2914990Z   fetch-tags: false
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2915620Z   show-progress: true
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2916240Z   lfs: false
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2916820Z   submodules: false
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2917450Z   set-safe-directory: true
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2918170Z   allow-unsafe-pr-checkout: false
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2919230Z env:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2919900Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2920550Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2921820Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2923180Z   RID: osx-x64
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2923810Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.2924540Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.5895490Z Syncing repository: mikekangdev/sql-investigator-macos
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.5898260Z ##[group]Getting Git version info
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.5899620Z Working directory is '/Users/runner/work/sql-investigator-macos/sql-investigator-macos'
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.5901510Z [command]/usr/local/bin/git version
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.6512850Z git version 2.55.0
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7258340Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7266980Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/e65b63ce-1435-4728-ae07-a09a9fa051b2/.gitconfig'
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7269380Z Temporarily overriding HOME='/Users/runner/work/_temp/e65b63ce-1435-4728-ae07-a09a9fa051b2' before making global git config changes
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7272400Z Adding repository directory to the temporary git global config as a safe directory
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7274540Z [command]/usr/local/bin/git config --global --add safe.directory /Users/runner/work/sql-investigator-macos/sql-investigator-macos
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7277560Z Deleting the contents of '/Users/runner/work/sql-investigator-macos/sql-investigator-macos'
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7279430Z ##[group]Initializing the repository
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7280810Z [command]/usr/local/bin/git init /Users/runner/work/sql-investigator-macos/sql-investigator-macos
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7282500Z hint: Using 'master' as the name for the initial branch. This default branch name
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7283950Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7285370Z hint: to use in all of your new repositories, which will suppress this warning,
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7286530Z hint: call:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7287160Z hint:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7287920Z hint: 	git config --global init.defaultBranch <name>
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7288860Z hint:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7289760Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7291220Z hint: 'development'. The just-created branch can be renamed via this command:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7292440Z hint:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7293160Z hint: 	git branch -m <name>
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7293950Z hint:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7294930Z hint: Disable this message with "git config set advice.defaultBranchName false"
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7296790Z Initialized empty Git repository in /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.git/
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7299730Z [command]/usr/local/bin/git remote add origin https://github.com/mikekangdev/sql-investigator-macos
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7302720Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7304000Z ##[group]Disabling automatic garbage collection
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7305090Z [command]/usr/local/bin/git config --local gc.auto 0
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7328270Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7329880Z ##[group]Setting up auth
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7331220Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.7335620Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.9029110Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:30.9036020Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:31.0715110Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:31.1693880Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:31.3783400Z [command]/usr/local/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:31.3831300Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:31.3842010Z ##[group]Fetching the repository
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:31.3850630Z [command]/usr/local/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5835cd81fcf4cabbcf6fb60ac262ced480b1cb86:refs/remotes/origin/main
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1279500Z From https://github.com/mikekangdev/sql-investigator-macos
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1299070Z  * [new ref]         5835cd81fcf4cabbcf6fb60ac262ced480b1cb86 -> origin/main
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1358100Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1378220Z ##[group]Determining the checkout info
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1407850Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1444580Z [command]/usr/local/bin/git sparse-checkout disable
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1464700Z [command]/usr/local/bin/git config --local --unset-all extensions.worktreeConfig
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1573560Z ##[group]Checking out the ref
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.1599730Z [command]/usr/local/bin/git checkout --progress --force -B main refs/remotes/origin/main
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.2441130Z Switched to a new branch 'main'
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.2449920Z branch 'main' set up to track 'origin/main'.
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.2514890Z ##[endgroup]
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.2646980Z [command]/usr/local/bin/git log -1 --format=%H
+macOS osx-x64	Run actions/checkout@v5	2026-11-06T13:55:32.2719660Z 5835cd81fcf4cabbcf6fb60ac262ced480b1cb86
+macOS osx-x64	Run actions/setup-dotnet@v5	﻿2026-11-06T13:55:32.3544310Z ##[group]Run actions/setup-dotnet@v5
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3546390Z with:
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3547870Z   dotnet-version: 10.0.x
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3549570Z   cache: false
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3551060Z env:
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3552490Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3554570Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3558000Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3561470Z   RID: osx-x64
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3563140Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.3565070Z ##[endgroup]
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:32.6036900Z [command]/Users/runner/work/_actions/actions/setup-dotnet/v5/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:33.5848080Z dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.14/dotnet-runtime-10.0.14-osx-x64.tar.gz
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:36.1094980Z dotnet-install: Remote file https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.14/dotnet-runtime-10.0.14-osx-x64.tar.gz size is 35598744 bytes.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:36.1098090Z dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.14/dotnet-runtime-10.0.14-osx-x64.tar.gz
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:38.9806880Z dotnet-install: Downloaded file size is 35598744 bytes.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:38.9809700Z dotnet-install: The remote and local file sizes are equal.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.0187950Z dotnet-install: Installed version is 10.0.14
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.0369920Z dotnet-install: Adding to current process PATH: `/Users/runner/.dotnet`. Note: This change will be visible only when sourcing script.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.0375640Z dotnet-install: Note that the script does not resolve dependencies during installation.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.0382340Z dotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.0386060Z dotnet-install: Installation finished successfully.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.0431820Z [command]/Users/runner/work/_actions/actions/setup-dotnet/v5/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:39.7833090Z dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.403/dotnet-sdk-10.0.403-osx-x64.tar.gz
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:46.1561600Z dotnet-install: Remote file https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.403/dotnet-sdk-10.0.403-osx-x64.tar.gz size is 238694323 bytes.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:55:46.1595000Z dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.403/dotnet-sdk-10.0.403-osx-x64.tar.gz
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:04.6805570Z dotnet-install: Downloaded file size is 238694323 bytes.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:04.6807360Z dotnet-install: The remote and local file sizes are equal.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:05.2594420Z dotnet-install: Installed version is 10.0.403
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:05.2794640Z dotnet-install: Adding to current process PATH: `/Users/runner/.dotnet`. Note: This change will be visible only when sourcing script.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:05.2799400Z dotnet-install: Note that the script does not resolve dependencies during installation.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:05.2802980Z dotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+macOS osx-x64	Run actions/setup-dotnet@v5	2026-11-06T13:56:05.2807290Z dotnet-install: Installation finished successfully.
+macOS osx-x64	Run actions/cache@v4	﻿2026-11-06T13:56:05.5153490Z ##[group]Run actions/cache@v4
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5154610Z with:
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5155370Z   path: .nuget/packages
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5156940Z   key: nuget-osx-x64-4e18582c553793611bfeba7b8a1529a0b171198752bf977a9393b95d3e538f35
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5158830Z   enableCrossOsArchive: false
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5160010Z   fail-on-cache-miss: false
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5160710Z   lookup-only: false
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5161740Z   save-always: false
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5162630Z env:
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5164090Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5164550Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5165740Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5167330Z   RID: osx-x64
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5167940Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5168450Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.5169600Z ##[endgroup]
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.6904440Z (node:2163) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.6906540Z (Use `node --trace-deprecation ...` to show where the warning was created)
+macOS osx-x64	Run actions/cache@v4	2026-11-06T13:56:05.9792810Z Cache not found for input keys: nuget-osx-x64-4e18582c553793611bfeba7b8a1529a0b171198752bf977a9393b95d3e538f35
+macOS osx-x64	Machine	﻿2026-11-06T13:56:05.9892310Z ##[group]Run sw_vers
+macOS osx-x64	Machine	2026-11-06T13:56:05.9893090Z ^[[36;1msw_vers^[[0m
+macOS osx-x64	Machine	2026-11-06T13:56:05.9893490Z ^[[36;1muname -m^[[0m
+macOS osx-x64	Machine	2026-11-06T13:56:05.9893880Z ^[[36;1mdotnet --version^[[0m
+macOS osx-x64	Machine	2026-11-06T13:56:05.9894520Z ^[[36;1mnode --version^[[0m
+macOS osx-x64	Machine	2026-11-06T13:56:05.9971720Z shell: /bin/bash -e {0}
+macOS osx-x64	Machine	2026-11-06T13:56:05.9972210Z env:
+macOS osx-x64	Machine	2026-11-06T13:56:05.9972590Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Machine	2026-11-06T13:56:05.9973280Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Machine	2026-11-06T13:56:05.9974350Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Machine	2026-11-06T13:56:05.9975570Z   RID: osx-x64
+macOS osx-x64	Machine	2026-11-06T13:56:05.9976490Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Machine	2026-11-06T13:56:05.9977270Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Machine	2026-11-06T13:56:05.9978060Z ##[endgroup]
+macOS osx-x64	Machine	2026-11-06T13:56:06.0411960Z ProductName:		macOS
+macOS osx-x64	Machine	2026-11-06T13:56:06.0421360Z ProductVersion:		15.7.9
+macOS osx-x64	Machine	2026-11-06T13:56:06.0471400Z BuildVersion:		24G830
+macOS osx-x64	Machine	2026-11-06T13:56:06.0508630Z x86_64
+macOS osx-x64	Machine	2026-11-06T13:56:06.2714240Z 10.0.403
+macOS osx-x64	Machine	2026-11-06T13:56:06.4539290Z v22.23.2
+macOS osx-x64	Temporary login keychain	﻿2026-11-06T13:56:06.4933540Z ##[group]Run KC="$RUNNER_TEMP/sqlinv-ci.keychain-db"
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4934310Z ^[[36;1mKC="$RUNNER_TEMP/sqlinv-ci.keychain-db"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4934900Z ^[[36;1mPW="$(openssl rand -hex 16)"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4935470Z ^[[36;1msecurity create-keychain -p "$PW" "$KC"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4936140Z ^[[36;1msecurity set-keychain-settings -lut 21600 "$KC"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4936850Z ^[[36;1msecurity unlock-keychain -p "$PW" "$KC"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4937550Z ^[[36;1msecurity list-keychains -d user -s "$KC"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4938230Z ^[[36;1msecurity default-keychain -d user -s "$KC"^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4938860Z ^[[36;1msecurity default-keychain -d user^[[0m
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4998310Z shell: /bin/bash -e {0}
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4998780Z env:
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4999150Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.4999570Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.5000480Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.5001470Z   RID: osx-x64
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.5001860Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.5002370Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.5002850Z ##[endgroup]
+macOS osx-x64	Temporary login keychain	2026-11-06T13:56:06.6716090Z     "/Users/runner/work/_temp/sqlinv-ci.keychain-db"
+macOS osx-x64	Build (warnings are errors)	﻿2026-11-06T13:56:06.7165150Z ##[group]Run dotnet build SqlInvestigator.slnx -c Release
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7165960Z ^[[36;1mdotnet build SqlInvestigator.slnx -c Release^[[0m
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7224240Z shell: /bin/bash -e {0}
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7225190Z env:
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7225570Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7226000Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7226870Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7227770Z   RID: osx-x64
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7228170Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7228660Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:06.7229140Z ##[endgroup]
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:09.6652620Z   Determining projects to restore...
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:14.2791740Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/SqlInvestigator.Testing.csproj (in 3.58 sec).
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:14.2808410Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj (in 3.58 sec).
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:14.3249480Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/SqlInvestigator.FixtureTool.csproj (in 24 ms).
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:14.3669480Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/SqlInvestigator.Tests.csproj (in 3.68 sec).
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:14.3895600Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.IntegrationTests/SqlInvestigator.IntegrationTests.csproj (in 3.68 sec).
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:28.0672610Z   SqlInvestigator.Testing -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/bin/Release/net10.0/osx-x64/SqlInvestigator.Testing.dll
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:31.4218230Z   SqlInvestigator.McpServer -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/bin/Release/net10.0/osx-x64/SqlInvestigator.dll
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:31.5544360Z   SqlInvestigator.FixtureTool -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/bin/Release/net10.0/osx-x64/SqlInvestigator.FixtureTool.dll
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:35.8137430Z   SqlInvestigator.Tests -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/bin/Release/net10.0/osx-x64/SqlInvestigator.Tests.dll
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:36.9184610Z   SqlInvestigator.IntegrationTests -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.IntegrationTests/bin/Release/net10.0/osx-x64/SqlInvestigator.IntegrationTests.dll
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:37.4616410Z 
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:37.4842600Z Build succeeded.
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:37.4952360Z     0 Warning(s)
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:37.5128650Z     0 Error(s)
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:37.5171600Z 
+macOS osx-x64	Build (warnings are errors)	2026-11-06T13:56:37.5269670Z Time Elapsed 00:00:29.78
+macOS osx-x64	Unit tests	﻿2026-11-06T13:56:37.6787630Z ##[group]Run dotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6790080Z ^[[36;1mdotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults^[[0m
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6911100Z shell: /bin/bash -e {0}
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6911570Z env:
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6912200Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6912700Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6913790Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6914940Z   RID: osx-x64
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6915560Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6916280Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Unit tests	2026-11-06T13:56:37.6916950Z ##[endgroup]
+macOS osx-x64	Unit tests	2026-11-06T13:56:39.1687670Z Test run for /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Tests/bin/Release/net10.0/osx-x64/SqlInvestigator.Tests.dll (.NETCoreApp,Version=v10.0)
+macOS osx-x64	Unit tests	2026-11-06T13:56:39.5147190Z A total of 1 test files matched the specified pattern.
+macOS osx-x64	Unit tests	2026-11-06T13:56:41.8870370Z [xUnit.net 00:00:01.22]     SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [SKIP]
+macOS osx-x64	Unit tests	2026-11-06T13:56:42.3447610Z   Skipped SqlInvestigator.Tests.StoreTests.A_private_directory_can_be_made_under_a_folder_that_grants_only_modify [1 ms]
+macOS osx-x64	Unit tests	2026-11-06T13:56:42.3628410Z [xUnit.net 00:00:01.75]     SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [SKIP]
+macOS osx-x64	Unit tests	2026-11-06T13:56:42.8971390Z   Skipped SqlInvestigator.Tests.StoreTests.The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias [1 ms]
+macOS osx-x64	Unit tests	2026-11-06T13:56:43.5132160Z Results File: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/TestResults/_sjc20-av657-bf37ed7f-4030-4168-a2e2-d7968cf8e181-3A4477323855_2026-11-06_13_56_41_net10.0.trx
+macOS osx-x64	Unit tests	2026-11-06T13:56:43.5180140Z 
+macOS osx-x64	Unit tests	2026-11-06T13:56:43.5230540Z Passed!  - Failed:     0, Passed:   131, Skipped:     2, Total:   133, Duration: 1 s - SqlInvestigator.Tests.dll (net10.0)
+macOS osx-x64	Publish (self-contained, single file)	﻿2026-11-06T13:56:43.6564690Z ##[group]Run dotnet publish src/SqlInvestigator.McpServer -c Release -r "$RID" --self-contained true \
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6568030Z ^[[36;1mdotnet publish src/SqlInvestigator.McpServer -c Release -r "$RID" --self-contained true \^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6570920Z ^[[36;1m  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none \^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6573060Z ^[[36;1m  -p:ContinuousIntegrationBuild=true -p:SourceRevisionId=$GITHUB_SHA -o publish/app^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6575730Z ^[[36;1mdotnet publish tests/SqlInvestigator.FixtureTool -c Release -r "$RID" --self-contained true \^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6577470Z ^[[36;1m  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -o publish/fixture^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6578780Z ^[[36;1mls -l publish/app^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6579500Z ^[[36;1mfile publish/app/SqlInvestigator^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6580310Z ^[[36;1mcodesign -dv publish/app/SqlInvestigator 2>&1 || true^[[0m
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6654870Z shell: /bin/bash -e {0}
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6655390Z env:
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6655880Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6656330Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6657540Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6658630Z   RID: osx-x64
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6659180Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6659810Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:43.6660330Z ##[endgroup]
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:45.8423430Z   Determining projects to restore...
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:56:52.8962890Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj (in 6.41 sec).
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:04.6437260Z   SqlInvestigator.McpServer -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/src/SqlInvestigator.McpServer/bin/Release/net10.0/osx-x64/SqlInvestigator.dll
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:09.5173230Z   SqlInvestigator.McpServer -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/publish/app/
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:10.7688870Z   Determining projects to restore...
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:12.2109000Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/SqlInvestigator.FixtureTool.csproj (in 744 ms).
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:12.2184050Z   Restored /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/SqlInvestigator.Testing.csproj (in 754 ms).
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:13.7756850Z   SqlInvestigator.Testing -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.Testing/bin/Release/net10.0/osx-x64/SqlInvestigator.Testing.dll
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:14.3147380Z   SqlInvestigator.FixtureTool -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/tests/SqlInvestigator.FixtureTool/bin/Release/net10.0/osx-x64/SqlInvestigator.FixtureTool.dll
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.3028830Z   SqlInvestigator.FixtureTool -> /Users/runner/work/sql-investigator-macos/sql-investigator-macos/publish/fixture/
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.3842550Z total 174688
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.3953860Z -rwxr-xr-x  1 runner  staff  89437216 Nov  6 13:57 SqlInvestigator
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.4020490Z publish/app/SqlInvestigator: Mach-O 64-bit executable x86_64
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.4336670Z Executable=/Users/runner/work/sql-investigator-macos/sql-investigator-macos/publish/app/SqlInvestigator
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.4656840Z Identifier=SqlInvestigator
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.4830930Z Format=Mach-O thin (x86_64)
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.5062720Z CodeDirectory v=20400 size=693480 flags=0x2(adhoc) hashes=21666+2 location=embedded
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.5079560Z Signature=adhoc
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.5159020Z Info.plist=not bound
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.5207140Z TeamIdentifier=not set
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.5372500Z Sealed Resources=none
+macOS osx-x64	Publish (self-contained, single file)	2026-11-06T13:57:17.5373600Z Internal requirements count=0 size=12
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	﻿2026-11-06T13:57:17.7236560Z ##[group]Run node eng/macos-smoke.mjs "$PWD/publish/app/SqlInvestigator" "$PWD/publish/fixture/SqlInvestigator.FixtureTool"
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7239270Z ^[[36;1mnode eng/macos-smoke.mjs "$PWD/publish/app/SqlInvestigator" "$PWD/publish/fixture/SqlInvestigator.FixtureTool"^[[0m
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7329860Z shell: /bin/bash -e {0}
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7334880Z env:
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7343140Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7343890Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7345190Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7372880Z   RID: osx-x64
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7373600Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7374260Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:17.7375040Z ##[endgroup]
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.2709590Z PASS  the executable starts (--version)  — 1.0.0+5835cd81fcf4cabbcf6fb60ac262ced480b1cb86
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.2935740Z PASS  --help prints the console usage
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.6362660Z PASS  provision stores the alias (secret on stdin)  — Provisioned alias "smoke": 127.0.0.1,1433/SmokeDb, fixture, scope dbo.Orders.
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.6394890Z PASS  the console never prints the secret
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.6447690Z PASS  the data home is 0700  — 700
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.6608660Z PASS  catalog.json is 0600  — 600
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.6652700Z PASS  nothing under the data home holds the secret
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:18.6694100Z PASS  no vault folder: the secret is not a file on macOS
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:19.1590790Z PASS  a login-keychain item exists for the alias  — {"ok":true,"mechanism":"keychain-login","present":true,"protectedForUser":true,"boundToAlias":true,"storeCurrentUserOnly":true,"detail":"another application's read answered OSStatus -25293"}
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:19.1623720Z PASS  another application cannot read it without approval  — another application's read answered OSStatus -25293
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:19.1656770Z PASS  the data home is current-user-only (stat)
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:19.4413710Z PASS  provision --replace updates the item  — Provisioned alias "smoke": 127.0.0.1,1433/SmokeDb, fixture, scope dbo.Orders.
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.2964050Z PASS  the MCP server initializes over stdio  — ""
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.3071040Z PASS  it lists the 11 tools  — 11
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.3140520Z PASS  connection_list shows the alias without a secret
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.3196570Z PASS  stdout carries only JSON-RPC
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.3393240Z PASS  no MCP output or diagnostic holds the secret
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.5762210Z PASS  remove deletes the keychain item  — Removed alias "smoke" and its stored secret.
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:20.7665750Z PASS  the item is gone  — {"ok":true,"mechanism":"keychain-login","present":false,"protectedForUser":false,"boundToAlias":false,"storeCurrentUserOnly":false,"detail":"no keychain item (OSStatus -25300)"}
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:21.1933240Z PASS  a second remove has nothing to delete  — Alias "smoke" was not provisioned.
+macOS osx-x64	Smoke test the published executable (keychain, permissions, MCP stdio)	2026-11-06T13:57:21.6181000Z smoke: all checks passed
+macOS osx-x64	SQL Server connectivity not verified	﻿2026-11-06T13:57:21.7823190Z ##[group]Run echo "::warning::No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on ${RID}."
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7826470Z ^[[36;1mecho "::warning::No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on ${RID}."^[[0m
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7910740Z shell: /bin/bash -e {0}
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7911250Z env:
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7911640Z   DOTNET_NOLOGO: 1
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7912050Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7912930Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7913840Z   RID: osx-x64
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7914240Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7914740Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.7915230Z ##[endgroup]
+macOS osx-x64	SQL Server connectivity not verified	2026-11-06T13:57:21.8391890Z ##[warning]No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on osx-x64.
+macOS osx-x64	Package	﻿2026-11-06T13:57:21.9080030Z ##[group]Run VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
+macOS osx-x64	Package	2026-11-06T13:57:21.9082730Z ^[[36;1mVERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9084420Z ^[[36;1mNAME="SqlInvestigator-$VERSION-$RID"^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9085540Z ^[[36;1mcp docs/USER-GUIDE.md publish/app/README.md^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9088060Z ^[[36;1mprintf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9089710Z ^[[36;1m  "$VERSION" "$GITHUB_SHA" "$RID" > publish/app/VERSION.txt^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9090460Z ^[[36;1mmkdir -p artifacts^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9091160Z ^[[36;1mtar -C publish/app -czf "artifacts/$NAME.tar.gz" .^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9092180Z ^[[36;1mshasum -a 256 "artifacts/$NAME.tar.gz" | tee "artifacts/$NAME.tar.gz.sha256"^[[0m
+macOS osx-x64	Package	2026-11-06T13:57:21.9180880Z shell: /bin/bash -e {0}
+macOS osx-x64	Package	2026-11-06T13:57:21.9181630Z env:
+macOS osx-x64	Package	2026-11-06T13:57:21.9182300Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Package	2026-11-06T13:57:21.9182770Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Package	2026-11-06T13:57:21.9183650Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Package	2026-11-06T13:57:21.9184920Z   RID: osx-x64
+macOS osx-x64	Package	2026-11-06T13:57:21.9186210Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Package	2026-11-06T13:57:21.9187170Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Package	2026-11-06T13:57:21.9187760Z ##[endgroup]
+macOS osx-x64	Package	2026-11-06T13:57:29.4414340Z c3e78d70030156e3925c6f64c1e437ff70810929bc48ba9aafdbaca22065949c  artifacts/SqlInvestigator-1.0.0-osx-x64.tar.gz
+macOS osx-x64	Run actions/upload-artifact@v4	﻿2026-11-06T13:57:29.5012070Z ##[group]Run actions/upload-artifact@v4
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5012780Z with:
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5013290Z   name: macos-osx-x64
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5013750Z   path: artifacts
+macOS osx-x64	Run actions/upload-artifact@v4	TestResults
+macOS osx-x64	Run actions/upload-artifact@v4	
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5014220Z   if-no-files-found: ignore
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5014670Z   retention-days: 14
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5015430Z   compression-level: 6
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5015920Z   overwrite: false
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5016500Z   include-hidden-files: false
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5016960Z env:
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5017420Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5018410Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5019470Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5020590Z   RID: osx-x64
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5021120Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5021740Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.5022350Z ##[endgroup]
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9176760Z (node:3495) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9232250Z (Use `node --trace-deprecation ...` to show where the warning was created)
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9736080Z Multiple search paths detected. Calculating the least common ancestor of all paths
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9850370Z The least common ancestor is /Users/runner/work/sql-investigator-macos/sql-investigator-macos. This will be the root directory of the artifact
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9883400Z With the provided path, there will be 3 files uploaded
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9940460Z Artifact name is valid!
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:29.9975730Z Root directory input is valid!
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:30.4016220Z Beginning upload of artifact content to blob storage
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:30.6871120Z (node:3495) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:31.7994260Z Uploaded bytes 8388608
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:32.2381790Z Uploaded bytes 16777216
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:32.4577990Z Uploaded bytes 25165824
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:32.8015070Z Uploaded bytes 33554432
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.0367070Z Uploaded bytes 37265091
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.0476930Z Finished uploading artifact content to blob storage!
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.0509980Z SHA256 digest of uploaded artifact zip is ea63417ed00bd18687fcc24eff8da5728915c7c15d5499e45824bc601e5a49af
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.0538130Z Finalizing artifact upload
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.5749430Z Artifact macos-osx-x64.zip successfully finalized. Artifact ID 13506968487
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.5801850Z Artifact macos-osx-x64 has been successfully uploaded! Final size is 37265091 bytes. Artifact ID is 13506968487
+macOS osx-x64	Run actions/upload-artifact@v4	2026-11-06T13:57:33.5861880Z Artifact download URL: https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42229416496/artifacts/13506968487
+macOS osx-x64	Remove the temporary keychain	﻿2026-11-06T13:57:33.5994370Z ##[group]Run security default-keychain -d user -s login.keychain-db 2>/dev/null || true
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.5995640Z ^[[36;1msecurity default-keychain -d user -s login.keychain-db 2>/dev/null || true^[[0m
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.5996790Z ^[[36;1msecurity list-keychains -d user -s login.keychain-db 2>/dev/null || true^[[0m
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6022900Z ^[[36;1msecurity delete-keychain "$RUNNER_TEMP/sqlinv-ci.keychain-db" 2>/dev/null || true^[[0m
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6094220Z shell: /bin/bash -e {0}
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6094700Z env:
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6095050Z   DOTNET_NOLOGO: 1
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6095620Z   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6096520Z   NUGET_PACKAGES: /Users/runner/work/sql-investigator-macos/sql-investigator-macos/.nuget/packages
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6097450Z   RID: osx-x64
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6097860Z   SQLINVESTIGATOR_FIXTURE_SERVER: 
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6098450Z   DOTNET_ROOT: /Users/runner/.dotnet
+macOS osx-x64	Remove the temporary keychain	2026-11-06T13:57:33.6099110Z ##[endgroup]
+macOS osx-x64	Post Run actions/cache@v4	﻿2026-11-06T13:57:35.5550870Z Post job cleanup.
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:35.7357770Z (node:3528) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:35.7369870Z (Use `node --trace-deprecation ...` to show where the warning was created)
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:35.7663770Z [command]/usr/local/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/sql-investigator-macos/sql-investigator-macos --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:38.7810530Z (node:3528) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:44.4520740Z Sent 0 of 219207463 (0.0%), 0.0 MBs/sec
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:45.3889550Z Sent 17880871 of 219207463 (8.2%), 2.6 MBs/sec
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:46.3829970Z Sent 17880871 of 219207463 (8.2%), 2.2 MBs/sec
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:47.3840030Z Sent 219207463 of 219207463 (100.0%), 24.3 MBs/sec
+macOS osx-x64	Post Run actions/cache@v4	2026-11-06T13:57:47.7852620Z Cache saved with key: nuget-osx-x64-4e18582c553793611bfeba7b8a1529a0b171198752bf977a9393b95d3e538f35
+macOS osx-x64	Post Run actions/setup-dotnet@v5	﻿2026-11-06T13:57:47.8124830Z Post job cleanup.
+macOS osx-x64	Post Run actions/checkout@v5	﻿2026-11-06T13:57:48.0439730Z Post job cleanup.
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.2450900Z [command]/usr/local/bin/git version
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.3939740Z git version 2.55.0
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.3990940Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/b9126010-08a7-4530-8ac7-b9b0a3c33c7e/.gitconfig'
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.4011800Z Temporarily overriding HOME='/Users/runner/work/_temp/b9126010-08a7-4530-8ac7-b9b0a3c33c7e' before making global git config changes
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.4013630Z Adding repository directory to the temporary git global config as a safe directory
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.4023660Z [command]/usr/local/bin/git config --global --add safe.directory /Users/runner/work/sql-investigator-macos/sql-investigator-macos
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.4186710Z [command]/usr/local/bin/git config --local --name-only --get-regexp core\.sshCommand
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.4306120Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.7371640Z [command]/usr/local/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.7504910Z http.https://github.com/.extraheader
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.7509420Z [command]/usr/local/bin/git config --local --unset-all http.https://github.com/.extraheader
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.7649210Z [command]/usr/local/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.9528150Z [command]/usr/local/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+macOS osx-x64	Post Run actions/checkout@v5	2026-11-06T13:57:48.9569100Z [command]/usr/local/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+macOS osx-x64	Complete job	﻿2026-11-06T13:57:49.1363990Z Cleaning up orphan processes
+macOS osx-x64	Complete job	2026-11-06T13:57:49.3685300Z Terminate orphan process: pid (2406) (VBCSCompiler)
+macOS osx-x64	Complete job	2026-11-06T13:57:49.5786690Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
