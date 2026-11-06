@@ -82,4 +82,4 @@ The ADL qualified names below drop the `::SQLInvestigator.` prefix. In them, `ID
 
 ## Decision-status reconciliation
 
-ADR-001 through ADR-006 were accepted by the Continuum Host under delegated `agent:remote-mcp` authority (events 15–20). Local signed export pending refresh with the Continuum CLI; the repository's model and package baseline have not been newly accepted by this documentation-only sync.
+ADR-001 through ADR-006 were accepted by the Continuum Host under delegated `agent:remote-mcp` authority (events 15–20). The signed export `continuum/decisions/decisions.jsonl` has since been refreshed through the CLI and verifies intact; the repository's model and package baseline have not been newly accepted by this documentation-only sync.

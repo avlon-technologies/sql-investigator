@@ -116,4 +116,4 @@
 - Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 
 
-> Decision statuses above are synchronized from Continuum Host acceptance events 15–20. This overview is a human-readable snapshot; the Host is authoritative and the local signed decision export still requires refresh.
+> Decision statuses above are synchronized from Continuum Host acceptance events 15–20. This overview is a human-readable snapshot; the Host is authoritative, and the signed decision export in `decisions/decisions.jsonl` has been refreshed and verifies intact.

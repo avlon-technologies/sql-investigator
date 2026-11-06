@@ -58,10 +58,10 @@ This is a tooling gap: `decision propose` accepts names it cannot resolve. Expec
 ```
 continuum decision show ADR-001 --verbose
 continuum decision list                              # accepted in Host; confirm live status
-continuum decision verify                            # after refreshing the signed export
+continuum decision verify                            # offline check of the export
 continuum decision integrity
 ```
 
 ## Local signed-export synchronization
 
-The Host is authoritative. The checked-in `decisions.jsonl` export must be refreshed with `continuum decision` before offline verification; do not manually edit signed lines.
+The Host is authoritative. The checked-in `decisions.jsonl` export was refreshed with `continuum decision list` and holds all 20 events, including the acceptances; `continuum decision verify` reports it intact. Every `continuum decision` command refreshes it again; do not manually edit signed lines.
