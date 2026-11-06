@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024" font-family="Inter, 'Segoe UI', Arial, sans-serif">
+<title>SQL Investigator: investigate here, provision locally</title>
+<desc>Investigation uses Claude Code and three local MCP tool handlers. A separate local console provisions profiles and places passwords directly in the DPAPI credential vault. Solid connectors are declared relationships; dashed connectors are inferred routes.</desc>
+<defs>
+<marker id="arrow" orient="auto" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="10" refX="10" refY="5"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#27639A"/></marker>
+<marker id="quiet" orient="auto" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="9" refX="9" refY="4.5"><path d="M 0 0 L 9 4.5 L 0 9 Z" fill="#8797AA"/></marker>
+<marker id="pink" orient="auto" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="10" refX="10" refY="5"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#AD276F"/></marker>
+<marker id="green" orient="auto" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="10" refX="10" refY="5"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#28864F"/></marker>
+</defs>
+<rect x="0" y="0" width="1536" height="1024" fill="#FFFFFF"/>
+<text x="768" y="48" text-anchor="middle" font-size="34" font-weight="750" fill="#191D30">SQL Investigator: investigate here, provision locally</text>
+<text x="768" y="87" text-anchor="middle" font-size="23" fill="#5D6C83">Claude Code is the only conversational interface · No separate chat or web UI</text>
+
+<g class="domain" data-label="Local MCP Server" data-grade="declared">
+<rect x="580" y="125" width="470" height="680" rx="14" fill="#F0F7FF" stroke="#A7C9FA" stroke-width="1.5"/>
+<text x="600" y="156" font-size="23" font-weight="700" fill="#123F73">Local MCP Server</text>
+<text x="600" y="181" font-size="16" fill="#526B87">One executable, three tool handlers</text>
+<g class="service" data-label="MCP stdio entry" data-grade="declared">
+<rect x="600" y="390" width="120" height="150" rx="9" fill="#E6F4FF" stroke="#1765BF" stroke-width="1.5"/>
+<text x="660" y="420" text-anchor="middle" font-size="18" font-weight="700" fill="#153D6C"><tspan x="660">MCP stdio</tspan><tspan x="660" dy="23">entry</tspan></text>
+<text x="613" y="473" font-size="14" fill="#334D6B"><tspan x="613">Child process</tspan><tspan x="613" dy="19">started by</tspan><tspan x="613" dy="19">Claude Code</tspan></text>
+</g>
+<g class="service" data-label="ConnectionRegistry" data-grade="declared">
+<rect x="750" y="220" width="280" height="130" rx="9" fill="#E8F5EC" stroke="#298359" stroke-width="1.5"/>
+<text x="765" y="247" font-size="21" font-weight="700" fill="#174B40">ConnectionRegistry</text>
+<text x="765" y="272" font-size="14" fill="#385B53"><tspan x="765">List, remove and locally</tspan><tspan x="765" dy="18">provision aliases</tspan></text>
+</g>
+<g class="service" data-label="QueryGateway" data-grade="declared">
+<rect x="750" y="390" width="280" height="170" rx="9" fill="#E8F4FF" stroke="#1765BF" stroke-width="1.5"/>
+<text x="765" y="417" font-size="21" font-weight="700" fill="#164779">QueryGateway</text>
+<text x="765" y="441" font-size="14" fill="#385574"><tspan x="765">Validate SQL, bound execution</tspan><tspan x="765" dy="18">and keep findings</tspan></text>
+</g>
+<g class="service" data-label="KnowledgeService" data-grade="declared">
+<rect x="750" y="600" width="280" height="170" rx="9" fill="#FFF6D9" stroke="#B99A31" stroke-width="1.5"/>
+<text x="765" y="627" font-size="21" font-weight="700" fill="#62501C">KnowledgeService</text>
+<text x="765" y="652" font-size="14" fill="#655D40"><tspan x="765">Inspect schema and manage</tspan><tspan x="765" dy="18">shared knowledge</tspan></text>
+</g>
+</g>
+
+<g class="domain" data-label="Provisioning — local console" data-grade="declared">
+<rect x="260" y="850" width="660" height="150" rx="14" fill="#F0FAF4" stroke="#8EC9A5" stroke-width="1.5"/>
+<text x="280" y="878" font-size="23" font-weight="700" fill="#145D4E">Provisioning — local console</text>
+<text x="280" y="901" font-size="15" fill="#477361">Same executable · provision subcommand</text>
+<g class="service" data-label="Local interactive console" data-grade="declared">
+<rect x="300" y="915" width="360" height="70" rx="9" fill="#FFFFFF" stroke="#27639A" stroke-width="1.5"/>
+<text x="315" y="939" font-size="20" font-weight="700" fill="#173F6B">Local interactive console</text>
+<text x="315" y="959" font-size="14" fill="#425D73"><tspan x="315">Run the same executable's provision</tspan><tspan x="315" dy="17">subcommand</tspan></text>
+</g>
+</g>
+
+<g class="actor" data-label="Developer" data-grade="declared">
+<rect x="30" y="390" width="180" height="150" rx="12" fill="#EFF6FF" stroke="#2764AE" stroke-width="1.5"/>
+<circle cx="120" cy="418" r="12" fill="#315E93"/>
+<path d="M 99 452 Q 99 433 120 433 Q 141 433 141 452 Z" fill="#315E93"/>
+<text x="120" y="478" text-anchor="middle" font-size="22" font-weight="700" fill="#143F75">Developer</text>
+<text x="44" y="503" font-size="14" fill="#435D79"><tspan x="44">Ask questions or</tspan><tspan x="44" dy="19">provision a connection</tspan></text>
+</g>
+<g class="service" data-label="Claude Code" data-grade="declared">
+<rect x="280" y="390" width="230" height="150" rx="12" fill="#F7F9FD" stroke="#21599E" stroke-width="1.5"/>
+<path d="M 372 415 L 384 426 L 372 437 M 391 439 L 409 439" fill="none" stroke="#243246" stroke-width="4" stroke-linecap="round"/>
+<text x="395" y="473" text-anchor="middle" font-size="25" font-weight="700" fill="#153D70">Claude Code</text>
+<text x="395" y="501" text-anchor="middle" font-size="16" fill="#435D79"><tspan x="395">The only conversational</tspan><tspan x="395" dy="21">interface</tspan></text>
+</g>
+
+<g class="service" data-label="ConnectionCatalog" data-grade="declared">
+<rect x="1190" y="220" width="310" height="100" rx="10" fill="#E8F5EA" stroke="#368D51" stroke-width="1.5"/>
+<text x="1206" y="251" font-size="22" font-weight="700" fill="#22563B">ConnectionCatalog</text>
+<text x="1206" y="281" font-size="16" fill="#466451">Non-secret connection metadata</text>
+</g>
+<g class="service" data-label="InvestigationHistory" data-grade="declared">
+<rect x="1190" y="410" width="310" height="100" rx="10" fill="#F0EAFC" stroke="#8A67BB" stroke-width="1.5"/>
+<text x="1206" y="442" font-size="22" font-weight="700" fill="#4D327E">InvestigationHistory</text>
+<text x="1206" y="473" font-size="16" fill="#65567E">Saved investigation evidence</text>
+</g>
+<g class="service" data-label="KnowledgeStore" data-grade="declared">
+<rect x="1190" y="610" width="310" height="100" rx="10" fill="#E0F5F8" stroke="#2195A8" stroke-width="1.5"/>
+<text x="1206" y="640" font-size="22" font-weight="700" fill="#165B70">KnowledgeStore</text>
+<text x="1206" y="666" font-size="16" fill="#3A6572"><tspan x="1206">Saved schema and relationship</tspan><tspan x="1206" dy="21">knowledge</tspan></text>
+</g>
+<g class="service" data-label="SQL Server" data-grade="declared">
+<rect x="1190" y="745" width="310" height="95" rx="10" fill="#FDECEF" stroke="#B9506D" stroke-width="1.5"/>
+<text x="1206" y="775" font-size="23" font-weight="700" fill="#612E45">SQL Server</text>
+<text x="1206" y="800" font-size="16" fill="#6C4B5A"><tspan x="1206">Dedicated read-only principal</tspan><tspan x="1206" dy="21">per alias</tspan></text>
+</g>
+<g class="service" data-label="CredentialVault" data-grade="declared">
+<rect x="1190" y="890" width="310" height="100" rx="10" fill="#F9EAF4" stroke="#A83182" stroke-width="1.8"/>
+<text x="1206" y="921" font-size="23" font-weight="700" fill="#702664">CredentialVault</text>
+<text x="1206" y="947" font-size="16" fill="#74516F"><tspan x="1206">DPAPI CurrentUser-protected</tspan><tspan x="1206" dy="21">credentials</tspan></text>
+</g>
+
+<g fill="none" stroke-linejoin="round" stroke-linecap="round">
+<g class="edge" data-from="Claude Code" data-to="ConnectionRegistry">
+<path d="M 510 435 L 550 435 L 550 315 L 750 315" stroke="#27639A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="765" y="314" fill="#214C65" stroke="none" font-size="13"><tspan x="765">ListConnections / RemoveConnection</tspan></text>
+</g>
+<g class="edge" data-from="Claude Code" data-to="QueryGateway">
+<path d="M 510 460 L 565 460 L 565 575 L 735 575 L 735 490 L 750 490" stroke="#27639A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="765" y="487" fill="#214C65" stroke="none" font-size="13"><tspan x="765">ValidateSql / ExecuteSql /</tspan><tspan x="765" dy="20">StartInvestigation / RecordFinding /</tspan><tspan x="765" dy="20">GetInvestigation</tspan></text>
+</g>
+<g class="edge" data-from="Claude Code" data-to="KnowledgeService">
+<path d="M 510 485 L 540 485 L 540 710 L 750 710" stroke="#27639A" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="765" y="702" fill="#214C65" stroke="none" font-size="13"><tspan x="765">InspectSchema / SearchKnowledge /</tspan><tspan x="765" dy="20">ProposeRelationship /</tspan><tspan x="765" dy="20">ReviewRelationship</tspan></text>
+</g>
+<g class="edge" data-from="ConnectionRegistry" data-to="ConnectionCatalog">
+<path d="M 1030 244 L 1190 244" stroke="#28864F" stroke-width="3" marker-end="url(#green)"/>
+<text x="1059" y="232" fill="#285543" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="14">reads + writes</text>
+</g>
+<g class="edge" data-from="QueryGateway" data-to="InvestigationHistory">
+<path d="M 1030 435 L 1190 435" stroke="#27639A" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1059" y="424" fill="#28516E" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="14">reads + writes</text>
+</g>
+<g class="edge" data-from="KnowledgeService" data-to="KnowledgeStore">
+<path d="M 1030 635 L 1190 635" stroke="#27639A" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1059" y="623" fill="#28516E" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="14">reads + writes</text>
+</g>
+<g class="edge" data-from="QueryGateway" data-to="ConnectionCatalog">
+<path d="M 1030 402 L 1140 402 L 1140 275 L 1190 275" stroke="#8797AA" stroke-width="1.7" marker-end="url(#quiet)"/>
+<text x="1149" y="345" fill="#60738B" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="13">reads</text>
+</g>
+<g class="edge" data-from="KnowledgeService" data-to="ConnectionCatalog">
+<path d="M 1030 610 L 1165 610 L 1165 300 L 1190 300" stroke="#8797AA" stroke-width="1.7" marker-end="url(#quiet)"/>
+<text x="1125" y="549" fill="#60738B" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="13">reads</text>
+</g>
+<g class="edge" data-from="QueryGateway" data-to="SQL Server">
+<path d="M 1030 550 L 1060 550 L 1060 780 L 1190 780" stroke="#27639A" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="1195" y="571" fill="#36536D" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="14">depends on + invokes</text>
+</g>
+<g class="edge" data-from="KnowledgeService" data-to="SQL Server">
+<path d="M 1030 755 L 1040 755 L 1040 820 L 1190 820" stroke="#27639A" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="1195" y="735" fill="#36536D" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="14">depends on + invokes</text>
+</g>
+<g class="edge" data-from="Local interactive console" data-to="ConnectionRegistry">
+<path d="M 660 935 L 700 935 L 700 790 L 730 790 L 730 340 L 750 340" stroke="#28864F" stroke-width="2.3" marker-end="url(#green)"/>
+<text x="305" y="756" fill="#286147" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="15"><tspan x="305">ProvisionConnection ·</tspan><tspan x="305" dy="21">non-secret profile</tspan></text>
+</g>
+<g class="edge" data-from="ConnectionRegistry" data-to="CredentialVault">
+<path d="M 1030 330 L 1080 330 L 1080 860 L 1240 860 L 1240 890" stroke="#8797AA" stroke-width="1.7" marker-end="url(#quiet)"/>
+<text x="1067" y="365" fill="#60738B" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="13">reads</text>
+</g>
+<g class="edge" data-from="QueryGateway" data-to="CredentialVault">
+<path d="M 1030 520 L 1100 520 L 1100 872 L 1300 872 L 1300 890" stroke="#8797AA" stroke-width="1.7" marker-end="url(#quiet)"/>
+<text x="1086" y="590" fill="#60738B" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="13">reads</text>
+</g>
+<g class="edge" data-from="KnowledgeService" data-to="CredentialVault">
+<path d="M 1030 700 L 1120 700 L 1120 882 L 1360 882 L 1360 890" stroke="#8797AA" stroke-width="1.7" marker-end="url(#quiet)"/>
+<text x="1105" y="749" fill="#60738B" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="13">reads</text>
+</g>
+<g class="edge" data-kind="derived" data-from="Developer" data-to="Claude Code">
+<path d="M 210 460 L 280 460" stroke="#6687AE" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#quiet)"/>
+<text x="220" y="344" fill="#476483" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="15"><tspan x="220">Investigation</tspan><tspan x="220" dy="21">questions</tspan></text>
+</g>
+<g class="edge" data-kind="derived" data-from="Claude Code" data-to="MCP stdio entry">
+<path d="M 510 410 L 600 410" stroke="#6687AE" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#quiet)"/>
+<text x="315" y="296" fill="#476483" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="15"><tspan x="315">Start child process · MCP over stdio</tspan></text>
+</g>
+<g class="edge" data-kind="derived" data-from="Developer" data-to="Local interactive console">
+<path d="M 120 540 L 120 950 L 300 950" stroke="#629975" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#green)"/>
+<text x="137" y="812" fill="#3F7154" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="15"><tspan x="137">Connection setup ·</tspan><tspan x="137" dy="22">password typed at console</tspan></text>
+</g>
+<g class="edge" data-kind="derived" data-from="Local interactive console" data-to="CredentialVault">
+<path d="M 660 970 L 1190 970" stroke="#AD276F" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#pink)"/>
+<text x="750" y="954" fill="#92265E" stroke="#FFFFFF" stroke-width="6" paint-order="stroke" font-size="16">Password → DPAPI-protected credential</text>
+</g>
+</g>
+</svg>

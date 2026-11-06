@@ -21,6 +21,15 @@ The SVGs are editable reconstructions. The PNGs are their raster previews.
 | `c3-contexts.svg/.png` | `3e5e6d73-1bfd-4060-ab86-b4c43cf95519` | deterministic C3 projection at bounded-context altitude | 9/9 declared; PASS; SUPPORTED |
 | `security-boundaries.svg/.png` | `bd193d43-0ae1-441a-a804-7b83063711d2` | composed security/trust view | 29 declared + 2 **inferred** (the dashed provisioning-console routes); geometry PASS; SUPPORTED |
 
+### Usage view (start here)
+
+`usage-view.svg/.png` answers "how do I use this?". The developer chats with Claude Code, which starts the MCP server as a child process over stdio. Inside the server, the three services each write their own store, and QueryGateway and KnowledgeService query SQL Server through a read-only principal. A separate lane shows the local provisioning console, where the password goes straight to the DPAPI vault and never passes through MCP or chat. There is no web or chat UI.
+
+- Run `5fa9c003-bac3-4dfa-b7a4-ff98831d89c0`, composed view, pinned to snapshot `snp_ad099add675cef027dc724c8b9940d66` (current attestation `sha256:df885cef…3d77`).
+- 28 declared and 4 **inferred** relationships. The inferred ones are drawn dashed, and none is presented as declared.
+- SVG check passed. It has not been visually accepted.
+- Messages are shown by model name (for example `ExecuteQuery`), not by MCP tool name (`sql_execute`). The tool table in the top-level README maps one to the other.
+
 There is only one bounded context (`QueryExecution`), so C3 shows the context, not the three services inside it. The editorial `02-local-runtime.md` gives the service-level detail.
 
 A composed C3 attempt (run `873e3879-d496-41d0-abf6-3ce526d6beb5`) was semantically SUPPORTED, but its geometry check failed: one edge was drawn twice. It is not committed.
