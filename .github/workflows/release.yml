@@ -1,0 +1,42 @@
+# Builds the Windows x64 release zip with eng/release.ps1 (twice, to prove reproducibility) and keeps it as a
+# workflow artifact. Building does not publish a GitHub Release: publishing is the owner's decision.
+name: Release build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sqlinv-local-runner
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build the release zip
+    runs-on: [self-hosted, Windows, X64, sqlinv-local]
+    timeout-minutes: 20
+    env:
+      DOTNET_NOLOGO: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      PSExecutionPolicyPreference: Bypass
+    defaults:
+      run:
+        shell: powershell
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build twice and compare
+        run: ./eng/release.ps1 -Verify
+      - name: Record the checksum
+        run: |
+          Get-Content artifacts/release/RELEASE.json
+          "## Release zip`n``````n$(Get-Content artifacts/release/*.sha256)`n``````" | Add-Content $env:GITHUB_STEP_SUMMARY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SqlInvestigator-win-x64
+          path: |
+            artifacts/release/*.zip
+            artifacts/release/*.sha256
+            artifacts/release/RELEASE.json
+          retention-days: 30
