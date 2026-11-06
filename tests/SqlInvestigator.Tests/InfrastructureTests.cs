@@ -220,6 +220,29 @@ public sealed class StoreTests : IDisposable
         Assert.Equal("credential.unavailable", Assert.Throws<InvestigatorException>(() => vault.ReadSecret("beta")).Error.Code);
         Assert.Equal("credential.unavailable", Assert.Throws<InvestigatorException>(() => vault.ReadSecret("gamma")).Error.Code);
     }
+
+    // Gap 2026-11-06-remove-connection-secret: connection_remove (RemoveConnection) writes only the catalog; the secret
+    // is deleted only by the local console, including after the alias was already removed over MCP.
+    [Fact]
+    public async Task Removing_an_alias_over_mcp_keeps_its_secret_until_the_console_removes_it()
+    {
+        var paths = Paths();
+        var vault = new CredentialVault(paths);
+        new VaultProvisioner(paths, vault).Store("alpha", "remove-unit-secret");
+        var registry = new ConnectionRegistry(new ConnectionCatalogReader(paths), TimeProvider.System, new Settings());
+        registry.RecordProvisioned(Entry(), false);
+
+        Assert.True(registry.Remove("alpha"));
+        Assert.Equal("alias.unknown", Assert.Throws<InvestigatorException>(() => new ConnectionCatalogReader(paths).Require("alpha")).Error.Code);
+        Assert.True(File.Exists(vault.FileFor("alpha")));
+        Assert.True(VaultInspector.IsCurrentUserOnly(vault.FileFor("alpha")));
+
+        var output = new StringWriter();
+        var console = new ProvisioningConsole(paths, new Settings(), TimeProvider.System, new StringReader(string.Empty), output, new StringWriter());
+        Assert.Equal(0, await console.RunAsync(["remove", "--alias", "alpha"]));
+        Assert.Contains("and its stored secret", output.ToString(), StringComparison.Ordinal);
+        Assert.False(File.Exists(vault.FileFor("alpha")));
+    }
 }
 
 public sealed class ToolSurfaceTests
@@ -254,6 +277,15 @@ public sealed class ToolSurfaceTests
     [Fact]
     public void Only_connection_remove_is_destructive()
         => Assert.Equal(["connection_remove"], Tools().Where(t => t.Tool.Destructive).Select(t => t.Tool.Name!));
+
+    [Fact]
+    public void Connection_remove_says_it_keeps_the_secret_and_names_the_console_command()
+    {
+        var description = typeof(InvestigatorTools).GetMethod(nameof(InvestigatorTools.ConnectionRemove))!
+            .GetCustomAttribute<System.ComponentModel.DescriptionAttribute>()!.Description;
+        Assert.Contains("does NOT delete", description, StringComparison.Ordinal);
+        Assert.Contains("SqlInvestigator.exe remove --alias", description, StringComparison.Ordinal);
+    }
 
     [Fact]
     public async Task The_console_refuses_a_secret_on_the_command_line()

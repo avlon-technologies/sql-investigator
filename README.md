@@ -84,7 +84,7 @@ SqlInvestigator.exe provision --alias orders --server "sqldev01,1433" --database
 | Tool | What it does |
 |---|---|
 | `connection_list` | Aliases and non-secret metadata (server, database, environment, scope) |
-| `connection_remove` | Remove an alias from the catalog |
+| `connection_remove` | Remove an alias from the catalog. It does **not** delete the stored secret; `SqlInvestigator.exe remove --alias <name>` at a console does |
 | `schema_inspect` | Approved objects and columns, with source and capture time. Recaptured when absent, stale (15 min) or drifted, and drift is reported |
 | `sql_validate` | Would this statement be accepted? Gives the reasons if not |
 | `sql_execute` | One bounded SELECT on one alias. Returns a query id, the exact SQL, timestamps, rows and a truncation indicator |

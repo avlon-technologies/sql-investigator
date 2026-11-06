@@ -1,6 +1,6 @@
 # Gap: what happens to an alias's secret when the alias is removed over MCP
 
-**Date:** 2026-11-06 · **Raised by:** implementation (Claude Code) · **Status:** open, for the owner · **Blocks:** nothing
+**Date:** 2026-11-06 · **Raised by:** implementation (Claude Code) · **Status:** resolved 2026-11-06, option 1 (no model change) · **Blocks:** nothing
 
 ## The fact the model does not settle
 
@@ -28,3 +28,24 @@ Either:
 2. **State it in the model.** Add to `RemoveConnection`'s description (or to the `CredentialVault` resource) that the secret is deleted only by the local console's `remove`, not by `connection_remove`. That is a descriptive `.adl-change` pinned to changeState `sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a`.
 
 Recommendation: option 1, unless the data owner wants removal over MCP to destroy the secret. That would need an architecture decision, because it is a write to a secret-store.
+
+## Disposition (2026-11-06)
+
+**Option 1, no model change.** Only the local console creates or destroys a secret. `connection_remove` removes the catalog entry and leaves the blob in place. The blob stays encrypted, bound to its alias and readable only by the current user, and no tool can reach it.
+
+This is consistent with the accepted model as written:
+
+- `CredentialVault` [secret-store]: "The developer places the secret here at the local provisioning console; ADL declares no service write to a secret store, and services only read it." Deleting the blob is a write. The model reserves writes to the developer at the console, which is what the implementation does.
+- `ConnectionRegistry` `writes ConnectionCatalog` only, and `on RemoveConnection -> none`. Making MCP removal delete the secret would add a service write to a secret-store, which is forbidden by `adl/architectural/secret-store-write` and would need an ADR. Nobody has asked for it.
+
+The ambiguity was in the tool surface, not the model, so it was fixed there:
+
+- The `connection_remove` description now says it does **not** delete the stored secret and names the console command (`SqlInvestigator.exe remove --alias <alias>`).
+- The result carries `secretDeleted: false` and an `action` with that command.
+
+Regression coverage (`tests/SqlInvestigator.Tests/InfrastructureTests.cs`):
+
+- `Removing_an_alias_over_mcp_keeps_its_secret_until_the_console_removes_it`: after `Remove` the alias is unknown, and the blob remains, current-user-only. The console's `remove` then deletes the orphaned blob.
+- `Connection_remove_says_it_keeps_the_secret_and_names_the_console_command`.
+
+Evidence: the cold-start evaluation in `evaluation/2026-11-06-cold-start/GOVERNANCE.md`.
