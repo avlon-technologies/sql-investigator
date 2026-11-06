@@ -26,10 +26,10 @@ The ADL qualified names below drop the `::SQLInvestigator.` prefix. In them, `ID
 | # | Intent | Source | Authoritative artifact / element | Verification | Disposition |
 |---|---|---|---|---|---|
 | 1 | Single-user, local Windows developer tool, not hosted | Vision §Product boundary | ADL `LocalMCPServer`; binding `dotnet-10-mcp-stdio` (`os: windows-x64`) | B12 | represented |
-| 2 | Claude Code is the only agent host and conversational interface | Vision; ADR-001 | ADL `ClaudeCode`, `IDA.SoleConversationalHost`, `LocalMCPServer satisfies` | B12 `mcp.tool-surface-exact` | represented. ADR-001 is proposed, not accepted (see `decisions/README.md`) |
+| 2 | Claude Code is the only agent host and conversational interface | Vision; ADR-001 | ADL `ClaudeCode`, `IDA.SoleConversationalHost`, `LocalMCPServer satisfies` | B12 `mcp.tool-surface-exact` | represented. ADR-001 is accepted in the Host (see `decisions/README.md`) |
 | 3 | .NET 10 MCP server over stdio; stdout carries protocol only; diagnostics go to stderr | Vision; CLAUDE.md | `SoleConversationalHost`; binding `dotnet-10-mcp-stdio` (`transport: mcp-stdio`) | B12 `mcp.stdout-protocol-only` | represented |
 | 4 | Exactly 11 MCP tools | design conversation | the 11 `ClaudeCode sends` messages; IMPLEMENTATION-HANDOFF §3 | B12 `mcp.tool-surface-exact` | represented |
-| 5 | SQL Server and T-SQL only | Vision; ADR-002 | ADL `SQLServer` API `Tsql` | B02, B06 | represented (ADR-002 proposed) |
+| 5 | SQL Server and T-SQL only | Vision; ADR-002 | ADL `SQLServer` API `Tsql` | B02, B06 | represented (ADR-002 accepted in Host) |
 | 6 | Excluded: web UI, embedded LLM, provider abstraction, SQLite, linked servers, Continuum runtime dependency | Vision; CLAUDE.md; ADR-004, ADR-006 | `SoleConversationalHost` (no other surface); `SelectOnlyAllowlist` (linked servers); bindings name no SQLite and no model provider | B12 surface; B03 linked-server and OPENQUERY cases | represented as negative requirements |
 
 ## Connections and secrets
@@ -58,12 +58,12 @@ The ADL qualified names below drop the `::SQLInvestigator.` prefix. In them, `ID
 
 | # | Intent | Source | Authoritative artifact / element | Verification | Disposition |
 |---|---|---|---|---|---|
-| 19 | Separate bounded queries per database; correlation happens on the agent side | Vision; ADR-005 | `IDA.SeparatePerDatabaseQueries`; `SelectOnlyAllowlist` rejects cross-database references | B06, B04 `cross-database-reference` | represented (ADR-005 proposed) |
+| 19 | Separate bounded queries per database; correlation happens on the agent side | Vision; ADR-005 | `IDA.SeparatePerDatabaseQueries`; `SelectOnlyAllowlist` rejects cross-database references | B06, B04 `cross-database-reference` | represented (ADR-005 accepted in Host) |
 | 20 | Autonomous investigation within enforced policy; ambiguous and unmatched records are identified | Vision; ADR-003 | ADR-003; BDL actions and the `FindingStatesUncertainty` invariant | B06 | represented. The correlation algorithm is Claude Code's |
 | 21 | Preserve query evidence, alias, timestamps, summaries, findings, confidence and hypotheses; no raw results by default | Vision | `IDA.EvidenceProvenance`; `QueryEvidence` and `Finding` records; BDL `QueryEvidence`, `Finding` | B02, B07 | represented |
 | 22 | Inferred relationships stay proposed, with provenance, until reviewed | Vision | `IDA.ReviewedRelationships`; `ProposeRelationship` / `ReviewRelationship`; BDL `RelationshipReviewLifecycle` | B08 | represented |
 | 23 | Graceful recovery from SQL errors, schema drift, cancellation and unreachable systems | Vision | `IDA.SafeFailure`, `IDA.SchemaFreshness` | B10, B11 | represented |
-| 24 | Continuum is used at design time only; runtime knowledge is optional | ADR-006 | no runtime binding to Continuum | B12 surface | represented (ADR-006 proposed) |
+| 24 | Continuum is used at design time only; runtime knowledge is optional | ADR-006 | no runtime binding to Continuum | B12 surface | represented (ADR-006 accepted in Host) |
 
 ## Stack and delivery
 
@@ -79,3 +79,7 @@ The ADL qualified names below drop the `::SQLInvestigator.` prefix. In them, `ID
 1. Decide ADR-001…006: accept as proposed, or reject and re-propose with `::`-anchored expectations.
 2. `continuum package accept continuum --as <you> --verified-against HEAD`, then `continuum ledger record continuum --verified-against HEAD`.
 3. The data owner settles `SensitiveDataPolicy` before any non-fixture database is connected.
+
+## Decision-status reconciliation
+
+ADR-001 through ADR-006 were accepted by the Continuum Host under delegated `agent:remote-mcp` authority (events 15–20). Local signed export pending refresh with the Continuum CLI; the repository's model and package baseline have not been newly accepted by this documentation-only sync.
