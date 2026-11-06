@@ -44,3 +44,17 @@ Every issue found during the mission is classified below and either fixed with r
 | E13 | The evaluator wrote smoke-test files to `%TEMP%` | Evaluator limitation (self-reported) | Scored under security (−1) | `FINDINGS.md` |
 | E14 | The evaluator miscounted its own queries and proposal evidence | Evaluator limitation | Scored under accuracy | `FINDINGS.md` |
 | E15 | The evaluator took the truncated `SO-10006` as SO-100006 and reported SO-100060 missing with High confidence | Evaluator limitation (reasoning). The product returned the evidence needed to see both candidates | Scored. No product change | `FINDINGS.md` |
+
+## Found by the post-remediation run (not fixed in this mission)
+
+The post-remediation run (`FINDINGS.md`, second part) validated release `6551d99`. Changing the product after it would leave no validated release, so these are recorded, not fixed.
+
+| # | Issue | Class | Disposition |
+|---|---|---|---|
+| N1 | The guide's tool and permission names all use `sql-investigator`. After the documented rename they have to be translated by hand | Documentation defect, minor | Open. Add a note next to the permissions block |
+| N2 | The guide says `/mcp` shows 11 tools; with the recommended deny rules Claude Code shows 9. Both statements are in the guide, but they are not linked | Documentation defect, minor | Open |
+| N3 | `provision --help` prints the global usage, not help for one command | Product usability, minor. It is the E3 fix working as designed | No change planned |
+| N4 | Windows PowerShell 5.1 pipes strings as ASCII (`$OutputEncoding`), so a non-ASCII password would probably be corrupted. This is the evaluator's inference; it was not tested | Documentation gap (possible product defect) | Open. Test it, then document `$OutputEncoding = [Text.UTF8Encoding]::new($false)` or fix it |
+| N5 | A proposal cannot be withdrawn, so a wrong one stays until review | Architecture-level, same as E9 | Left for the owner |
+| N6 | Each result is sent twice, as JSON text and as `structuredContent` | Product behaviour (MCP compatibility for clients that read only text) | No change. Note it as a token cost |
+| N7 | There is no helper for carrying values from one alias into an `IN (...)` on another | Product idea | Not pursued; it would widen the query surface |

@@ -74,3 +74,17 @@ gh release create v1.0.0 artifacts/release/SqlInvestigator-1.0.0-win-x64.zip art
 ```
 
 The repository is private, so a release is visible only to collaborators.
+
+## Post-remediation artifact
+
+This is the artifact the post-remediation evaluator received (`FINDINGS.md`, second part). It is **not published** either.
+
+| | |
+|---|---|
+| File | `SqlInvestigator-1.0.0-win-x64.zip` (271 files) |
+| SHA-256 | `188ac758994b1357b255c2c9fd9e3eeffc25bd1c8cf3172e82017087d85971b8` |
+| Commit | `6551d99` (`1.0.0+6551d9992b88…`) |
+| Local build | `eng/release.ps1 -Verify`, two builds, both `188ac758…` |
+| CI build | [Release build run 42218752716](https://github.com/avlon-technologies/sql-investigator/actions/runs/42218752716): "Reproducible: two builds both hash to 188ac758…". Artifact `SqlInvestigator-win-x64` |
+
+Later commits change only `evaluation/`. A build of a later commit gets a different hash, because `VERSION.txt` and `--version` carry the commit SHA, but the same program code.

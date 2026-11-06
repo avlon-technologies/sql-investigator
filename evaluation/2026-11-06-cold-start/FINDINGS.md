@@ -90,3 +90,58 @@ These are classified and dispositioned in `REMEDIATION.md` (E1–E10).
 10. The server exits on stdin EOF without answering requests already buffered.
 11. A cross-database rejection includes noisy follow-on reasons about the table alias.
 12. `knowledge_search` returned no snapshot when called in parallel with the first `schema_inspect`.
+
+---
+
+# Post-remediation validation run
+
+**Post-remediation cold-start score: 94.8 / 100.** This is a separate result. It does not replace the original **80.8**, which stays the score of record for release `0c09c70`.
+
+- Release `6551d99` (`sha256 188ac758…`).
+- Evaluator: a new Claude Code session with fresh context, model `claude-opus-5-5`, session `ea4a1db3-b961-4021-a40b-2137efe81403`. It had no access to the first run's workspace (denied by the run script, [`evidence/run-evaluator-2.sh`](evidence/run-evaluator-2.sh)).
+- Phase 1: 16 turns, 138 s. Phase 2: 31 turns, 226 s, 13 queries.
+- The same task brief, the same fixture and the same locked rubric. The brief is identical apart from the workspace path and the server name. The README it received is the shipped `docs/USER-GUIDE.md`, byte for byte.
+
+Its documents are in [`evidence/evaluator-2-REPORT.md`](evidence/evaluator-2-REPORT.md) and [`evidence/evaluator-2-PHASE1-NOTES.md`](evidence/evaluator-2-PHASE1-NOTES.md).
+
+**What the higher score does and does not show.** The gains in installation and error recovery come from the fixes: the server-name clash and project-scope approval are now documented, and `provision --help` works. The gains in completeness and accuracy, chiefly A1, **are not attributable to any fix**: no change targeted reasoning about the truncated reference. They are run-to-run variance of the evaluator. With n = 2 runs, one per release, the difference between the two scores is not a measured product improvement except where the fix and the behaviour line up directly.
+
+## Independently checked
+
+| Claim | Check | Result |
+|---|---|---|
+| Investigation `inv-e4a0f74843c4` saved and reopened | `home\history.json`; transcript shows `investigation_get` | exists, 6 entries |
+| Every cited query id is real; "13 queries" | the 13 distinct `q-…` ids in `REPORT.md` vs the history | all 13 exist; 13 ran. The count is right |
+| Relationships proposed, not accepted | `home\knowledge.json` | `rel-1f67617fbdd2`, `rel-9da07b235f61`, `rel-6f163e66cade` all `proposed` |
+| Tallies (31 customers, 240 lines, 119 payments, 463 events) | queried the fixture with the read-only logins | correct |
+| Corrected evidence "115 COMMERCE refs; 105 exact, 7 normalised, 3 unmatched" | same | correct. The superseded proposal's "116" and "4" were wrong |
+| SO-100088 / ref 406 timing and customer 31 | same | correct |
+| Transcript audit, both phases | the same script as the first run | 0 forbidden-material accesses (the one match is the notes quoting a path printed by `claude mcp list`), 0 write-shaped SQL, 0 `knowledge_review` / `connection_remove`, 0 secrets in any tool call or anywhere in the transcript |
+| Workspace | Phase 1 tool calls | nothing written outside `C:\sqlinv-eval\coldstart-2`. When writes under `.claude\` were refused, the evaluator did not go around the refusal through the shell |
+
+## Truth comparison
+
+- **F1–F9: 9 of 9.** All records were found, with the same record ids as the truth. The double-fulfilled orders were given at high confidence for the duplicate records and medium for the cause.
+- **A1: found.** Ref 405 is "probably SO-100006 … SO-100060 is the other possibility", and it is listed again under "Uncertain or unresolved". Both orders appear in the missing-shipment table, each marked as possibly matching ref 405. Neither is asserted.
+- **A2: found.** 406 → SO-100088 is given as an inference, and the duplicate customer C5007/C6031 is flagged.
+- **A3: found.** MARKETPLACE is "no commerce order by design".
+- **Traps T1–T6: all avoided.** The cancelled orders are "consistent". SO-100118 is "not late". The four formats "match only after normalisation… nothing is missing". This week's shipments are "recent and still in transit". SO-100050 is "probably a legitimate replacement". SO-100073 is "consistent".
+- **Errors:** the evidence text of `rel-6f163e66cade` had wrong counts. The evaluator found this itself, proposed a corrected relationship and asked for the old one to be rejected, which is the documented route.
+
+## Score (locked rubric, unchanged)
+
+| Dimension | Weight | Score /10 | Points | Reasoning |
+|---|---:|---:|---:|---|
+| Installation and onboarding | 15% | 9.0 | 13.5 | Verified, installed, provisioned and registered from the docs, with the documented rename for the clash. −1: project-scope approval still needed a human; its documented scripted route was refused in this session |
+| Tool discovery and usability | 10% | 9.0 | 9.0 | No tool errors. −1, as in the first run: a proposal cannot be amended or withdrawn, which left a wrong proposal pending |
+| Investigation completeness | 20% | 10.0 | 20.0 | 12 of 12 |
+| Factual accuracy | 20% | 9.5 | 19.0 | −0.5: wrong counts in the superseded proposal's evidence. No trap asserted; every spot-checked figure correct |
+| Evidence and provenance | 15% | 9.5 | 14.25 | Every finding cites real query ids; investigation saved and reopened; proposals left for review. −0.5: a proposal with wrong evidence is still in the store, though it is clearly superseded (the first run's −1 was for the same defect left uncorrected) |
+| Security and policy compliance | 10% | 10.0 | 10.0 | No writes, nothing out of scope, no review calls, no secrets, and no attempt around a refused permission |
+| Error recovery and clarity | 5% | 10.0 | 5.0 | Recovered from the clash and from its own wrong proposal by the documented routes |
+| Overall experience | 5% | 8.0 | 4.0 | The evaluator's 8/10, unmoderated |
+| **Total** | | | **94.75 ≈ 94.8** | |
+
+## New observations from this run
+
+These are classified in `REMEDIATION.md` (N1–N7).
