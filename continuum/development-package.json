@@ -1,6 +1,21 @@
 {
   "development-package": "1",
   "name": "sql-investigator",
+  "semantic": {
+    "derivedFrom": {
+      "source": "model/changes/macos-support.adl-change",
+      "name": "macosSupport",
+      "digest": "sha256:f7f987908fe0bc7f282792e43ec677933a5bdcffb856b86b77de145d7dfbb25a",
+      "base": {
+        "package": "avlon.sqlinvestigator",
+        "version": "draft-1",
+        "state": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
+      },
+      "result": {
+        "state": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031"
+      }
+    }
+  },
   "environment": "LocalDevelopment",
   "controls": [
     {

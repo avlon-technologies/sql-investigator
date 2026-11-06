@@ -11,8 +11,8 @@
     ]
   },
   "ok": true,
-  "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
-  "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+  "attestation": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005",
+  "changeState": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031",
   "ledger": {
     "passed": 78,
     "failed": 0,
@@ -32,11 +32,11 @@
     "documents": [
       {
         "path": "architecture.adl",
-        "digest": "sha256:a7845e458cff2c79a8e846521ef12db47dfdbd12c3016cbf2ddaa9dd144ebca1",
-        "bytes": 19926
+        "digest": "sha256:b4ba6611fa8889adece88f7a878913f71c05ff0e7147bb87dac104a0b5bcb051",
+        "bytes": 23669
       }
     ],
-    "inputSet": "sha256:c2c66f90aeca7824901d9d02b057ff59b28713ecfa520b3ead8e3d9bf66675a7",
+    "inputSet": "sha256:0a458b6ceb9273c4aacc2daeef5fb6a82878d08d14de8a4ef0ee2e998bd4d7cb",
     "note": "digests over the AUTHORED input bytes, distinct from the attestation (the engine's digest over canonical content)."
   },
   "verifier": {
@@ -45,7 +45,19 @@
   },
   "warnings": [],
   "errors": [],
-  "derivedFrom": null,
+  "derivedFrom": {
+    "source": "model/changes/macos-support.adl-change",
+    "name": "macosSupport",
+    "digest": "sha256:f7f987908fe0bc7f282792e43ec677933a5bdcffb856b86b77de145d7dfbb25a",
+    "base": {
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "state": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
+    },
+    "result": {
+      "state": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031"
+    }
+  },
   "binding": {
     "environments": [
       {
@@ -53,14 +65,14 @@
         "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
         "document": "model/local-development.adl-binding.json",
         "completeness": "passed",
-        "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7",
+        "bindingDigest": "sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d",
         "notEvaluated": []
       }
     ],
     "claims": [
       {
         "vocabulary": "avlon.bindings.localdotnet draft-1",
-        "digest": "sha256:4daa47e4cc0b42a7ad645e1b25498194e73364f12a1fc6d8ab0169c957e63f9f"
+        "digest": "sha256:e9adc82b9b9e8db109e290baf60d86acb601d83e363a775a7daf6bc6e9674749"
       }
     ],
     "secretMaterial": {

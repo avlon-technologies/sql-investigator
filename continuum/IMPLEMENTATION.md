@@ -18,9 +18,10 @@
 | | |
 |---|---|
 | package | `avlon.sqlinvestigator` version `draft-1` (core `adl/1.6`) |
-| attestation (canonical model) | `sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77` |
-| changeState (the digest a `.adl-change` base pin must name) | `sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a` |
+| attestation (canonical model) | `sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005` |
+| changeState (the digest a `.adl-change` base pin must name) | `sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031` |
 | environment | `::SQLInvestigator.LocalDevelopment` (`model/local-development.adl-binding.json`) |
+| derived from | state `sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a` + change `macosSupport` (`model/changes/macos-support.adl-change`, digest `sha256:f7f987908fe0bc7f282792e43ec677933a5bdcffb856b86b77de145d7dfbb25a`) — this package describes the RESULT state only |
 
 A copy of the tool's compile result is `model/compile-proof.json`. Do not edit the semantic files: a byte changed there changes the attestation, every binding goes stale, and the package must be rebuilt.
 
@@ -123,24 +124,24 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ApprovedEnvironmentsOnly` — Guardrail
 
-- statement = A connection may be provisioned or queried only for an environment and data classification the data owner has approved; production data is refused until that approval exists.
 - enforcement = input
+- statement = A connection may be provisioned or queried only for an environment and data classification the data owner has approved; production data is refused until that approval exists.
 - realizes: `::SQLInvestigator.Investigation.ProductionDataApproval`
 
 #### `::SQLInvestigator.Investigation.QueryExecution.QueryBudgets` — Guardrail
 
-- statement = Every query is held to the configured timeout, row, byte, concurrency and per-investigation query budgets, and is cancelled or truncated, with an explicit indicator, when it exceeds them.
 - enforcement = action
+- statement = Every query is held to the configured timeout, row, byte, concurrency and per-investigation query budgets, and is cancelled or truncated, with an explicit indicator, when it exceeds them.
 
 #### `::SQLInvestigator.Investigation.QueryExecution.SecretRedaction` — Guardrail
 
-- statement = No credential, connection secret or password ever appears in an MCP result, error, diagnostic, history entry or knowledge entry.
 - enforcement = output
+- statement = No credential, connection secret or password ever appears in an MCP result, error, diagnostic, history entry or knowledge entry.
 
 #### `::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist` — Guardrail
 
-- statement = A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references, objects or columns outside the alias's approved scope, and any unrecognised syntax are rejected before execution and audited.
 - enforcement = input
+- statement = A statement executes only if it parses as exactly one bounded SELECT accepted by a fail-closed allowlist; DDL, DML, SELECT INTO, multiple batches, dynamic execution, linked servers, OPENROWSET, cross-database references, objects or columns outside the alias's approved scope, and any unrecognised syntax are rejected before execution and audited.
 
 ### Commands (6)
 
@@ -148,37 +149,37 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 > MCP knowledge_propose. The relationship enters as proposed.
 
-- payload = RelationshipProposal
+- payload = ::SQLInvestigator.Investigation.QueryExecution.RelationshipProposal
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection` — Command
 
 > Local interactive console command run by the developer; the secret is entered at the console, never carried in an MCP payload.
 
-- payload = ConnectionProfile
+- payload = ::SQLInvestigator.Investigation.QueryExecution.ConnectionProfile
 
 #### `::SQLInvestigator.Investigation.QueryExecution.RecordFinding` — Command
 
 > MCP investigation_record.
 
-- payload = InvestigationEntry
+- payload = ::SQLInvestigator.Investigation.QueryExecution.InvestigationEntry
 
 #### `::SQLInvestigator.Investigation.QueryExecution.RemoveConnection` — Command
 
 > MCP connection_remove.
 
-- payload = AliasRef
+- payload = ::SQLInvestigator.Investigation.QueryExecution.AliasRef
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship` — Command
 
 > MCP knowledge_review. Accepts or rejects a proposed relationship and keeps the evidence either way.
 
-- payload = RelationshipReview
+- payload = ::SQLInvestigator.Investigation.QueryExecution.RelationshipReview
 
 #### `::SQLInvestigator.Investigation.QueryExecution.StartInvestigation` — Command
 
 > MCP investigation_start.
 
-- payload = InvestigationRequest
+- payload = ::SQLInvestigator.Investigation.QueryExecution.InvestigationRequest
 
 ### Querys (6)
 
@@ -186,43 +187,43 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 > MCP sql_execute. Validates, enforces budgets, executes one bounded SELECT against one alias and records the evidence.
 
-- payload = SqlRequest
-- result = QueryEvidence
+- payload = ::SQLInvestigator.Investigation.QueryExecution.SqlRequest
+- result = ::SQLInvestigator.Investigation.QueryExecution.QueryEvidence
 
 #### `::SQLInvestigator.Investigation.QueryExecution.GetInvestigation` — Query
 
 > MCP investigation_get.
 
-- payload = InvestigationRef
-- result = InvestigationRecord
+- payload = ::SQLInvestigator.Investigation.QueryExecution.InvestigationRef
+- result = ::SQLInvestigator.Investigation.QueryExecution.InvestigationRecord
 
 #### `::SQLInvestigator.Investigation.QueryExecution.InspectSchema` — Query
 
 > MCP schema_inspect. Returns the current snapshot, capturing or refreshing it from the catalog when absent, stale or drifted.
 
-- payload = SchemaRequest
-- result = SchemaSnapshot
+- payload = ::SQLInvestigator.Investigation.QueryExecution.SchemaRequest
+- result = ::SQLInvestigator.Investigation.QueryExecution.SchemaSnapshot
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ListConnections` — Query
 
 > MCP connection_list. Returns aliases and non-secret metadata only.
 
-- payload = AliasRef
-- result = ConnectionList
+- payload = ::SQLInvestigator.Investigation.QueryExecution.AliasRef
+- result = ::SQLInvestigator.Investigation.QueryExecution.ConnectionList
 
 #### `::SQLInvestigator.Investigation.QueryExecution.SearchKnowledge` — Query
 
 > MCP knowledge_search.
 
-- payload = KnowledgeQuery
-- result = KnowledgeResults
+- payload = ::SQLInvestigator.Investigation.QueryExecution.KnowledgeQuery
+- result = ::SQLInvestigator.Investigation.QueryExecution.KnowledgeResults
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ValidateSql` — Query
 
 > MCP sql_validate. Validates without executing.
 
-- payload = SqlRequest
-- result = ValidationVerdict
+- payload = ::SQLInvestigator.Investigation.QueryExecution.SqlRequest
+- result = ::SQLInvestigator.Investigation.QueryExecution.ValidationVerdict
 
 ### Resources (4)
 
@@ -232,7 +233,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` — Resource [secret-store]
 
-> Windows DPAPI CurrentUser protected SQL credentials, one per alias, in current-user-only files. The developer places the secret here at the local provisioning console; ADL declares no service write to a secret store, and services only read it.
+> SQL credentials, one per alias, encrypted for the current operating-system user and readable only by that user. The developer places the secret here at the local provisioning console; ADL declares no service write to a secret store, and services only read it.
 
 #### `::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory` — Resource [data-store]
 
@@ -248,7 +249,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 > Provisions connection aliases through the local interactive console, lists them without secrets, and removes them. The only writer of ConnectionCatalog.
 
-- `on ProvisionConnection -> none`; `on RemoveConnection -> none`
+- `on ::SQLInvestigator.Investigation.QueryExecution.RemoveConnection -> none`; `on ::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection -> none`
 - constrainedBy: `::SQLInvestigator.Investigation.QueryExecution.ApprovedEnvironmentsOnly`, `::SQLInvestigator.Investigation.QueryExecution.SecretRedaction`
 - deployedAs: `::SQLInvestigator.LocalMCPServer`
 - governedBy: `::SQLInvestigator.Investigation.ProductionDataApproval`
@@ -262,7 +263,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 > Maintains schema snapshots and proposed cross-database relationships. The only writer of KnowledgeStore.
 
-- `on ProposeRelationship -> none`; `on ReviewRelationship -> none`
+- `on ::SQLInvestigator.Investigation.QueryExecution.ReviewRelationship -> none`; `on ::SQLInvestigator.Investigation.QueryExecution.ProposeRelationship -> none`
 - constrainedBy: `::SQLInvestigator.Investigation.QueryExecution.ApprovedEnvironmentsOnly`, `::SQLInvestigator.Investigation.QueryExecution.SecretRedaction`
 - dependsOn: `::SQLInvestigator.SQLServer`
 - deployedAs: `::SQLInvestigator.LocalMCPServer`
@@ -278,7 +279,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 > Local .NET MCP stdio service validating SQL and enforcing budgets before execution. The only writer of InvestigationHistory.
 
-- `on StartInvestigation -> none`; `on RecordFinding -> none`
+- `on ::SQLInvestigator.Investigation.QueryExecution.RecordFinding -> none`; `on ::SQLInvestigator.Investigation.QueryExecution.StartInvestigation -> none`
 - constrainedBy: `::SQLInvestigator.Investigation.QueryExecution.ApprovedEnvironmentsOnly`, `::SQLInvestigator.Investigation.QueryExecution.QueryBudgets`, `::SQLInvestigator.Investigation.QueryExecution.SecretRedaction`, `::SQLInvestigator.Investigation.QueryExecution.SelectOnlyAllowlist`
 - dependsOn: `::SQLInvestigator.SQLServer`
 - deployedAs: `::SQLInvestigator.LocalMCPServer`
@@ -298,19 +299,19 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.SQLServer.Tsql.ExecuteSelect` — Operation
 
-- in = Investigation.QueryExecution.SqlRequest
-- out = Investigation.QueryExecution.QueryEvidence
+- in = ::SQLInvestigator.Investigation.QueryExecution.SqlRequest
+- out = ::SQLInvestigator.Investigation.QueryExecution.QueryEvidence
 
 #### `::SQLInvestigator.SQLServer.Tsql.ReadCatalog` — Operation
 
-- in = Investigation.QueryExecution.SchemaRequest
-- out = Investigation.QueryExecution.SchemaSnapshot
+- in = ::SQLInvestigator.Investigation.QueryExecution.SchemaRequest
+- out = ::SQLInvestigator.Investigation.QueryExecution.SchemaSnapshot
 
 ### Deployable (1)
 
 #### `::SQLInvestigator.LocalMCPServer` — Deployable
 
-> Windows .NET 10 executable. Started by Claude Code, it speaks MCP over stdio; run by the developer with the provisioning subcommand, it offers the local interactive console.
+> .NET 10 executable for the developer's workstation, on Windows or macOS. Started by Claude Code, it speaks MCP over stdio; run by the developer with the provisioning subcommand, it offers the local interactive console.
 
 - satisfies: `::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost`
 
@@ -318,7 +319,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.LocalDevelopment` — Environment
 
-> Local Windows developer workstation running Claude Code and the MCP stdio executable against disposable SQL Server databases.
+> Local developer workstation, Windows x64 or macOS, running Claude Code and the MCP stdio executable against disposable SQL Server databases.
 
 ### Tests (10)
 
@@ -336,7 +337,7 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 
 #### `::SQLInvestigator.ConnectionProvisioningSuite` — Test
 
-> A connection is provisioned only at the local console, its secret is DPAPI CurrentUser protected, and no MCP operation accepts or returns it.
+> A connection is provisioned only at the local console, its secret is protected for the current operating-system user, and no MCP operation accepts or returns it.
 
 - verifies: `::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning`, `::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry`, `::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection`
 
@@ -392,27 +393,27 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 #### `::SQLInvestigator.Investigation.QueryExecution.ConnectionInfo` — TypeDefinition v1
 
 - form = record
-- fields[alias=text; server=text; database=text; provisionedAt=text]
+- fields[alias=text; database=text; provisionedAt=text; server=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ConnectionList` — TypeDefinition v1
 
 - form = record
-- fields[connections=list(ConnectionInfo)]
+- fields[connections=list(::SQLInvestigator.Investigation.QueryExecution.ConnectionInfo)]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ConnectionProfile` — TypeDefinition v1
 
 - form = record
-- fields[alias=text; server=text; database=text; authentication=text]
+- fields[alias=text; authentication=text; database=text; server=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.InvestigationEntry` — TypeDefinition v1
 
 - form = record
-- fields[investigationId=text; hypothesis=text; queryIds=list(text); aliases=list(text); finding=text; uncertainty=text]
+- fields[aliases=list(text); finding=text; hypothesis=text; investigationId=text; queryIds=list(text); uncertainty=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.InvestigationRecord` — TypeDefinition v1
 
 - form = record
-- fields[investigationId=text; question=text; startedAt=text; entries=list(InvestigationEntry)]
+- fields[entries=list(::SQLInvestigator.Investigation.QueryExecution.InvestigationEntry); investigationId=text; question=text; startedAt=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.InvestigationRef` — TypeDefinition v1
 
@@ -427,37 +428,37 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 #### `::SQLInvestigator.Investigation.QueryExecution.KnowledgeQuery` — TypeDefinition v1
 
 - form = record
-- fields[text=text; alias=optional(text)]
+- fields[alias=optional(text); text=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.KnowledgeResults` — TypeDefinition v1
 
 - form = record
-- fields[snapshots=list(SchemaSnapshot); relationships=list(Relationship)]
+- fields[relationships=list(::SQLInvestigator.Investigation.QueryExecution.Relationship); snapshots=list(::SQLInvestigator.Investigation.QueryExecution.SchemaSnapshot)]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.QueryEvidence` — TypeDefinition v1
 
 - form = record
-- fields[queryId=text; alias=text; sql=text; startedAt=text; completedAt=text; rowCount=int32; truncated=boolean; columns=list(text); rows=list(list(text))]
+- fields[alias=text; columns=list(text); completedAt=text; queryId=text; rowCount=int32; rows=list(list(text)); sql=text; startedAt=text; truncated=boolean]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.Relationship` — TypeDefinition v1
 
 - form = record
-- fields[relationshipId=text; source=text; target=text; evidence=text; provenance=text; state=ReviewState]
+- fields[evidence=text; provenance=text; relationshipId=text; source=text; state=::SQLInvestigator.Investigation.QueryExecution.ReviewState; target=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.RelationshipProposal` — TypeDefinition v1
 
 - form = record
-- fields[source=text; target=text; evidence=text; provenance=text]
+- fields[evidence=text; provenance=text; source=text; target=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.RelationshipReview` — TypeDefinition v1
 
 - form = record
-- fields[relationshipId=text; verdict=ReviewVerdict; rationale=text]
+- fields[rationale=text; relationshipId=text; verdict=::SQLInvestigator.Investigation.QueryExecution.ReviewVerdict]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ReviewState` — TypeDefinition v1
 
 - form = enumeration
-- cases = proposed, accepted, rejected
+- cases = accepted, proposed, rejected
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ReviewVerdict` — TypeDefinition v1
 
@@ -467,17 +468,17 @@ Every element below is DECLARED by the model, cited by its root-anchored qualifi
 #### `::SQLInvestigator.Investigation.QueryExecution.SchemaRequest` — TypeDefinition v1
 
 - form = record
-- fields[alias=text; scope=optional(text); refresh=boolean]
+- fields[alias=text; refresh=boolean; scope=optional(text)]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.SchemaSnapshot` — TypeDefinition v1
 
 - form = record
-- fields[alias=text; source=text; capturedAt=text; objects=list(text)]
+- fields[alias=text; capturedAt=text; objects=list(text); source=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.SqlRequest` — TypeDefinition v1
 
 - form = record
-- fields[alias=text; sql=text; investigationId=optional(text)]
+- fields[alias=text; investigationId=optional(text); sql=text]
 
 #### `::SQLInvestigator.Investigation.QueryExecution.ValidationVerdict` — TypeDefinition v1
 
@@ -500,18 +501,18 @@ Derived from the model's declarations, in the order a reader needs. Each line na
 
 ## 4. Technology realization — environment `LocalDevelopment`
 
-Source: `model/local-development.adl-binding.json` (applies to attestation `sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77`; environment completeness passed; binding digest `sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7`).
+Source: `model/local-development.adl-binding.json` (applies to attestation `sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005`; environment completeness passed; binding digest `sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d`).
 
 | element | kind | technology | configuration |
 |---|---|---|---|
 | `::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog` | Resource | `avlon.bindings.localdotnet` / **atomic-json-files** | `{"serializer":"System.Text.Json","writes":"atomic-replace-single-writer","retention":"metadata-only-no-secrets"}` |
-| `::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry` | Service | `avlon.bindings.localdotnet` / **dotnet-console-provisioning** | `{"runtime":"net10.0","entry":"LocalMCPServer provision subcommand","secretEntry":"interactive-console-only","protection":"DPAPI-CurrentUser"}` |
-| `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` | Resource | `avlon.bindings.localdotnet` / **windows-dpapi-currentuser** | `{"protection":"DPAPI-CurrentUser","acl":"current-user-only"}` |
+| `::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry` | Service | `avlon.bindings.localdotnet` / **dotnet-console-provisioning** | `{"runtime":"net10.0","entry":"LocalMCPServer provision subcommand","secretEntry":"interactive-console-only","protection":"os-user-secret-store"}` |
+| `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` | Resource | `avlon.bindings.localdotnet` / **os-user-secret-store** | `{"windows":"DPAPI-CurrentUser","macos":"Keychain-login-generic-password","acl":"current-user-only"}` |
 | `::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory` | Resource | `avlon.bindings.localdotnet` / **atomic-json-files** | `{"serializer":"System.Text.Json","writes":"atomic-replace-single-writer","retention":"no-raw-results-default"}` |
 | `::SQLInvestigator.Investigation.QueryExecution.KnowledgeService` | Service | `avlon.bindings.localdotnet` / **dotnet-sqlclient-service** | `{"runtime":"net10.0","persistence":"System.Text.Json","driver":"Microsoft.Data.SqlClient"}` |
 | `::SQLInvestigator.Investigation.QueryExecution.KnowledgeStore` | Resource | `avlon.bindings.localdotnet` / **atomic-json-files** | `{"serializer":"System.Text.Json","writes":"atomic-replace-single-writer","retention":"metadata-only-no-row-values"}` |
 | `::SQLInvestigator.Investigation.QueryExecution.QueryGateway` | Service | `avlon.bindings.localdotnet` / **sqlclient-scriptdom** | `{"driver":"Microsoft.Data.SqlClient","validator":"Microsoft.SqlServer.TransactSql.ScriptDom","policy":"fail-closed-select-only"}` |
-| `::SQLInvestigator.LocalMCPServer` | Deployable | `avlon.bindings.localdotnet` / **dotnet-10-mcp-stdio** | `{"runtime":"net10.0","language":"csharp","transport":"mcp-stdio","os":"windows-x64"}` |
+| `::SQLInvestigator.LocalMCPServer` | Deployable | `avlon.bindings.localdotnet` / **dotnet-10-mcp-stdio** | `{"runtime":"net10.0","language":"csharp","transport":"mcp-stdio","os":"windows-x64 osx-arm64 osx-x64"}` |
 
 ### Runtime controls (binding/runtime concern — recommended defaults, not architecture)
 
@@ -570,7 +571,7 @@ If implementing requires a behaviour, message, store, consumer, ordering or rule
 3. Request an architecture change: a `.adl-change` whose `base` pins this package's state —
 
 ```
-base package avlon.sqlinvestigator version "draft-1" state "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
+base package avlon.sqlinvestigator version "draft-1" state "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031"
 ```
 
 4. When the change is accepted, the next package is built from the applied state (`node tools/development-package.mjs build … ` with `semantic.change`), and `node tools/development-package.mjs check <package> --change <file>` proves `package.changeState == change.base.state` before any work continues.

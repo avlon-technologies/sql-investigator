@@ -33,7 +33,7 @@ export function createAdapter({ createFakeProvider, env }) {
 | `connection.metadata-has-no-secret` | then | `alias` | 1 scenario |
 | `connection.provision` | given | `alias`, `credential` | 2 scenarios |
 | `connection.verify-local-only-provisioning` | then | — | 1 scenario |
-| `credential.dpapi-current-user` | then | `alias` | 1 scenario |
+| `credential.user-protected` | then | `alias` | 1 scenario |
 | `investigation.correlate-separate` | when | `aliases`, `key` | 1 scenario |
 | `investigation.history-complete` | then | — | 1 scenario |
 | `investigation.labels-unmatched-and-ambiguous` | then | — | 1 scenario |
@@ -80,7 +80,7 @@ export function createAdapter({ createFakeProvider, env }) {
 - `connection.metadata-has-no-secret` — "the listed metadata for "alpha" contains no secret"
 - `connection.provision` — "the developer provisions alias "alpha" at the local console, typing the secret there"
 - `connection.verify-local-only-provisioning` — "no MCP tool accepts or returns a credential, and provisioning is not an MCP tool"
-- `credential.dpapi-current-user` — "the credential for "alpha" is stored DPAPI CurrentUser protected in a current-user-only file"
+- `credential.user-protected` — "the credential for "alpha" is stored protected for the current operating-system user, readable only by that user"
 - `investigation.correlate-separate` — "Claude Code queries alpha and beta separately and correlates on OrderId"
 - `investigation.history-complete` — "the question, hypothesis, query id, exact SQL, alias, finding and uncertainty are all present, and no raw result rows"
 - `investigation.labels-unmatched-and-ambiguous` — "unmatched and ambiguous records are labelled as such"
@@ -124,7 +124,7 @@ export function createAdapter({ createFakeProvider, env }) {
 
 ### `b01-connection-provisioning`
 
-Registration separates alias metadata from DPAPI protected credentials
+Registration separates alias metadata from credentials protected for the current operating-system user
 
 - verifies: `::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning` (Requirement), `::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry` (Service), `::SQLInvestigator.Investigation.QueryExecution.CredentialVault` (Resource), `::SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog` (Resource)
 - realizes the declared Test `::SQLInvestigator.ConnectionProvisioningSuite`
@@ -138,7 +138,7 @@ Registration separates alias metadata from DPAPI protected credentials
 
 **then**
 - the listed metadata for "alpha" contains no secret `[connection.metadata-has-no-secret]`
-- the credential for "alpha" is stored DPAPI CurrentUser protected in a current-user-only file `[credential.dpapi-current-user]`
+- the credential for "alpha" is stored protected for the current operating-system user, readable only by that user `[credential.user-protected]`
 - no MCP output contains the secret "fixture-secret" `[output.excludes-secret]`
 
 **Derived trace from `::SQLInvestigator.Investigation.QueryExecution.ProvisionConnection`** (the compiler's process graph; weakest hop: correlated; declared causal closure: closed — never a runtime claim)

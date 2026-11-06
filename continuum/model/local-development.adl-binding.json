@@ -5,7 +5,7 @@
     "base": {
       "package": "avlon.sqlinvestigator",
       "version": "draft-1",
-      "canonicalModel": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77"
+      "canonicalModel": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005"
     },
     "vocabularies": [
       {
@@ -29,7 +29,7 @@
             "runtime": "net10.0",
             "language": "csharp",
             "transport": "mcp-stdio",
-            "os": "windows-x64"
+            "os": "windows-x64 osx-arm64 osx-x64"
           }
         },
         "relationships": {
@@ -105,9 +105,10 @@
         "name": "BindCredentialVault",
         "attributes": {
           "vocabulary": "avlon.bindings.localdotnet",
-          "technology": "windows-dpapi-currentuser",
+          "technology": "os-user-secret-store",
           "configuration": {
-            "protection": "DPAPI-CurrentUser",
+            "windows": "DPAPI-CurrentUser",
+            "macos": "Keychain-login-generic-password",
             "acl": "current-user-only"
           }
         },
@@ -169,7 +170,7 @@
             "runtime": "net10.0",
             "entry": "LocalMCPServer provision subcommand",
             "secretEntry": "interactive-console-only",
-            "protection": "DPAPI-CurrentUser"
+            "protection": "os-user-secret-store"
           }
         },
         "relationships": {

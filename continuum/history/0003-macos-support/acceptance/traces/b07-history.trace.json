@@ -1,0 +1,30 @@
+{
+  "development-package-trace": "1",
+  "normative": false,
+  "note": "derived from the compiler's process graph; declared causality only — never a runtime claim",
+  "scenario": "b07-history",
+  "from": "::SQLInvestigator.Investigation.QueryExecution.RecordFinding",
+  "ok": true,
+  "hops": [],
+  "sinks": [
+    {
+      "participant": "::SQLInvestigator.Investigation.QueryExecution.QueryGateway",
+      "consumed": "::SQLInvestigator.Investigation.QueryExecution.RecordFinding"
+    }
+  ],
+  "openConsumptions": [],
+  "productions": [],
+  "cycles": [],
+  "messagesReached": [
+    "::SQLInvestigator.Investigation.QueryExecution.RecordFinding"
+  ],
+  "participantsReached": [
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway"
+  ],
+  "weakestStrength": "correlated",
+  "declaredCausalClosure": {
+    "closed": true,
+    "meaning": "every consumption reached along declared hops carries a declaration (sinks included); NOT runtime completion, success, or that any Event occurs"
+  },
+  "expected": null
+}

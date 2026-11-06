@@ -1,6 +1,6 @@
 // acceptance/adapter.mjs — binds the 46 scenario steps to the REAL implementation.
 //
-// Every step drives the built SqlInvestigator.exe: as an MCP stdio child process (a JSON-RPC client below, the way
+// Every step drives the built SqlInvestigator executable (Windows x64, macOS arm64 or macOS x64): as an MCP stdio child process (a JSON-RPC client below, the way
 // Claude Code starts it) or as the local provisioning console (with the secret on stdin, never in argv). Fixtures are
 // disposable SQL Server databases with synthetic data, created and dropped through tests/SqlInvestigator.FixtureTool
 // on the local test server (SQLINVESTIGATOR_FIXTURE_SERVER, default 127.0.0.1,1433). Nothing here is an in-memory fake.
@@ -21,8 +21,13 @@ export const clock = {
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(here, '..', '..');
 const CONFIG = process.env.SQLINVESTIGATOR_ACCEPTANCE_CONFIGURATION || 'Release';
-const EXE = join(ROOT, 'src', 'SqlInvestigator.McpServer', 'bin', CONFIG, 'net10.0-windows', 'win-x64', 'SqlInvestigator.exe');
-const FIXTURE_TOOL = join(ROOT, 'tests', 'SqlInvestigator.FixtureTool', 'bin', CONFIG, 'net10.0-windows', 'win-x64', 'SqlInvestigator.FixtureTool.exe');
+// The runtime identifier of this machine. SQLINVESTIGATOR_EXE and SQLINVESTIGATOR_FIXTURE_TOOL point the suite at
+// published executables instead of the build output (with SQLINVESTIGATOR_SKIP_BUILD=1).
+const RID = process.platform === 'win32' ? 'win-x64' : process.platform === 'darwin' ? (process.arch === 'arm64' ? 'osx-arm64' : 'osx-x64') : null;
+if (!RID) throw new Error(`SQL Investigator supports Windows and macOS, not ${process.platform}`);
+const SUFFIX = process.platform === 'win32' ? '.exe' : '';
+const EXE = process.env.SQLINVESTIGATOR_EXE || join(ROOT, 'src', 'SqlInvestigator.McpServer', 'bin', CONFIG, 'net10.0', RID, `SqlInvestigator${SUFFIX}`);
+const FIXTURE_TOOL = process.env.SQLINVESTIGATOR_FIXTURE_TOOL || join(ROOT, 'tests', 'SqlInvestigator.FixtureTool', 'bin', CONFIG, 'net10.0', RID, `SqlInvestigator.FixtureTool${SUFFIX}`);
 const SECRET = 'fixture-secret';
 const SERVER = process.env.SQLINVESTIGATOR_FIXTURE_SERVER || '127.0.0.1,1433';
 
@@ -235,6 +240,13 @@ export function createAdapter() {
       for (const f of ctx.state.fixtures ?? []) {
         try { fixtureTool(['drop', '--server', f.server, '--database', f.database, '--login', f.login]); } catch (e) { ctx.log(`drop: ${e.message}`); }
       }
+      // On macOS the secrets live in the user's keychain, not under the data home: remove them through the console,
+      // the only code that deletes a secret (and the application the keychain items trust).
+      if (process.platform === 'darwin' && ctx.state.home) {
+        for (const alias of Object.keys(ctx.state.aliases ?? {})) {
+          try { runConsole(ctx, ['remove', '--alias', alias]); } catch (e) { ctx.log(`remove ${alias}: ${e.message}`); }
+        }
+      }
       if (ctx.state.home) rmSync(ctx.state.home, { recursive: true, force: true });
     },
 
@@ -266,13 +278,15 @@ export function createAdapter() {
         if (/password|pwd|secret|credential/i.test(text)) throw new Error('the listed metadata names a credential field');
       },
 
-      'credential.dpapi-current-user': async (ctx, { alias }) => {
-        const file = join(ctx.state.home, 'vault', `${alias}.dpapi`);
-        if (!existsSync(file)) throw new Error(`no vault file for ${alias}`);
-        const v = fixtureTool(['vault-check', '--file', file, '--alias', alias, '--expected', ctx.state.credential ?? SECRET]);
-        if (!v.dpapiCurrentUser) throw new Error('the vault file is not a DPAPI CurrentUser blob');
-        if (!v.decryptsForAlias) throw new Error('the vault blob does not decrypt (only) with its alias entropy for this user');
-        if (!v.fileCurrentUserOnly || !v.directoryCurrentUserOnly) throw new Error('the vault file or directory is not restricted to the current user');
+      // Windows: a DPAPI CurrentUser blob that decrypts only with its alias entropy, in a current-user-only file.
+      // macOS: a generic-password item in the user's default keychain whose data another application (this fixture
+      // tool) cannot read without the user's approval, and a current-user-only data directory.
+      'credential.user-protected': async (ctx, { alias }) => {
+        const v = fixtureTool(['vault-check', '--home', ctx.state.home, '--alias', alias, '--expected', ctx.state.credential ?? SECRET]);
+        if (!v.present) throw new Error(`no protected credential for ${alias} (${v.mechanism})`);
+        if (!v.protectedForUser) throw new Error(`the credential for ${alias} is not protected for the current user (${v.mechanism}): ${v.detail ?? ''}`);
+        if (!v.boundToAlias) throw new Error(`the credential for ${alias} is not bound to its alias (${v.mechanism}): ${v.detail ?? ''}`);
+        if (!v.storeCurrentUserOnly) throw new Error('the credential store or the data directory is not restricted to the current user');
         for (const f of ['catalog.json']) {
           if (!fixtureTool(['acl-check', '--path', join(ctx.state.home, f)]).currentUserOnly) throw new Error(`${f} is not current-user-only`);
         }
@@ -622,7 +636,7 @@ export function createAdapter() {
       'storage.excludes-plaintext-secret': async (ctx, { value }) => {
         const files = fixtureTool(['scan', '--root', ctx.state.home, '--value', value]).files;
         if (files.length) throw new Error(`plaintext secret in ${files.join(', ')}`);
-        if (!existsSync(join(ctx.state.home, 'vault', 'alpha.dpapi'))) throw new Error('the scan saw no vault file');
+        if (!fixtureTool(['vault-check', '--home', ctx.state.home, '--alias', 'alpha', '--expected', value]).present) throw new Error('no protected credential exists for the scan to have missed');
       },
 
       // ---- schema drift --------------------------------------------------------------------------------------

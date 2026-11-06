@@ -1,7 +1,7 @@
 {
   "continuum-ledger": "continuum-ledger/1",
   "package": "avlon.sqlinvestigator",
-  "current": 2,
+  "current": 3,
   "entries": [
     {
       "sequence": 1,
@@ -60,6 +60,41 @@
       "previous": 1,
       "verifiedAgainst": {
         "commit": "bdd65c293aa0f6b215af7fd7360c5ea2641223b3"
+      }
+    },
+    {
+      "sequence": 3,
+      "label": "macos-support",
+      "recorded": "history/0003-macos-support",
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "core": "adl/1.6",
+      "changeState": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031",
+      "attestation": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005",
+      "environment": "LocalDevelopment",
+      "bindingDigests": {
+        "LocalDevelopment": "sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d"
+      },
+      "acceptance": {
+        "count": 12,
+        "executed": false,
+        "accepted": {
+          "fact": "sha256:3641af3ce5101b6fb41b08d801b719b6ce82b8387d2b0fc2c6db7be266708f79",
+          "implementationRevision": "e7e272fd204981e3d94f53fe0880bee15de11a64"
+        }
+      },
+      "transition": {
+        "transitionId": "sha256:5b00b33401cea2fa973f70ea95c6a46aeea4888919b587b6c7260a5007525fbf",
+        "path": "transitions/0001-macos-support",
+        "delta": {
+          "semantic": "changed",
+          "bindings": "changed",
+          "acceptance": "changed"
+        }
+      },
+      "previous": 2,
+      "verifiedAgainst": {
+        "commit": "e7e272fd204981e3d94f53fe0880bee15de11a64"
       }
     }
   ]

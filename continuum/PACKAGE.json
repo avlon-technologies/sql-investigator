@@ -10,8 +10,8 @@
     "package": "avlon.sqlinvestigator",
     "version": "draft-1",
     "core": "adl/1.6",
-    "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
-    "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+    "attestation": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005",
+    "changeState": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031",
     "manifest": "model/architecture.adl-manifest.json",
     "documents": [
       "model/architecture.adl"
@@ -21,19 +21,31 @@
     "warnings": 0,
     "notEvaluated": 0
   },
-  "change": null,
+  "change": {
+    "source": "model/changes/macos-support.adl-change",
+    "name": "macosSupport",
+    "digest": "sha256:f7f987908fe0bc7f282792e43ec677933a5bdcffb856b86b77de145d7dfbb25a",
+    "base": {
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "state": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
+    },
+    "result": {
+      "state": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031"
+    }
+  },
   "environment": {
     "name": "LocalDevelopment",
     "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
     "document": "model/local-development.adl-binding.json",
-    "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
+    "bindingDigest": "sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d"
   },
   "environments": [
     {
       "name": "LocalDevelopment",
       "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
       "document": "model/local-development.adl-binding.json",
-      "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
+      "bindingDigest": "sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d"
     }
   ],
   "bindings": [
@@ -119,15 +131,15 @@
     "model/compile-proof.json"
   ],
   "files": {
-    "BEHAVIOUR.md": "sha256:65ce0a857465e39541a99363fef1c02bff624105f0211ab611ff0dcbad16e99c",
+    "BEHAVIOUR.md": "sha256:d029b9e6e044070d7074e3bcaf602d107461e07d5b1233441e2c0ff78d1ad24e",
     "GOAL.md": "sha256:242c389a8bd6ca13518b6f7655dcdd7b5b379b5674982e9cb03ddec01f31b90b",
-    "IMPLEMENTATION.md": "sha256:cc40325530c851dbfc2b80c224d3ade08840eabb7be9216f3f6ae1a99b997697",
-    "README.md": "sha256:92fb666e4c354e7492cff191dd171dfb21ad44c149f6d2d9a320562ee84586e1",
-    "acceptance/README.md": "sha256:219a628f6484e4b713f7a5da625b52389e38c28341b6456794ecce0310d2f441",
-    "acceptance/adapter.mjs": "sha256:3abcf2e0db2525e1a5eb8ed75d32283880dd459a2777a3c8733c0ea37f4e1d62",
+    "IMPLEMENTATION.md": "sha256:8249dd662504d8c450658106c486c08d566b44e379a2e913e9cfd52df6523df7",
+    "README.md": "sha256:cac8afadfadd23ec90e1f46211cb6fae07d370bdaa482e1399cb89276ff2d02b",
+    "acceptance/README.md": "sha256:89d4ce5411f13365055f5e5395f8a4da91bc0902f23ecbeca3f0929d4f13c921",
+    "acceptance/adapter.mjs": "sha256:65a3992bffdd8603a558778fe7a52e3d1cd1b157ebf2f4575fe96763d20d0c05",
     "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
     "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
-    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:955c72804d756dd3283c725a910e0216828b9762ec8fa4fd3211f66bf26d89d8",
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:059877a21c9f1dbd8dc1e059b3230ae0c4afea19c06e74d9348908b6a3f67dd6",
     "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:dd84c7da0a756adc3828fc7b1712b4288d91320507f1271d63f920d3f4d8d29d",
     "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:9206d39f7ebac837a6108d239114dadf2e6f27ca1a46c764cf700a3fc98d859e",
     "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:ac618940ef4a976fdccd24d524b0a4ebac18c917af90f055c35c29a7ae300b5c",
@@ -142,13 +154,14 @@
     "acceptance/traces/b01-connection-provisioning.trace.json": "sha256:ef9f20dd75d83fe2da4443df3d7a48e63fa03d523ff9b4fcc3a8b930ab7c94f7",
     "acceptance/traces/b07-history.trace.json": "sha256:392632411cb815508f83da1877f5c73a5a27c1f538a47abce4846853749ff5fa",
     "acceptance/traces/b08-relationship-review.trace.json": "sha256:f2d7d74654772194dd1611d30ce7983eba6fccb17a08fb8ee4ba1c90e6c44f21",
-    "development-package.json": "sha256:3f772625969fe3b37a816f87883cb89ae0021d33de7744d6e9a39f3693f54180",
-    "model/architecture.adl": "sha256:a7845e458cff2c79a8e846521ef12db47dfdbd12c3016cbf2ddaa9dd144ebca1",
+    "development-package.json": "sha256:1661765912df9140d2b617f9020f9370c1d7494005e9912d56f1cb82a7ded3f2",
+    "model/architecture.adl": "sha256:b4ba6611fa8889adece88f7a878913f71c05ff0e7147bb87dac104a0b5bcb051",
     "model/architecture.adl-manifest.json": "sha256:b50c9982c5a508a967ac05a6d4159d8ac37a8b6fc33e8a5e9de2a94b0514c450",
-    "model/architecture.adl.txt": "sha256:09e51d11fe68c196186a15fc34ddc2bae89efce3ab9cb583c2014b7621d3f3d1",
-    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:060216c3bd88966ea382d014a5fdfe5aa2329618b410229e2809ca9983554367",
-    "model/compile-proof.json": "sha256:6603a9f5957a39df6907cc548869a011f722b955ed7b7fc3742b8c6420c3a8e1",
-    "model/local-development.adl-binding.json": "sha256:b602265a873b3d839f8bf535f07c75b63e911132ae988216000cff20109d61c5",
+    "model/architecture.adl.txt": "sha256:b7307d322423460af0d49c35c3c13ca81fe30896f1c36a2ea534cc5a47793561",
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:b0c7e3c38951c3ec181cc083b0b176516265111320ca6a90f8531e6f8776383f",
+    "model/changes/macos-support.adl-change": "sha256:41092f7a60e4544fcabb134c8090f93b24e0fe0a332f7d1ebe62bdfc59a711c8",
+    "model/compile-proof.json": "sha256:5965b47c427b6d66af0b5e538c9d6be42731c660019d568c640edba0d215c3aa",
+    "model/local-development.adl-binding.json": "sha256:ca7a3dc8a15b81f334701034fda9534bb61e44235e3ec2c316e8aed3fdb2b12c",
     "model/sql-investigator.bdl": "sha256:ce3b667ffb3ad537e20369623ed8ada53ee01360fbc94478e62b9391c2a3ddc8"
   }
 }

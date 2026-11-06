@@ -1,7 +1,7 @@
 {
   "acceptance-scenario": "1",
   "name": "b01-connection-provisioning",
-  "purpose": "Registration separates alias metadata from DPAPI protected credentials",
+  "purpose": "Registration separates alias metadata from credentials protected for the current operating-system user",
   "verifies": [
     "::SQLInvestigator.Investigation.InvestigateData.LocalOnlyProvisioning",
     "::SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry",
@@ -36,11 +36,11 @@
       "text": "the listed metadata for \"alpha\" contains no secret"
     },
     {
-      "step": "credential.dpapi-current-user",
+      "step": "credential.user-protected",
       "args": {
         "alias": "alpha"
       },
-      "text": "the credential for \"alpha\" is stored DPAPI CurrentUser protected in a current-user-only file"
+      "text": "the credential for \"alpha\" is stored protected for the current operating-system user, readable only by that user"
     },
     {
       "step": "output.excludes-secret",

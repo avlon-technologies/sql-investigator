@@ -57,6 +57,14 @@
           "persistence": "atom",
           "driver": "atom"
         }
+      },
+      "os-user-secret-store": {
+        "claims": [],
+        "configuration": {
+          "windows": "atom",
+          "macos": "atom",
+          "acl": "atom"
+        }
       }
     }
   }

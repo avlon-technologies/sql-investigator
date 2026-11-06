@@ -1,0 +1,166 @@
+{
+  "development-package": "continuum-development-package/1",
+  "name": "sql-investigator",
+  "generator": {
+    "tool": "tools/development-package.mjs",
+    "version": "0.1.0"
+  },
+  "goal": "GOAL.md",
+  "semantic": {
+    "package": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "core": "adl/1.6",
+    "attestation": "sha256:28a88f436b9ce5349783975e4a495199b25cebcd317d764ba6ce299d808c4005",
+    "changeState": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031",
+    "manifest": "model/architecture.adl-manifest.json",
+    "documents": [
+      "model/architecture.adl"
+    ],
+    "textProjection": "model/architecture.adl.txt",
+    "proof": "model/compile-proof.json",
+    "warnings": 0,
+    "notEvaluated": 0
+  },
+  "change": {
+    "source": "model/changes/macos-support.adl-change",
+    "name": "macosSupport",
+    "digest": "sha256:f7f987908fe0bc7f282792e43ec677933a5bdcffb856b86b77de145d7dfbb25a",
+    "base": {
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "state": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a"
+    },
+    "result": {
+      "state": "sha256:ff4a0287e6407cf45d4b81383093fd7bbeb122aa1b7c0eff88acdea2320b0031"
+    }
+  },
+  "environment": {
+    "name": "LocalDevelopment",
+    "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+    "document": "model/local-development.adl-binding.json",
+    "bindingDigest": "sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d"
+  },
+  "environments": [
+    {
+      "name": "LocalDevelopment",
+      "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+      "document": "model/local-development.adl-binding.json",
+      "bindingDigest": "sha256:fc95681c989a60f13a2c0fe68bf2d2b93c970ec9fd8d97a41ab1943272cc8b8d"
+    }
+  ],
+  "bindings": [
+    "model/local-development.adl-binding.json"
+  ],
+  "vocabularies": [
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json"
+  ],
+  "acceptance": {
+    "scenarios": "acceptance/scenarios",
+    "runner": "acceptance/run.mjs",
+    "fakeProvider": "acceptance/fake-model-provider.mjs",
+    "adapter": "acceptance/adapter.mjs",
+    "count": 12,
+    "names": [
+      "b01-connection-provisioning",
+      "b02-bounded-select",
+      "b03-reject-writes",
+      "b04-fail-closed-policy",
+      "b05-resource-budgets",
+      "b06-cross-database-correlation",
+      "b07-history",
+      "b08-relationship-review",
+      "b09-secret-redaction",
+      "b10-schema-drift",
+      "b11-safe-failures",
+      "b12-claude-only"
+    ],
+    "traces": [
+      "acceptance/traces/b01-connection-provisioning.trace.json",
+      "acceptance/traces/b07-history.trace.json",
+      "acceptance/traces/b08-relationship-review.trace.json"
+    ],
+    "executed": false,
+    "results": null,
+    "uncoveredRequirements": []
+  },
+  "implementation": "IMPLEMENTATION.md",
+  "behaviour": {
+    "document": "BEHAVIOUR.md",
+    "starts": 3,
+    "underspecified": 0
+  },
+  "readme": "README.md",
+  "controls": [
+    {
+      "variable": "MAX_QUERY_ROWS",
+      "default": "500",
+      "meaning": "Recommended default, not architecture: maximum rows returned per query; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "MAX_RESULT_BYTES",
+      "default": "1048576",
+      "meaning": "Recommended default, not architecture: maximum serialized result size per query in bytes; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "SQL_TIMEOUT_SECONDS",
+      "default": "15",
+      "meaning": "Recommended default, not architecture: SQL command timeout; the gateway cancels the command and reports a sanitized timeout error."
+    },
+    {
+      "variable": "MAX_CONCURRENT_QUERIES",
+      "default": "2",
+      "meaning": "Recommended default, not architecture: queries executing at once across all aliases; further requests are refused with an audited budget event."
+    },
+    {
+      "variable": "MAX_QUERIES_PER_INVESTIGATION",
+      "default": "50",
+      "meaning": "Recommended default, not architecture: executed queries allowed per investigation; further requests are refused with an audited budget event."
+    }
+  ],
+  "generated": [
+    "BEHAVIOUR.md",
+    "IMPLEMENTATION.md",
+    "README.md",
+    "acceptance/README.md",
+    "acceptance/fake-model-provider.mjs",
+    "acceptance/run.mjs",
+    "acceptance/traces/b01-connection-provisioning.trace.json",
+    "acceptance/traces/b07-history.trace.json",
+    "acceptance/traces/b08-relationship-review.trace.json",
+    "model/architecture.adl.txt",
+    "model/compile-proof.json"
+  ],
+  "files": {
+    "BEHAVIOUR.md": "sha256:d029b9e6e044070d7074e3bcaf602d107461e07d5b1233441e2c0ff78d1ad24e",
+    "GOAL.md": "sha256:242c389a8bd6ca13518b6f7655dcdd7b5b379b5674982e9cb03ddec01f31b90b",
+    "IMPLEMENTATION.md": "sha256:8249dd662504d8c450658106c486c08d566b44e379a2e913e9cfd52df6523df7",
+    "README.md": "sha256:cac8afadfadd23ec90e1f46211cb6fae07d370bdaa482e1399cb89276ff2d02b",
+    "acceptance/README.md": "sha256:89d4ce5411f13365055f5e5395f8a4da91bc0902f23ecbeca3f0929d4f13c921",
+    "acceptance/adapter.mjs": "sha256:65a3992bffdd8603a558778fe7a52e3d1cd1b157ebf2f4575fe96763d20d0c05",
+    "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
+    "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:059877a21c9f1dbd8dc1e059b3230ae0c4afea19c06e74d9348908b6a3f67dd6",
+    "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:dd84c7da0a756adc3828fc7b1712b4288d91320507f1271d63f920d3f4d8d29d",
+    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:9206d39f7ebac837a6108d239114dadf2e6f27ca1a46c764cf700a3fc98d859e",
+    "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:ac618940ef4a976fdccd24d524b0a4ebac18c917af90f055c35c29a7ae300b5c",
+    "acceptance/scenarios/b05-resource-budgets.scenario.json": "sha256:82714c748ddc74b8de2bd41c7e25d6e579d866a9b963933b7f222f754a935965",
+    "acceptance/scenarios/b06-cross-database-correlation.scenario.json": "sha256:bd2154d110d28c42b712bc6456ef3558272b8888109dbf0293c13fceed2e2d34",
+    "acceptance/scenarios/b07-history.scenario.json": "sha256:95752b3d6434f2a3877c77c99db54a6dc14c5f5db2ba7e5c318b3cb9c86bd63c",
+    "acceptance/scenarios/b08-relationship-review.scenario.json": "sha256:fdc906111455064027bdfbc717034dede58fbb992d8765d4a5a12b0e48f3a316",
+    "acceptance/scenarios/b09-secret-redaction.scenario.json": "sha256:06a91929b4722ec3d7f371c9e1090d2f17693cdb05fdeed13e21873bafb7ff2c",
+    "acceptance/scenarios/b10-schema-drift.scenario.json": "sha256:598bb48a7e738e58435cc890245c669d888a4154241d9ff452a2239b6c53c215",
+    "acceptance/scenarios/b11-safe-failures.scenario.json": "sha256:8e38c665f881885b83793591903f096e339f4fa4e3c0e9bf2da02d11b979a077",
+    "acceptance/scenarios/b12-claude-only.scenario.json": "sha256:b029d5fa960b13b4b2acdc806aac616d88cd8a02f4cdf5cde259b15e8b99e52e",
+    "acceptance/traces/b01-connection-provisioning.trace.json": "sha256:ef9f20dd75d83fe2da4443df3d7a48e63fa03d523ff9b4fcc3a8b930ab7c94f7",
+    "acceptance/traces/b07-history.trace.json": "sha256:392632411cb815508f83da1877f5c73a5a27c1f538a47abce4846853749ff5fa",
+    "acceptance/traces/b08-relationship-review.trace.json": "sha256:f2d7d74654772194dd1611d30ce7983eba6fccb17a08fb8ee4ba1c90e6c44f21",
+    "development-package.json": "sha256:1661765912df9140d2b617f9020f9370c1d7494005e9912d56f1cb82a7ded3f2",
+    "model/architecture.adl": "sha256:b4ba6611fa8889adece88f7a878913f71c05ff0e7147bb87dac104a0b5bcb051",
+    "model/architecture.adl-manifest.json": "sha256:b50c9982c5a508a967ac05a6d4159d8ac37a8b6fc33e8a5e9de2a94b0514c450",
+    "model/architecture.adl.txt": "sha256:b7307d322423460af0d49c35c3c13ca81fe30896f1c36a2ea534cc5a47793561",
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:b0c7e3c38951c3ec181cc083b0b176516265111320ca6a90f8531e6f8776383f",
+    "model/changes/macos-support.adl-change": "sha256:41092f7a60e4544fcabb134c8090f93b24e0fe0a332f7d1ebe62bdfc59a711c8",
+    "model/compile-proof.json": "sha256:5965b47c427b6d66af0b5e538c9d6be42731c660019d568c640edba0d215c3aa",
+    "model/local-development.adl-binding.json": "sha256:ca7a3dc8a15b81f334701034fda9534bb61e44235e3ec2c316e8aed3fdb2b12c"
+  }
+}

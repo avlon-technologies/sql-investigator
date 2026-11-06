@@ -106,7 +106,7 @@ jobs:
           dotnet test tests/SqlInvestigator.IntegrationTests -c Release --no-build --logger trx --results-directory TestResults
           export SQLINVESTIGATOR_EXE="$PWD/publish/app/SqlInvestigator"
           export SQLINVESTIGATOR_FIXTURE_TOOL="$PWD/publish/fixture/SqlInvestigator.FixtureTool"
-          node continuum/transitions/0001-macos-support/result/acceptance/run.mjs
+          node continuum/acceptance/run.mjs
 
       - name: SQL Server connectivity not verified
         if: env.SQLINVESTIGATOR_FIXTURE_SERVER == ''
