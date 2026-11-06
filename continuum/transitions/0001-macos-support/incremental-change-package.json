@@ -33,12 +33,13 @@
   "expected": {
     "sequence": 3
   },
-  "transitionId": "sha256:3c3f1e8aca8760409f0e09403793672f8a1bb54a82c422e3955ffe57f18a703a",
+  "transitionId": "sha256:5b00b33401cea2fa973f70ea95c6a46aeea4888919b587b6c7260a5007525fbf",
   "files": {
     "REASON.md": "sha256:52f4c36bf5c351db715463f0364c7e3e105b4156ea2ad7fcf5903a031ad8d703",
     "changes/macos-support.adl-change": "sha256:41092f7a60e4544fcabb134c8090f93b24e0fe0a332f7d1ebe62bdfc59a711c8",
     "bindings/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:b0c7e3c38951c3ec181cc083b0b176516265111320ca6a90f8531e6f8776383f",
     "bindings/local-development.adl-binding.json": "sha256:ca7a3dc8a15b81f334701034fda9534bb61e44235e3ec2c316e8aed3fdb2b12c",
-    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:059877a21c9f1dbd8dc1e059b3230ae0c4afea19c06e74d9348908b6a3f67dd6"
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:059877a21c9f1dbd8dc1e059b3230ae0c4afea19c06e74d9348908b6a3f67dd6",
+    "acceptance/adapter.mjs": "sha256:65a3992bffdd8603a558778fe7a52e3d1cd1b157ebf2f4575fe96763d20d0c05"
   }
 }
