@@ -68,10 +68,12 @@ jobs:
             -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -o "$RUNNER_TEMP/publish/fixture" --nologo -v quiet
           VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
           cp docs/USER-GUIDE.md "$RUNNER_TEMP/publish/app/README.md"
+          cp docs/MACOS.md "$RUNNER_TEMP/publish/app/MACOS.md"
           printf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \
             "$VERSION" "$GITHUB_SHA" "$RID" > "$RUNNER_TEMP/publish/app/VERSION.txt"
           mkdir -p "$RUNNER_TEMP/download"
           tar -C "$RUNNER_TEMP/publish/app" -czf "$RUNNER_TEMP/download/SqlInvestigator-$VERSION-$RID.tar.gz" .
+          (cd "$RUNNER_TEMP/download" && shasum -a 256 "SqlInvestigator-$VERSION-$RID.tar.gz" > "SqlInvestigator-$VERSION-$RID.tar.gz.sha256")
           echo "SQLINV_TARBALL=$RUNNER_TEMP/download/SqlInvestigator-$VERSION-$RID.tar.gz" >> "$GITHUB_ENV"
 
       # One disposable database with synthetic orders and a SELECT-only login on dbo.Orders (harness).

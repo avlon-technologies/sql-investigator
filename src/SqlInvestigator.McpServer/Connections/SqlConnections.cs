@@ -166,6 +166,13 @@ internal static class SqlFailures
         {
             // a login rejection can arrive as a later error of the collection, behind a transport error
             var n = sql.Errors.Cast<SqlError>().Select(x => x.Number).FirstOrDefault(IsLoginOrDatabaseFailure, sql.Number);
+            if (!IsLoginOrDatabaseFailure(n) && IsEncryptionFailure(sql))
+            {
+                return new InvestigatorError("server.unreachable",
+                    $"The server of alias \"{alias}\" answered, but the encrypted (TLS) connection could not be set up (error {n}): {Redaction.Apply(FirstLine(sql.Message))}",
+                    "If the server uses a self-signed certificate (typical for local, container and test servers), provision the alias again at the local console with --trust-server-certificate (add --replace if it already exists). Otherwise install the server's CA certificate on this machine.");
+            }
+
             return n switch
             {
                 -2 => new InvestigatorError("budget.timeout", $"The query on alias \"{alias}\" exceeded the SQL timeout and was cancelled.",
@@ -205,6 +212,31 @@ internal static class SqlFailures
     /// The server answered and refused the login or database. Error 233 ("no process is on the other end of the pipe") is
     /// how a refused SQL login surfaces over shared memory and named pipes, so it counts as a refusal, not as unreachable.
     /// </summary>
+    /// <summary>
+    /// The TCP connection was made but TLS was not: an untrusted, expired or mismatched server certificate, or a failed
+    /// pre-login handshake. SqlClient reports these with an SSPI/certificate HRESULT on Windows and with the managed
+    /// stack's "pre-login handshake" text on macOS, so both the numbers and the text are recognised.
+    /// </summary>
+    public static bool IsEncryptionFailure(SqlException e)
+    {
+        if (e.Errors.Cast<SqlError>().Any(x => x.Number is -2146893019 or -2146762487 or -2146762481 or -2146762495 or -2146893022))
+        {
+            return true;
+        }
+
+        for (Exception? x = e; x is not null; x = x.InnerException)
+        {
+            if (x is System.Security.Authentication.AuthenticationException
+                || x.Message.Contains("pre-login handshake", StringComparison.OrdinalIgnoreCase)
+                || x.Message.Contains("certificate", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static bool IsLoginOrDatabaseFailure(int number) => number is 18456 or 18452 or 18486 or 18487 or 18488 or 233 or 4060 or 916;
 
     public static bool IsLoginOrDatabaseFailure(SqlException e) => e.Errors.Cast<SqlError>().Any(x => IsLoginOrDatabaseFailure(x.Number)) || IsLoginOrDatabaseFailure(e.Number);

@@ -16,13 +16,19 @@ SQL Investigator runs on macOS as well as Windows (ADR-007). It is the same prog
 
 ## 1. Install
 
-Each build is a `SqlInvestigator-<version>-osx-arm64.tar.gz` or `…-osx-x64.tar.gz`. It contains the `SqlInvestigator` executable, `README.md` (the user guide) and `VERSION.txt`. Builds come from the `macOS` workflow (`.github/workflows/macos.yml`), which you start by hand. Download the artifact with `gh run download`.
+Each build is a `SqlInvestigator-<version>-osx-arm64.tar.gz` or `…-osx-x64.tar.gz`, with a `.sha256` file beside it. It contains the `SqlInvestigator` executable, `README.md` (the user guide), `MACOS.md` (this page) and `VERSION.txt`. Builds come from the `macOS` workflow (`.github/workflows/macos.yml`), which you start by hand. Download the artifact with `gh run download`, then check it:
+
+```bash
+shasum -a 256 -c SqlInvestigator-1.0.0-osx-arm64.tar.gz.sha256   # prints "...: OK"
+```
 
 ```bash
 mkdir -p ~/Applications/SqlInvestigator
 tar -xzf SqlInvestigator-1.0.0-osx-arm64.tar.gz -C ~/Applications/SqlInvestigator
 ~/Applications/SqlInvestigator/SqlInvestigator --version   # prints e.g. 1.0.0+<commit>
 ```
+
+The folder is not on your `PATH`, so this page uses the full path. To type just `SqlInvestigator`, add `export PATH="$HOME/Applications/SqlInvestigator:$PATH"` to `~/.zshrc`. The Claude Code registration below uses the full path either way.
 
 If macOS says the app **"cannot be opened"** or that **Apple could not verify** it, the file carries the quarantine mark a browser adds on download. Files fetched with `curl` or `gh` do not get it. For a development build you trust, remove the mark:
 
@@ -47,7 +53,7 @@ Unlike on Windows, there is no `vault` folder. Passwords are kept in your **logi
 # Password for commerce_ro on sqldev01,1433/Commerce:   (typed, not shown)
 ```
 
-The options are the same as on Windows; see the user guide. Use a SQL login (`--user`). `--windows-auth` (integrated authentication) depends on a Kerberos setup on the Mac and has not been tested on macOS.
+The options are the same as on Windows; see the user guide. Use a SQL login (`--user`). Add `--trust-server-certificate` for a local, container or test SQL Server: they use a self-signed certificate, and without the flag `provision` fails with `server.unreachable` ("the encrypted (TLS) connection could not be set up"). `--windows-auth` (integrated authentication) depends on a Kerberos setup on the Mac and has not been tested on macOS.
 
 To pipe the password from a password manager instead of typing it, send it on standard input, for example `security find-generic-password -s my-sql -w | SqlInvestigator provision ...`. Never put it on the command line; `provision` refuses a password argument.
 
@@ -69,7 +75,7 @@ claude mcp add sql-investigator --scope user -- ~/Applications/SqlInvestigator/S
 - **Only the SqlInvestigator executable that stored an item can read it.** The item's access list trusts only that program. Any other application, including `security find-generic-password -w` and Keychain Access's *Show password*, needs your approval in a keychain dialog. This is stricter than DPAPI on Windows, where any program running as you can decrypt your blobs.
 - **The MCP server never asks.** Claude Code starts the server in the background, where nobody would see a dialog. The server forbids keychain prompts and gives each read 15 seconds. If the keychain would need your approval, is locked, or does not answer, the query fails with `credential.unavailable` and tells you what to do. It never falls back to a weaker store.
 - **Only the console writes.** `provision`, `provision --replace` and `remove` are the only commands that create, change or delete items. They run in your terminal, where a keychain dialog can be answered.
-- **Removing an alias.** `connection_remove`, called by Claude, removes an alias from the catalog but leaves its keychain item. `SqlInvestigator remove --alias <name>` at your terminal deletes both.
+- **Removing an alias.** `connection_remove`, called by Claude, removes an alias from the catalog but leaves its keychain item. `SqlInvestigator remove --alias <name>` at your terminal deletes both, and still deletes the keychain item after `connection_remove` has already removed the alias from the catalog.
 
 ### After you update or rebuild SqlInvestigator
 
@@ -110,6 +116,7 @@ None of this is required for development or for the automated tests. All of it i
 | `credential.unavailable` … "did not release the credential" | The keychain needs your approval for this build (typically after an update), or it is locked. See [After you update](#after-you-update-or-rebuild-sqlinvestigator). Over SSH the login keychain is usually locked: run `security unlock-keychain ~/Library/Keychains/login.keychain-db` first |
 | `credential.unavailable` … "No credential is stored" | The alias has no keychain item for this data folder. Was it provisioned with a different `SQLINVESTIGATOR_HOME`? Re-provision |
 | `credential.store-failed` at `provision` or `remove` | The keychain refused the write, often because it is locked. Unlock it and retry. If an old item is in the way, delete **SQL Investigator: \<alias\>** in Keychain Access |
+| `server.unreachable` … "the encrypted (TLS) connection could not be set up" | The server answered, but its certificate is not trusted by this Mac. For a local, container or test server, provision again with `--trust-server-certificate` (add `--replace` if the alias exists). For a server with a real certificate, add its CA in Keychain Access |
 | `store.inaccessible` | The data folder could not be created or set to `0700`, usually because it belongs to another user. Use a folder you own, or the default |
 | A keychain dialog appears while you run `provision --replace` | Expected after an update: the item belongs to the previous build. Choose Always Allow (or Allow) |
 | `platform.unsupported` | SQL Investigator runs only on Windows x64 and macOS 15 or later |

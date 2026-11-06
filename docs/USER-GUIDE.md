@@ -66,7 +66,7 @@ Connections and passwords never pass through Claude Code or chat. You add each o
 | `--user <login>` | A SQL login. You are prompted for its password. Alternatively `--windows-auth` uses your Windows account |
 | `--environment fixture\|development` | Required. `production` is refused |
 | `--scope <schema.object>` | Required, repeatable. **The only objects that can be queried.** `dbo.Orders` approves all its columns; `dbo.Orders(OrderId,Status)` approves only those |
-| `--trust-server-certificate` | Accept a self-signed TLS certificate. Typical for local and container SQL Servers; without it you get a certificate error |
+| `--trust-server-certificate` | Accept a self-signed TLS certificate. **Needed for local, container and most test SQL Servers**, which use one. Without it, `provision` fails with `server.unreachable` and a message that the encrypted (TLS) connection could not be set up. Leave it off for a server whose certificate this machine trusts |
 | `--no-encrypt` | Do not require TLS |
 | `--replace` | Re-provision an existing alias (new password, scope or server) |
 | `--no-verify` | Skip the connection and read-only check, for offline set-up. The check then runs when the alias is first used |
@@ -163,7 +163,7 @@ Claude Code uses these tools:
 | `investigation_start` / `investigation_record` / `investigation_get` | Save the question, hypotheses, findings and uncertainty, citing query ids. Reopen it later by id. Result rows are not stored |
 | `knowledge_search` / `knowledge_propose` | Look up schema snapshots and relationships; propose a relationship between databases with its evidence |
 | `knowledge_review` | Records **your** verdict (accepted or rejected) on a proposed relationship. Claude Code should only call it when you have decided |
-| `connection_remove` | Removes an alias from the catalog. It does **not** delete the stored password; run `SqlInvestigator.exe remove --alias <name>` at a console for that |
+| `connection_remove` | Removes an alias from the catalog. It does **not** delete the stored password; run `SqlInvestigator remove --alias <name>` (`SqlInvestigator.exe` on Windows) at a console for that. This still works after `connection_remove`: it deletes the password even when the alias is no longer in the catalog |
 
 Good to know:
 
@@ -203,21 +203,21 @@ Every error has a `code`, a `message` and an `action` that says what to do.
 
 | Code | Usual cause |
 |---|---|
-| `alias.unknown` | The alias is not provisioned (`SqlInvestigator.exe list`), or the console and Claude Code use different `SQLINVESTIGATOR_HOME` values |
+| `alias.unknown` | The alias is not provisioned (`SqlInvestigator list`), or the console and Claude Code use different `SQLINVESTIGATOR_HOME` values |
 | `login.failed` | Wrong user or password. Re-provision with `--replace` |
-| `server.unreachable` | Wrong server or port, firewall, or SQL Server not running. For a certificate error, add `--trust-server-certificate` |
+| `server.unreachable` | Wrong server or port, firewall, or SQL Server not running. If the message says the **encrypted (TLS) connection could not be set up**, the server answered but its certificate is not trusted: for a local, container or test server, provision again with `--trust-server-certificate` |
 | `principal.unsafe` | The login can do more than read. Ask for a SELECT-only login |
 | `scope.unapproved` | The query names a table or column outside `--scope`. Re-provision with `--replace` and a wider scope if that access is approved |
 | `sql.rejected` | Not one bounded SELECT; the reasons say what to change |
 | `permission.denied` | SQL Server refused the read: the login lacks SELECT on that object |
 | `database.unavailable` | The login is not mapped to a user in that database, or the database name is wrong |
 | `environment.unapproved` | Only `fixture` and `development` are accepted |
-| `credential.unavailable` | The stored password is missing, or was stored by another Windows user. Re-provision as yourself |
+| `credential.unavailable` | The stored password is missing or cannot be read: on Windows, it was stored by another Windows user; on macOS, the keychain item belongs to an earlier build or the keychain is locked ([macOS notes](MACOS.md#troubleshooting)). Re-provision as yourself |
 | `budget.*` | A limit was reached; see [Limits](#limits) |
 
 ## Uninstall
 
-1. Remove each alias and its stored password: `SqlInvestigator.exe list`, then `SqlInvestigator.exe remove --alias <name>` for each.
+1. Remove each alias and its stored password: `SqlInvestigator list`, then `SqlInvestigator remove --alias <name>` for each (`SqlInvestigator.exe` on Windows).
 2. `claude mcp remove sql-investigator --scope user`, or `--scope project` in that project.
 3. Delete the program folder, for example `%LOCALAPPDATA%\Programs\SqlInvestigator`.
 4. Delete the data folder, `%LOCALAPPDATA%\SqlInvestigator\data` (or your `SQLINVESTIGATOR_HOME`). This deletes your saved investigations and relationship knowledge too.

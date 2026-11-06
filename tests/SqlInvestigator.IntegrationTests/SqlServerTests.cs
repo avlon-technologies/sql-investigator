@@ -109,6 +109,25 @@ public sealed class SqlServerTests : IDisposable
         Assert.Contains(e.Error.Reasons!, r => r.Contains("dbo.Orders", StringComparison.Ordinal));
     }
 
+    /// <summary>
+    /// The fixture server's certificate is self-signed. Without --trust-server-certificate the TLS handshake fails, and
+    /// that must read as a connection problem with the flag as the remedy, never as "correct the query".
+    /// </summary>
+    [Fact]
+    public async Task An_untrusted_server_certificate_is_reported_with_the_trust_flag_as_the_remedy()
+    {
+        var f = Fixture();
+        var entry = Entry(f) with { TrustServerCertificate = false };
+        await using var connection = new SqlConnection(SqlConnectionFactory.Describe(entry, FixtureDatabase.Secret, 15).ConnectionString);
+        var e = await Assert.ThrowsAsync<SqlException>(() => connection.OpenAsync());
+
+        var error = SqlFailures.Translate(e, "alpha", false);
+        Assert.Equal("server.unreachable", error.Code);
+        Assert.Contains("TLS", error.Message, StringComparison.Ordinal);
+        Assert.Contains("--trust-server-certificate", error.Action, StringComparison.Ordinal);
+        Assert.DoesNotContain(FixtureDatabase.Secret, error.Message, StringComparison.Ordinal);
+    }
+
     [Fact]
     public async Task The_guard_refuses_a_db_owner()
     {

@@ -117,11 +117,12 @@ jobs:
           VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
           NAME="SqlInvestigator-$VERSION-$RID"
           cp docs/USER-GUIDE.md publish/app/README.md
+          cp docs/MACOS.md publish/app/MACOS.md
           printf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \
             "$VERSION" "$GITHUB_SHA" "$RID" > publish/app/VERSION.txt
           mkdir -p artifacts
           tar -C publish/app -czf "artifacts/$NAME.tar.gz" .
-          shasum -a 256 "artifacts/$NAME.tar.gz" | tee "artifacts/$NAME.tar.gz.sha256"
+          (cd artifacts && shasum -a 256 "$NAME.tar.gz" | tee "$NAME.tar.gz.sha256")
 
       - uses: actions/upload-artifact@v4
         if: always()
