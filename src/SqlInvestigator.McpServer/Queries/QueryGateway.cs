@@ -225,7 +225,7 @@ internal sealed class QueryGateway(
             }
 
             var record = new QueryRecord { QueryId = InvestigationHistory.NewId("q"), InvestigationId = investigationId, Alias = alias, Sql = sql, StartedAt = history.Now() };
-            document.Queries.Add(record);
+            document.Queries.Add(record with { Sql = Redaction.Apply(sql) }); // executed as submitted; stored redacted
             history.Audit(document, "sql.started", alias, record.QueryId, investigationId);
             return (record, (InvestigatorError?)null);
         });

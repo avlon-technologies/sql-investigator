@@ -52,7 +52,7 @@ internal sealed class SqlConnectionFactory(CredentialVault vault, Settings setti
             {
                 await connection.OpenAsync(cancel);
             }
-            catch (SqlException e) when (!SqlFailures.IsLoginOrDatabaseFailure(e.Number) && !cancel.IsCancellationRequested)
+            catch (SqlException e) when (!SqlFailures.IsLoginOrDatabaseFailure(e) && !cancel.IsCancellationRequested)
             {
                 // the connection never opened and the server did not reject the login: the server was not reached
                 throw new InvestigatorException(new InvestigatorError("server.unreachable",
@@ -164,17 +164,18 @@ internal static class SqlFailures
 
         if (e is SqlException sql)
         {
-            var n = sql.Number;
+            // a login rejection can arrive as a later error of the collection, behind a transport error
+            var n = sql.Errors.Cast<SqlError>().Select(x => x.Number).FirstOrDefault(IsLoginOrDatabaseFailure, sql.Number);
             return n switch
             {
                 -2 => new InvestigatorError("budget.timeout", $"The query on alias \"{alias}\" exceeded the SQL timeout and was cancelled.",
                     "Narrow the query (filter, TOP, fewer joins) and run it again."),
-                18456 or 18452 or 18486 or 18487 or 18488 => new InvestigatorError("login.failed",
+                18456 or 18452 or 18486 or 18487 or 18488 or 233 => new InvestigatorError("login.failed",
                     $"SQL Server rejected the stored credential of alias \"{alias}\" (error {n}).",
                     "The developer re-provisions the alias at the local console with the correct secret."),
                 4060 => new InvestigatorError("database.unavailable", $"The database of alias \"{alias}\" cannot be opened by its principal (error {n}).",
                     "Check that the database exists and the alias's login is mapped to a user in it."),
-                -1 or 2 or 26 or 40 or 53 or 64 or 121 or 233 or 258 or 1225 or 10054 or 10060 or 10061 or 10065 or 11001 or 11004 => new InvestigatorError("server.unreachable",
+                -1 or 2 or 26 or 40 or 53 or 64 or 121 or 258 or 1225 or 10054 or 10060 or 10061 or 10065 or 11001 or 11004 => new InvestigatorError("server.unreachable",
                     $"The server of alias \"{alias}\" could not be reached (error {n}).",
                     "Check that SQL Server is running and reachable from this machine, then retry."),
                 229 or 230 or 262 or 297 or 300 or 916 => new InvestigatorError("permission.denied",
@@ -200,7 +201,13 @@ internal static class SqlFailures
             "Retry; if it persists, inspect the server's stderr diagnostics.");
     }
 
-    public static bool IsLoginOrDatabaseFailure(int number) => number is 18456 or 18452 or 18486 or 18487 or 18488 or 4060 or 916;
+    /// <summary>
+    /// The server answered and refused the login or database. Error 233 ("no process is on the other end of the pipe") is
+    /// how a refused SQL login surfaces over shared memory and named pipes, so it counts as a refusal, not as unreachable.
+    /// </summary>
+    public static bool IsLoginOrDatabaseFailure(int number) => number is 18456 or 18452 or 18486 or 18487 or 18488 or 233 or 4060 or 916;
+
+    public static bool IsLoginOrDatabaseFailure(SqlException e) => e.Errors.Cast<SqlError>().Any(x => IsLoginOrDatabaseFailure(x.Number)) || IsLoginOrDatabaseFailure(e.Number);
 
     private static string FirstLine(string text)
     {

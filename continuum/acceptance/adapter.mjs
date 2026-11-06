@@ -697,8 +697,13 @@ export function createAdapter() {
             client.send({ jsonrpc: '2.0', method: 'notifications/cancelled', params: { requestId: id, reason: 'the developer cancelled it' } });
             const reply = await pending.catch(() => null); // a cancelled request need not be answered
             if (reply?.result && !reply.result.isError) throw new Error('a cancelled query returned a result');
-            await sleep(500);
-            const q = history(ctx).queries.find((x) => x.sql === SLOW_SQL);
+            // the server records the outcome once SQL Server acknowledges the cancel; a slow runner can take a while
+            let q;
+            for (let i = 0; i < 60; i++) {
+              q = history(ctx).queries.find((x) => x.sql === SLOW_SQL);
+              if (q && q.status !== 'running') break;
+              await sleep(500);
+            }
             if (!q || q.status !== 'failed' || q.errorCode !== 'cancelled') throw new Error(`the cancelled query is recorded as ${JSON.stringify(q)}`);
             if (reply?.result) failures.push([kind, { isError: true, data: reply.result.structuredContent, text: JSON.stringify(reply.result) }, ['cancelled']]);
           } else {

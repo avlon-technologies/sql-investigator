@@ -124,7 +124,7 @@
     "IMPLEMENTATION.md": "sha256:cc40325530c851dbfc2b80c224d3ade08840eabb7be9216f3f6ae1a99b997697",
     "README.md": "sha256:92fb666e4c354e7492cff191dd171dfb21ad44c149f6d2d9a320562ee84586e1",
     "acceptance/README.md": "sha256:219a628f6484e4b713f7a5da625b52389e38c28341b6456794ecce0310d2f441",
-    "acceptance/adapter.mjs": "sha256:7769197f198e148424f1ef231b186c0fc3aafaec1cf15c03fc72518e2f09786e",
+    "acceptance/adapter.mjs": "sha256:3abcf2e0db2525e1a5eb8ed75d32283880dd459a2777a3c8733c0ea37f4e1d62",
     "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
     "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
     "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:955c72804d756dd3283c725a910e0216828b9762ec8fa4fd3211f66bf26d89d8",
