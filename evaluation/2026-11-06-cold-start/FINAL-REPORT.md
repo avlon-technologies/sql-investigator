@@ -4,14 +4,13 @@ Date: 2026-11-06. Repository `avlon-technologies/sql-investigator`, branch `main
 
 ## Overall: PARTIAL
 
-The engineering, safety and evaluation work is complete and evidenced. It is PARTIAL for four reasons, each needing the owner or a human:
+The engineering, safety and evaluation work is complete and evidenced. It is PARTIAL for three reasons, each needing the owner or a human:
 
-- The remediated code has not been accepted as a new Continuum state.
 - The release is not published.
-- Project-scope MCP approval still needs a human in an interactive session.
+- Project-scope MCP approval needs a human to trust the folder in an interactive session.
 - No clean Windows user profile was available for the install test.
 
-Nothing here was accepted, published or approved on the owner's behalf.
+**Update 12:40Z:** the remediated code is now accepted as a new Continuum state, at the owner's direction (see Governance). Nothing was accepted, published or approved on the owner's own initiative.
 
 ## What each status means here
 
@@ -20,7 +19,7 @@ Nothing here was accepted, published or approved on the owner's behalf.
 | **Implemented** | The `connection_remove` clarification, fixes R1–R5, the release script and workflow, the user guide, and fixes E1–E8 | `REMEDIATION.md`; commits below |
 | **Tested** | 130 unit tests, 18 integration tests and 12/12 acceptance scenarios at `6551d99`. The safety challenge passed 79/79 MCP checks and 7/7 console checks on the installed release. Each fix has a regression test that fails before and passes after | `SECURITY-RESULTS.md`; [.NET run 42217030860](https://github.com/avlon-technologies/sql-investigator/actions/runs/42217030860) |
 | **Independently validated** | Two cold-start evaluations, each by a separate Claude Code session with fresh context and no access to the repo, the grading material or the implementation's data | `FINDINGS.md`; `EXECUTION-LOG.md` |
-| **Governance accepted** | Only **S0** (`sha256:fdbddf00…` at `5fdd905`, by mike@avlon.ca, recorded before this mission). The remediated code is **moved-conforming**, not accepted. ADRs 001–006 were already accepted; decision integrity is INTACT | `GOVERNANCE.md` |
+| **Governance accepted** | S0 (`5fdd905`, recorded before this mission), and now the remediated code: fact `sha256:cd242e6a…` at `bdd65c2`, by mike@avlon.ca at the owner's direction, suite 12/12, ledger checkpoint 0002 **verified**. ADRs 001–006 were already accepted; decision integrity is INTACT | `GOVERNANCE.md` |
 | **Released** | **Built, reproducible, not published.** The zip exists as a local build and a CI workflow artifact. There is no GitHub Release | `RELEASE.md` |
 
 ## Governance
@@ -28,6 +27,7 @@ Nothing here was accepted, published or approved on the owner's behalf.
 - **S0** already existed: acceptance at `5fdd905`, ledger checkpoint 0001 **verified**, and `continuum package check` **intact**. It was not re-recorded.
 - **Continuum CI now evaluates architecture.** The gate had never run, because GitHub billing refuses hosted runners. It runs on the self-hosted runner `sqlinv-local` with `guard ci --require-judgment`. The first evaluated PASS was [run 42210211471](https://github.com/avlon-technologies/sql-investigator/actions/runs/42210211471). It also passed at `6551d99`: [run 42217031144](https://github.com/avlon-technologies/sql-investigator/actions/runs/42217031144).
 - **Connection-removal gap resolved** with option 1 and no model change. MCP removal keeps the secret, as the accepted model requires. The tool now says so: `secretDeleted: false` and an `action` naming `SqlInvestigator.exe remove`. See `continuum/gaps/2026-11-06-remove-connection-secret.md`.
+- **Remediated revision accepted** at the owner's direction: fact `sha256:cd242e6a…` at `bdd65c2`, suite 12/12, checkpoint 0002 verified.
 - **No model, binding, scenario or ADR was changed**, and no derived file was hand-edited.
 
 ## Engineering
@@ -84,13 +84,9 @@ The rubric and the truth were locked by SHA-256 before the first launch and were
 
 ## Remaining blockers (owner actions only)
 
-1. **Accept the remediated revision.** This is optional. Without it, the guard stays moved-conforming, which is a PASS.
-   ```powershell
-   continuum package run continuum
-   continuum package accept continuum --as mike@avlon.ca --verified-against HEAD
-   ```
+1. ~~Accept the remediated revision.~~ **Done** at 12:40Z, at the owner's direction.
 2. **Publish the release**, if you want one. No publication route exists yet. The CI artifact expires after 30 days.
-3. **Approve the project-scope MCP server** in an interactive Claude Code session. An agent cannot do it for itself. Both evaluations used `--mcp-config` in its place.
+3. **Approve the project-scope MCP server** in an interactive Claude Code session. An agent cannot do it for itself; both evaluations used `--mcp-config` in its place. At the owner's direction, `enabledMcpjsonServers: ["sql-investigator-dev"]` is now set in `C:sqlinv-evalcoldstart-2.claudesettings.local.json`. Claude Code still shows "Pending approval" until the owner trusts the folder by starting `claude` there once.
 4. **Clean-profile install.** Optionally, install once on a fresh Windows user profile. This session was not elevated, so it could not create one.
 5. **GitHub billing.** Hosted runners stay unavailable, so both CI gates depend on the PC's self-hosted runner being online.
 6. **Optional model change:** a way to amend or withdraw a relationship proposal (E9 and N5) would need an `.adl-change` on `KnowledgeService`.

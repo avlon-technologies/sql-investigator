@@ -1,0 +1,184 @@
+{
+  "adl-json": "adl-json/1.0",
+  "document": {
+    "universe": "binding",
+    "base": {
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "canonicalModel": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77"
+    },
+    "vocabularies": [
+      {
+        "name": "avlon.bindings.localdotnet",
+        "version": "draft-1"
+      }
+    ],
+    "environment": {
+      "ref": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+      "hint": "SQLInvestigator.LocalDevelopment"
+    },
+    "bindings": [
+      {
+        "kind": "Binding",
+        "id": "5f4ffaae-e184-4a6f-b030-4030033a4f0a",
+        "name": "BindLocalMCPServer",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "dotnet-10-mcp-stdio",
+          "configuration": {
+            "runtime": "net10.0",
+            "language": "csharp",
+            "transport": "mcp-stdio",
+            "os": "windows-x64"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "6ae994a4-5c93-4913-a298-8e93a51a0d32",
+            "hint": "SQLInvestigator.LocalMCPServer"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "af3f1810-a6bb-4882-b6f7-dde8e0b6848f",
+        "name": "BindQueryGateway",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "sqlclient-scriptdom",
+          "configuration": {
+            "driver": "Microsoft.Data.SqlClient",
+            "validator": "Microsoft.SqlServer.TransactSql.ScriptDom",
+            "policy": "fail-closed-select-only"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "c1f771be-65f0-46b9-a3d1-514b26a8d027",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.QueryGateway"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "c2e85525-908f-453d-a5fa-a288e033e3b5",
+        "name": "BindKnowledgeService",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "dotnet-sqlclient-service",
+          "configuration": {
+            "runtime": "net10.0",
+            "persistence": "System.Text.Json",
+            "driver": "Microsoft.Data.SqlClient"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "1dca3692-e8e7-4b8c-864e-baf97ab2070b",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "0b8293bf-7c6d-45cc-ab4d-b2168e60cbd0",
+        "name": "BindInvestigationHistory",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "atomic-json-files",
+          "configuration": {
+            "serializer": "System.Text.Json",
+            "writes": "atomic-replace-single-writer",
+            "retention": "no-raw-results-default"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "069e8309-22db-4048-8c43-341fa9586f57",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.InvestigationHistory"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "3c3673ee-086f-4c42-9755-6586240892cc",
+        "name": "BindCredentialVault",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "windows-dpapi-currentuser",
+          "configuration": {
+            "protection": "DPAPI-CurrentUser",
+            "acl": "current-user-only"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "783fa850-ffb5-40e3-846c-4a215d12d393",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.CredentialVault"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "edf460d3-d403-4a43-bbc2-4607edf8da72",
+        "name": "BindKnowledgeStore",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "atomic-json-files",
+          "configuration": {
+            "serializer": "System.Text.Json",
+            "writes": "atomic-replace-single-writer",
+            "retention": "metadata-only-no-row-values"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "4ab9a12f-98de-44a1-b021-0d700f8361da",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.KnowledgeStore"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "1ff2e954-ef90-4772-be93-160c0600cab3",
+        "name": "BindConnectionCatalog",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "atomic-json-files",
+          "configuration": {
+            "serializer": "System.Text.Json",
+            "writes": "atomic-replace-single-writer",
+            "retention": "metadata-only-no-secrets"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "44f2931e-21fa-4347-b2fb-6c61a8d65de3",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.ConnectionCatalog"
+          }
+        }
+      },
+      {
+        "kind": "Binding",
+        "id": "8961a6e1-d589-46b8-90f9-82a75cd5458e",
+        "name": "BindConnectionRegistry",
+        "attributes": {
+          "vocabulary": "avlon.bindings.localdotnet",
+          "technology": "dotnet-console-provisioning",
+          "configuration": {
+            "runtime": "net10.0",
+            "entry": "LocalMCPServer provision subcommand",
+            "secretEntry": "interactive-console-only",
+            "protection": "DPAPI-CurrentUser"
+          }
+        },
+        "relationships": {
+          "binds": {
+            "ref": "d01ce53b-5579-430e-8618-f6e28d1b436e",
+            "hint": "SQLInvestigator.Investigation.QueryExecution.ConnectionRegistry"
+          }
+        }
+      }
+    ]
+  }
+}

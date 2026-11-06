@@ -1,0 +1,50 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b07-history",
+  "purpose": "Investigation history retains question, hypotheses, SQL, evidence and uncertainty",
+  "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.EvidenceProvenance",
+    "::SQLInvestigator.Investigation.QueryExecution.QueryGateway",
+    "::SQLInvestigator.Investigation.QueryExecution.InvestigationHistory"
+  ],
+  "test": "::SQLInvestigator.ProvenanceSuite",
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "investigation.start",
+      "args": {
+        "question": "Why is order 42 delayed?"
+      },
+      "text": "Claude Code starts an investigation: \"Why is order 42 delayed?\""
+    }
+  ],
+  "when": [
+    {
+      "step": "investigation.record",
+      "args": {
+        "hypothesis": "Shipment missing",
+        "sql": "SELECT OrderId FROM dbo.Orders",
+        "alias": "alpha",
+        "queryId": "fixture-q1",
+        "finding": "unconfirmed",
+        "uncertainty": "schema may be stale"
+      },
+      "text": "Claude Code records a hypothesis, the query evidence, a finding and its uncertainty"
+    },
+    {
+      "step": "investigation.reopen",
+      "args": {},
+      "text": "the investigation is reopened with investigation_get"
+    }
+  ],
+  "then": [
+    {
+      "step": "investigation.history-complete",
+      "args": {},
+      "text": "the question, hypothesis, query id, exact SQL, alias, finding and uncertainty are all present, and no raw result rows"
+    }
+  ],
+  "trace": {
+    "from": "::SQLInvestigator.Investigation.QueryExecution.RecordFinding"
+  }
+}

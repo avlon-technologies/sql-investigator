@@ -1,7 +1,7 @@
 {
   "continuum-ledger": "continuum-ledger/1",
   "package": "avlon.sqlinvestigator",
-  "current": 1,
+  "current": 2,
   "entries": [
     {
       "sequence": 1,
@@ -28,6 +28,38 @@
       "previous": null,
       "verifiedAgainst": {
         "commit": "5fdd905713f09a9f8356ea54e256049a63eb2688"
+      }
+    },
+    {
+      "sequence": 2,
+      "label": "checkpoint",
+      "recorded": "history/0002-checkpoint",
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "core": "adl/1.6",
+      "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+      "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+      "environment": "LocalDevelopment",
+      "bindingDigests": {
+        "LocalDevelopment": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
+      },
+      "acceptance": {
+        "count": 12,
+        "executed": false,
+        "accepted": {
+          "fact": "sha256:cd242e6a43bc522bf81e75d95116c80d6d0a9e7a75412003778b094e84550e52",
+          "implementationRevision": "bdd65c293aa0f6b215af7fd7360c5ea2641223b3"
+        }
+      },
+      "transition": {
+        "transitionId": null,
+        "path": null,
+        "delta": null,
+        "note": "no transition named — the same state as checkpoint 0001, recorded again to carry its acceptance evidence; not a lineage break"
+      },
+      "previous": 1,
+      "verifiedAgainst": {
+        "commit": "bdd65c293aa0f6b215af7fd7360c5ea2641223b3"
       }
     }
   ]

@@ -1,0 +1,32 @@
+{
+  "development-package": "1",
+  "name": "sql-investigator",
+  "environment": "LocalDevelopment",
+  "controls": [
+    {
+      "variable": "MAX_QUERY_ROWS",
+      "default": "500",
+      "meaning": "Recommended default, not architecture: maximum rows returned per query; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "MAX_RESULT_BYTES",
+      "default": "1048576",
+      "meaning": "Recommended default, not architecture: maximum serialized result size per query in bytes; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "SQL_TIMEOUT_SECONDS",
+      "default": "15",
+      "meaning": "Recommended default, not architecture: SQL command timeout; the gateway cancels the command and reports a sanitized timeout error."
+    },
+    {
+      "variable": "MAX_CONCURRENT_QUERIES",
+      "default": "2",
+      "meaning": "Recommended default, not architecture: queries executing at once across all aliases; further requests are refused with an audited budget event."
+    },
+    {
+      "variable": "MAX_QUERIES_PER_INVESTIGATION",
+      "default": "50",
+      "meaning": "Recommended default, not architecture: executed queries allowed per investigation; further requests are refused with an audited budget event."
+    }
+  ]
+}

@@ -11,19 +11,24 @@
 | Package | changeState `sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a`, attestation `sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77`; `continuum package check continuum` → **intact** |
 | Commit | `9394525 continuum: record the initial accepted state (S0) and ledger checkpoint 0001` |
 
-### Accepting the remediated revision is the owner's act
+### The remediated revision is accepted (owner-directed)
 
-The mission changed implementation code (see `REMEDIATION.md`) but not the model, bindings or acceptance scenarios. `continuum guard ci` reports the implementation as **moved-conforming** from the accepted `5fdd905`.
+The mission changed implementation code (see `REMEDIATION.md`) but not the model, bindings or acceptance scenarios. Until the acceptance below, `continuum guard ci` reported the implementation as **moved-conforming** from the accepted `5fdd905`.
 
-Recording a new accepted state for the remediated code is an acceptance. The `continuum` CLI on this machine is signed in as **Michael Kang**, so running `continuum package accept` from this session would record an acceptance in the owner's name, which is impersonation. It was **not done**. When the owner wants the remediated revision to be the accepted state:
+During the mission the agent did **not** accept on its own initiative. The `continuum` CLI is signed in as the owner, so doing so would have been impersonation. At 12:40Z the owner directed it in the session ("Let's accept remediated code as a new continuum state"), and the agent then ran:
 
 ```powershell
-continuum package run continuum                                   # 12/12 at HEAD on a clean tree
 continuum package accept continuum --as mike@avlon.ca --verified-against HEAD
-continuum ledger current continuum                                # expect a new checkpoint, verified
+continuum ledger record continuum --verified-against bdd65c293aa0
 ```
 
-This is optional. Without it, the accepted state stays S0 and the guard keeps reporting moved-conforming, which is a PASS.
+| Fact | Value |
+|---|---|
+| Acceptance | fact `sha256:cd242e6a43bc522bf81e75d95116c80d6d0a9e7a75412003778b094e84550e52` by **mike@avlon.ca**, 2026-11-06T12:40:42Z |
+| Implementation | `bdd65c2`. Its program code is identical to the evaluated release `6551d99`; only `evaluation/` differs |
+| Suite | 12/12, run by `accept` itself on a clean tree. The owner's unrelated uncommitted work was stashed for the run and restored afterwards |
+| State | changeState `sha256:def71c2d…`, the same semantic state as S0. No model change |
+| Ledger | checkpoint 0002, `continuum ledger current continuum` → **verified**, resting on this acceptance |
 
 ## B2. Continuum CI architecture gate
 

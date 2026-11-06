@@ -1,0 +1,54 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b10-schema-drift",
+  "purpose": "Schema cache records provenance and refreshes on drift",
+  "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.SchemaFreshness",
+    "::SQLInvestigator.Investigation.QueryExecution.KnowledgeService"
+  ],
+  "test": "::SQLInvestigator.SchemaDriftSuite",
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "schema.snapshot",
+      "args": {
+        "alias": "alpha"
+      },
+      "text": "a schema snapshot of \"alpha\" exists"
+    }
+  ],
+  "when": [
+    {
+      "step": "schema.fixture-change",
+      "args": {
+        "alias": "alpha",
+        "change": "rename-column"
+      },
+      "text": "the fixture schema of \"alpha\" changes (rename-column)"
+    },
+    {
+      "step": "schema.refresh-after-drift",
+      "args": {
+        "alias": "alpha"
+      },
+      "text": "Claude Code inspects \"alpha\" again and the snapshot refreshes"
+    }
+  ],
+  "then": [
+    {
+      "step": "schema.has-source-and-time",
+      "args": {},
+      "text": "the snapshot states its source and capture time"
+    },
+    {
+      "step": "schema.changed-column-visible",
+      "args": {},
+      "text": "the changed column is visible"
+    },
+    {
+      "step": "schema.no-fabricated-results",
+      "args": {},
+      "text": "no stale or invented object is reported"
+    }
+  ]
+}

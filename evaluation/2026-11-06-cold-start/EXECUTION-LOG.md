@@ -49,6 +49,8 @@ An audit script checked every tool-call input for:
 | 12:26–12:30 | **Eval 2** | Phase 2 (31 turns, 226 s; 13 queries) | `DONE`. `inv-e4a0f74843c4`, 3 proposals (one superseded by the evaluator) |
 | 12:31 | Impl | Audited both transcripts; checked the figures against the fixture with the read-only logins | Clean, and the figures are correct |
 | 12:33 | Impl | Scored with the locked rubric | **94.8 / 100** post-remediation. The original 80.8 is unchanged |
+| 12:40 | Owner → Impl | At the owner's direction: `continuum package accept … --verified-against HEAD`, then `ledger record` | Fact `cd242e6a…` at `bdd65c2`, 12/12, checkpoint 0002 verified |
+| 12:43 | Owner → Impl | At the owner's direction: `enabledMcpjsonServers` for `sql-investigator-dev` in the coldstart-2 workspace | Still "Pending approval" until the folder is trusted interactively |
 
 ## Post-remediation audit
 
