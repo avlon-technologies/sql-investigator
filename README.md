@@ -4,7 +4,7 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 
 ## Status
 
-**The development package is complete and verified. No application code exists yet. Two owner acts are still open (see the end of this file).**
+**The development package is complete and verified. No application code exists yet. The six ADRs are accepted in the Host; the initial accepted architecture baseline remains open (see the end of this file).**
 
 | Piece | State |
 |---|---|
@@ -14,7 +14,7 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 | Development package (`continuum/`) | `continuum package build` succeeds; `continuum package check continuum` reports it intact |
 | Acceptance scenarios (12) | All references resolve; adapter scaffolded; **0 / 12 passing**: every step is a stub until the implementation exists |
 | Diagrams | Atlas C1/C2/C3 and security views in `continuum/diagrams/atlas/`, checked against the model; Mermaid editorial supplements |
-| ADRs (`continuum/decisions/`) | ADR-001..006 **proposed** in a Host-governed decision space. **Not accepted**: acceptance is the owner's act |
+| ADRs (`continuum/decisions/`) | ADR-001..006 **accepted** by the Continuum Host (events 15–20) under delegated `agent:remote-mcp` authority; signed local export pending refresh |
 | Initial accepted state (S0) | Not recorded yet; the owner records it |
 
 The architecture guard (`pre-push`, CI) runs the full acceptance suite. It reports implementation drift until the scenarios pass, which is expected before any code exists.
@@ -45,7 +45,7 @@ continuum/                        the development package (the implementation co
   model/                          semantic ADL (authority), BDL business model, bindings, vocabulary claims
   acceptance/scenarios/           12 executable Given/When/Then scenarios (B01-B12)
   acceptance/adapter.mjs          step bindings: replace each stub with a call into the implementation
-  decisions/                      governed decision space: ADR-001..006 (proposed), signed record
+  decisions/                      governed decision space: ADR-001..006 (accepted in Host), signed export pending refresh
   diagrams/                       atlas/ generated views + hand-authored Mermaid supplements
   handoff-reconciliation.md       agreed intent -> artifact -> scenario, with dispositions
 .githooks/, .github/workflows/    Continuum architecture guard (pre-commit, pre-push, CI)
@@ -77,6 +77,6 @@ Do not edit derived files (`IMPLEMENTATION.md`, `BEHAVIOUR.md`, `PACKAGE.json`, 
 
 ## Owner actions still open
 
-1. **Decide the six ADRs.** Their alignment checks report "missing" because the expectations were written without the `::` root anchor (see `continuum/decisions/README.md`). Either accept them as proposed (`continuum decision accept ADR-001 --reason "<why>"`, and so on for each), or reject them so they can be re-proposed with anchored expectations.
+1. **Refresh the signed ADR export.** The Host has accepted ADR-001…006, but the repository's `continuum/decisions/decisions.jsonl` must be refreshed through the Continuum CLI; do not hand-edit signed events. The previous alignment checks reported missing unanchored names, so verify alignment against the canonical model.
 2. **Record the initial accepted state** once you have reviewed the model: `continuum package accept continuum --as <you> --verified-against HEAD`, then `continuum ledger record continuum --verified-against HEAD`.
 3. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
