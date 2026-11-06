@@ -1,8 +1,10 @@
 # macOS runtime evidence: ADR-007, transition 0001-macos-support
 
-**Result:** the published macOS executables ran on real GitHub-hosted Macs, on Apple silicon and Intel.
-- **Proven there:** the unit tests, the Keychain lifecycle, owner-only permissions, application-scoped Keychain access, and MCP stdio start-up.
-- **Not proven yet on macOS:** SQL Server connectivity and the 12 acceptance scenarios. GitHub's macOS runners cannot host the SQL Server container, and no reachable test server was configured.
+**Result:** the published macOS executables ran on real GitHub-hosted Macs, on Apple silicon and Intel, and passed everything on both architectures:
+- the unit tests;
+- the published-executable smoke test (Keychain lifecycle, owner-only permissions, application-scoped access, MCP stdio);
+- the 18 SQL Server integration tests;
+- **all 12 acceptance scenarios**, run against a disposable SQL Server in an Azure Container Instance (run 42232080041).
 
 ## Where it ran
 
@@ -14,9 +16,31 @@
 | Run | Commit | Result |
 |---|---|---|
 | [42228910509](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42228910509) | `2ed472a` (= `0ad21a3` + scratch) | Failed at unit tests on both: `The_default_data_home_on_macos_is_under_application_support` tried to delete a temp folder it never created (a test bug; 130 other tests passed). Fixed in `f8238ce`. Log: `run-42228910509-failed.log` |
-| [42229416496](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42229416496) | `5835cd8` (= `f8238ce` + scratch) | **Passed on both.** Log: `run-42229416496.log` |
+| [42229416496](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42229416496) | `5835cd8` (= `f8238ce` + scratch) | **Passed on both**, without SQL Server (none configured). Log: `run-42229416496.log` |
+| [42232080041](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42232080041) | `5835cd8` | **Passed on both, with SQL Server.** Integration tests 18/18 and acceptance 12/12 on each architecture. Log: `run-42232080041.log` |
 
-## Run 42229416496, per architecture
+## Run 42232080041 (with SQL Server)
+
+| | osx-arm64 | osx-x64 |
+|---|---|---|
+| Unit tests | 131 passed, 0 failed, 2 skipped | 131 passed, 0 failed, 2 skipped |
+| Smoke test of the published executable | all checks passed | all checks passed |
+| Integration tests (SQL Server) | 18 passed, 0 failed (57 s) | 18 passed, 0 failed (1 min 1 s) |
+| Acceptance scenarios, transition 0001 result, against the PUBLISHED executables | **12 passed, 0 failed**: b01–b12 | **12 passed, 0 failed**: b01–b12 |
+| Job time | 3 min 6 s | 5 min 59 s |
+
+**The test SQL Server:**
+- **What it was:** `mcr.microsoft.com/mssql/server:2022-latest` (Developer edition, the same image as the local fixture), in an Azure Container Instance.
+  - 2 vCPU, 4 GB, Canada Central.
+  - Its own resource group, `rg-sqlinv-macos-ci-cc`, in the owner's subscription.
+- **Data:** synthetic fixture data only.
+- **The admin password:**
+  - It was random and never placed on a command line.
+  - It was passed to Azure as a secure value and to the run as a repository secret.
+  - It does not appear in the saved log.
+- **Lifetime:** created at 14:00 UTC and checked from this PC first (a fixture was created and dropped). The resource group, the repository secret and variable, and the local password file were deleted right after the run.
+
+## Run 42229416496 (without SQL Server), per architecture
 
 | | osx-arm64 | osx-x64 |
 |---|---|---|
@@ -56,13 +80,16 @@ The CI keychain was a temporary keychain made the user's default: created, unloc
 
 ## What this does and does not establish
 
-- **Established on macOS 15 (arm64 and x64):**
+- **Established on macOS 15 (arm64 and x64), with the published single-file executables:**
   - The secret store's create, read, update and delete work, and the item is application-scoped.
   - Folders are 0700 and files 0600, and the default data path is correct.
-  - The published single-file executable starts, provisions, serves MCP over stdio and cleans up.
-  - No secret appears in output, diagnostics or files.
-- **Not established on macOS:**
-  - SQL Server connectivity from macOS (Microsoft.Data.SqlClient's managed network stack). Everything the scenarios exercise against a live server: B02–B12 and the read-only principal barrier.
+  - MCP stdio is protocol-only.
+  - SQL Server connectivity works through Microsoft.Data.SqlClient's managed stack, with TLS against the server's self-signed certificate.
+  - Every behaviour the 12 acceptance scenarios specify holds: B01 `credential.user-protected` through the keychain; the SELECT-only allowlist and the read-only principal (B03, B04); budgets, timeout and cancellation (B05); cross-database correlation (B06); history (B07); relationship review (B08); redaction (B09); schema drift (B10); safe failures (B11); the Claude-only surface (B12).
+- **Not established:**
   - Behaviour on macOS 26.
-  - An update of an ad-hoc-signed build re-prompting on a developer's Mac. The design expects it, and it fails closed headless, but it was not observed.
-- **Readiness:** macOS is **Runtime-verified for everything except SQL connectivity**, and not Distribution-ready: the builds are ad-hoc signed, not Developer ID signed or notarized. Windows evidence is unchanged: 130 unit, 18 integration and 12/12 scenarios on this PC.
+  - An interactive keychain prompt, or a locked login keychain, on a developer's Mac. Headless, the server is designed to fail closed, but neither case was observed.
+  - Re-prompting after an update of an ad-hoc-signed build.
+- **Readiness:**
+  - **macOS (arm64, x64): Runtime-verified.** Not Distribution-ready: the builds are ad-hoc signed, not Developer ID signed or notarized.
+  - **Windows:** unchanged. On this PC, 130 unit tests, 18 integration tests and the 12 scenarios of the transition's result pass.
