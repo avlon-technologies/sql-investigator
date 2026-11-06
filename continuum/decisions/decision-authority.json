@@ -44,6 +44,22 @@
         "*"
       ],
       "note": "agent:claude-code may propose, amend, check and record evidence through a delegation the owner mints (continuum decision delegate). It may never accept, reject, revoke or supersede."
+    },
+    {
+      "id": "chatgpt-delegate",
+      "principal": "owner",
+      "actingAs": "agent:remote-mcp",
+      "delegatedBy": "owner",
+      "actions": [
+        "propose",
+        "check",
+        "evidence",
+        "accept",
+        "reject"
+      ],
+      "subjects": [
+        "::SQLInvestigator"
+      ]
     }
   ],
   "rules": [
