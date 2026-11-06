@@ -1,8 +1,10 @@
 # Build, test and acceptance for the SQL Investigator executable.
 #
-# Runs on Windows (DPAPI CurrentUser and NTFS ACLs are part of what is tested) against a throwaway SQL Server
-# installed on the runner. The fixtures are disposable databases with synthetic data; nothing here can reach a
-# real database. The sa password below is for that ephemeral runner instance only and protects nothing.
+# Runs on the self-hosted Windows runner on the developer's PC (label sqlinv-local), because DPAPI CurrentUser
+# and NTFS ACLs are part of what is tested and GitHub-hosted minutes are limited. The tests use the PC's local
+# throwaway SQL Server container (sqlinvestigator-mssql at 127.0.0.1,1433); the fixtures read its admin password
+# from %LOCALAPPDATA%\SqlInvestigator\dev-fixture\sa-password.txt, which never leaves the machine. Fixtures are
+# disposable SqlInvFixture_* databases with synthetic data; nothing here can reach a real database.
 name: .NET
 
 on:
@@ -12,34 +14,32 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: sqlinv-local-runner
+  cancel-in-progress: false
+
 jobs:
   build-test:
     name: Build, test and acceptance
-    runs-on: windows-latest
+    runs-on: [self-hosted, Windows, X64, sqlinv-local]
     timeout-minutes: 45
     env:
       DOTNET_NOLOGO: "1"
       DOTNET_CLI_TELEMETRY_OPTOUT: "1"
-      SQLINVESTIGATOR_FIXTURE_SERVER: "localhost"
-      SQLINVESTIGATOR_FIXTURE_ADMIN_USER: "sa"
-      SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD: "Ci-Fixture-Only-1!"
+      SQLINVESTIGATOR_FIXTURE_SERVER: "127.0.0.1,1433"
+    defaults:
+      run:
+        shell: powershell
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: "10.0.x"
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-
-      - name: Install a disposable SQL Server
-        uses: potatoqualitee/mssqlsuite@v1.12
-        with:
-          install: sqlengine
-          version: "2022"
-          sa-password: "Ci-Fixture-Only-1!"
+      - name: Check the local toolchain and test SQL Server
+        run: |
+          dotnet --version
+          node --version
+          $running = docker inspect -f '{{.State.Running}}' sqlinvestigator-mssql 2>$null
+          if ($running -ne 'true') { Write-Error 'The sqlinvestigator-mssql container is not running. Start Docker Desktop and the container, then re-run.'; exit 1 }
+          if (-not (Test-Path "$env:LOCALAPPDATA\SqlInvestigator\dev-fixture\sa-password.txt")) { Write-Error 'The fixture admin password file is missing.'; exit 1 }
 
       - name: Build (warnings are errors)
         run: dotnet build SqlInvestigator.slnx -c Release

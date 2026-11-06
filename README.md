@@ -136,7 +136,7 @@ The integration and acceptance tests create and drop disposable databases (`SqlI
 docker run -d --name sqlinvestigator-mssql -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=<throwaway> -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-`tests/SqlInvestigator.FixtureTool` is the fixture CLI the acceptance adapter drives (`drop-all` removes leftovers). CI (`.github/workflows/dotnet.yml`) runs the build, the tests and the acceptance scenarios on Windows against a SQL Server installed on the runner.
+`tests/SqlInvestigator.FixtureTool` is the fixture CLI the acceptance adapter drives (`drop-all` removes leftovers). CI (`.github/workflows/dotnet.yml`) runs the build, the tests and the acceptance scenarios on a self-hosted Windows runner on the developer's PC (label `sqlinv-local`, in `C:ctions-runnersql-investigator`), against the local SQL Server container.
 
 Implementation decisions (MCP SDK, store formats, allowlist design and the rest) are in [`docs/IMPLEMENTATION-NOTES.md`](docs/IMPLEMENTATION-NOTES.md).
 
