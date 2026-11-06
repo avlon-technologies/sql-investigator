@@ -25,11 +25,10 @@
 | 21 | ADR-007 proposed, "Support macOS; protect credentials with the operating system's per-user secret store" | this agent, under the owner's delegation |
 | 22 | Checked: aligned, 7 of 7 | the Continuum Host |
 | 23 | **Accepted**, option `macos` | ChatGPT (`agent:remote-mcp`), a party distinct from the proposer |
+| 24 | **ADR-004 superseded by ADR-007**, with the reason stated | the owner (Michael Kang), grant `owner`, signed by the Host |
 
-- **Current state:** the decision space holds 7 decisions, all accepted, over 23 events.
-- **ADR-004 ("Local JSON and DPAPI, not SQLite") is still marked accepted.** ADR-007 supersedes only its *credential* clause; its JSON persistence and no-SQLite decisions stand. The Host's `decision supersede` acts on a whole decision, so running `continuum decision supersede ADR-004 --by ADR-007` would mark the JSON and no-SQLite parts superseded too.
-  - I did not run it. It is the owner's call (or ChatGPT's, whose acceptance right expires 2026-11-12).
-  - The alternatives are to leave ADR-004 accepted, with the partial supersession recorded in ADR-007's text (as now), or to supersede it with an ADR that restates the clauses that stand.
+- **Current state:** the decision space holds 7 decisions over 24 events: ADR-001 to ADR-003, ADR-005 to ADR-007 accepted, and ADR-004 superseded by ADR-007.
+- **ADR-004's other clauses still stand.** The supersession acts on the whole decision, but ADR-007's accepted text restates ADR-004's store decision unchanged (System.Text.Json files with atomic replacement, one writing service per store, no SQLite). The reason recorded at event 24 says the same.
 - **Not recorded:** ADR-007's implementation evidence is not on the Host yet. `decision evidence` needs a new delegation.
 
 ## 2. ADL, BDL and binding changes
@@ -170,5 +169,5 @@ Until then, every update of an ad-hoc-signed build is a new application to the k
 | Not verified | Claude Code's own registration on macOS (`claude mcp add`, `/mcp`) | The same manual check |
 | Not verified | macOS 26; Gatekeeper's "Open Anyway" on a browser-downloaded build; `--windows-auth` (Kerberos) on macOS | Not claimed in the docs |
 | CI home | macOS CI lives in a temporary personal repository because the org's trial has no Actions budget. `macos.yml` and `macos-coldstart.yml` are in the org repo, but cannot run there until it has a paid plan or budget | Activate the paid plan and set a budget, then run `macos.yml` in the org |
-| Governance | ADR-004 not superseded (item 1); ADR-007's implementation evidence not recorded on the Host | The owner's decision; a new delegation for `decision evidence` |
+| Governance | ADR-007's implementation evidence not recorded on the Host (ADR-004 was superseded at event 24) | A new delegation for `decision evidence` |
 | Housekeeping | The personal repository `mikekangdev/sql-investigator-macos` still exists (no secrets or variables left) | `gh auth refresh -s delete_repo`, then `gh repo delete mikekangdev/sql-investigator-macos --yes` |
