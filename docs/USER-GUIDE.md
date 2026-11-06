@@ -1,12 +1,12 @@
 # SQL Investigator — user guide
 
-SQL Investigator lets Claude Code investigate data in your SQL Server databases with bounded, read-only, audited queries. It is one local Windows program. Claude Code starts it as an MCP server, and you also run it at a console to set up connections.
+SQL Investigator lets Claude Code investigate data in your SQL Server databases with bounded, read-only, audited queries. It is one local program for Windows or macOS. Claude Code starts it as an MCP server, and you also run it at a console to set up connections.
 
-This guide is the `README.md` inside the release zip. It covers installing, connecting databases, using SQL Investigator from Claude Code, and uninstalling.
+This guide is the `README.md` inside the release zip. The examples use Windows paths and PowerShell; on a Mac, read [SQL Investigator on macOS](MACOS.md) alongside it (install, keychain, data folder, troubleshooting). It covers installing, connecting databases, using SQL Investigator from Claude Code, and uninstalling.
 
 ## Requirements
 
-- Windows 10 or 11, x64. The release is self-contained, so you do not need to install .NET.
+- Windows 10 or 11, x64, or macOS 15 or later on Apple silicon or Intel ([macOS notes](MACOS.md)). The release is self-contained, so you do not need to install .NET.
 - [Claude Code](https://docs.claude.com/en/docs/claude-code) (the `claude` command).
 - Network access to a SQL Server (tested with SQL Server 2022) and, for each database, a **read-only SQL login**. See [Ask for a read-only login](#ask-for-a-read-only-login).
 - Only **development or fixture** databases. SQL Investigator refuses to provision anything marked production. Production data needs your data owner's approval first.

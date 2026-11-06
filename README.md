@@ -1,6 +1,6 @@
 # SQL Investigator
 
-A single-user, local Windows developer tool: ask Claude Code questions about data in one or more SQL Server databases and get evidence-backed answers. A local .NET 10 MCP server (stdio) provides authorized schema discovery, bounded read-only query execution, investigation history and reviewed relationship knowledge. See [`VISION.md`](VISION.md).
+A single-user, local developer tool for Windows and macOS: ask Claude Code questions about data in one or more SQL Server databases and get evidence-backed answers. A local .NET 10 MCP server (stdio) provides authorized schema discovery, bounded read-only query execution, investigation history and reviewed relationship knowledge. See [`VISION.md`](VISION.md).
 
 ## Status
 
@@ -18,9 +18,9 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 
 ## Install
 
-**From a release zip (no .NET needed):** follow [`docs/USER-GUIDE.md`](docs/USER-GUIDE.md), which is also the README inside the zip. `eng/release.ps1 -Verify` builds the self-contained `SqlInvestigator-<version>-win-x64.zip` and its SHA-256 reproducibly, from a clean worktree of HEAD. The `Release build` workflow does the same on CI and keeps the zip as a workflow artifact. No GitHub Release has been published yet.
+**From a release zip (no .NET needed):** follow [`docs/USER-GUIDE.md`](docs/USER-GUIDE.md), which is also the README inside the zip. `eng/release.ps1 -Verify` builds the self-contained `SqlInvestigator-<version>-win-x64.zip` and its SHA-256 reproducibly, from a clean worktree of HEAD. The `Release build` workflow does the same on CI and keeps the zip as a workflow artifact. No GitHub Release has been published yet. **macOS:** the manual `macOS` workflow builds `SqlInvestigator-<version>-osx-arm64.tar.gz` and `-osx-x64.tar.gz`. These are single-file, self-contained, ad-hoc signed development builds, not notarized; see [`docs/MACOS.md`](docs/MACOS.md).
 
-**From source:** you need Windows x64, the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (pinned in `global.json`), and, for tests, a SQL Server 2022 you can throw away (Developer edition, or the container below). Node.js 24+ runs the acceptance scenarios.
+**From source:** you need Windows x64 or macOS 15+ (arm64 or x64), the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (pinned in `global.json`), and, for tests, a SQL Server 2022 you can throw away (Developer edition, or the container below). Node.js 24+ runs the acceptance scenarios.
 
 ```powershell
 dotnet publish src/SqlInvestigator.McpServer -c Release -o "$env:LOCALAPPDATA\SqlInvestigator\bin"
@@ -77,7 +77,10 @@ SqlInvestigator.exe provision --alias orders --server "sqldev01,1433" --database
 - **The login must be read-only.** Use a dedicated login with SELECT on the approved objects only. Before storing anything, the console connects and refuses a login that is sysadmin, db_owner, db_datawriter or db_ddladmin, or that can write, alter or execute (`principal.unsafe`). The same check runs again the first time each server process uses the alias.
 - **The scope is the allowlist.** `--scope schema.object` approves every column of that object, and `schema.object(col,…)` approves only the listed columns. Queries naming anything else are rejected before they reach SQL Server.
 - **Only `fixture` and `development` environments are accepted.** Production is refused until the data owner has approved the data classifications and environment (`ProductionDataApproval`).
-- **The password is stored with DPAPI CurrentUser** in `%LOCALAPPDATA%\SqlInvestigator\data\vault\<alias>.dpapi`. The blob is bound to its alias, and the folder and files are restricted to your Windows account. It is never accepted as a command-line argument.
+- **The password is stored in the operating system's per-user secret store** (ADR-007).
+  - **Windows:** DPAPI CurrentUser in `%LOCALAPPDATA%\SqlInvestigator\data\vault\<alias>.dpapi`. The blob is bound to its alias, and the folder and files are restricted to your Windows account.
+  - **macOS:** one login-keychain item per alias, readable only by the SqlInvestigator executable that stored it. The data folder is `0700` and its files `0600` ([`docs/MACOS.md`](docs/MACOS.md)).
+  - It is never accepted as a command-line argument.
 - Other options: `--windows-auth` (instead of `--user`), `--trust-server-certificate`, `--no-encrypt`, `--replace`, `--no-verify` (skip the read-only check, for offline set-up; the server still checks before first use).
 - `SqlInvestigator.exe list` lists aliases; `SqlInvestigator.exe remove --alias orders` removes one and deletes its secret.
 
@@ -147,7 +150,7 @@ Implementation decisions (MCP SDK, store formats, allowlist design and the rest)
 ```
 VISION.md, CLAUDE.md                product intent; instructions for coding agents
 src/SqlInvestigator.McpServer/      the executable
-  Connections/                      ConnectionRegistry, catalog, DPAPI vault, SQL connections + principal guard, console
+  Connections/                      ConnectionRegistry, catalog, vault (DPAPI / macOS keychain), SQL connections + principal guard, console
   Queries/                          QueryGateway, SqlValidator (allowlist), InvestigationHistory
   Knowledge/                        KnowledgeService, KnowledgeStore
   Mcp/                              the 11 MCP tools
