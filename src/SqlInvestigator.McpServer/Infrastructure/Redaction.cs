@@ -30,6 +30,9 @@ internal static partial class Redaction
         }
     }
 
+    /// <summary>True when the whole text is a registered secret (used for JSON numbers and booleans).</summary>
+    public static bool IsSecret(string text) => secrets.Contains(text, StringComparer.Ordinal);
+
     public static string Apply(string? text)
     {
         if (string.IsNullOrEmpty(text))

@@ -32,6 +32,29 @@ public sealed class RedactionTests
         Assert.DoesNotContain("tool-output-secret", text, StringComparison.Ordinal);
         Assert.DoesNotContain("tool-output-secret", result.StructuredContent.ToString(), StringComparison.Ordinal);
     }
+
+    // Cold-start safety run 2026-11-06: redacting the serialized JSON text swallowed the backslash of an escaped
+    // quote after "Password=", so the document no longer parsed and the actionable error became the SDK's generic one.
+    [Fact]
+    public void An_error_quoting_a_connection_string_stays_an_actionable_redacted_error()
+    {
+        var result = ToolResults.Error(new InvestigatorError("input.invalid", "Alias \"Server=x;Password=Fake-Secret-123\" is not valid.", "Use an alias."));
+        Assert.True(result.IsError);
+        var error = result.StructuredContent!.Value.GetProperty("error");
+        Assert.Equal("input.invalid", error.GetProperty("code").GetString());
+        Assert.Equal("Alias \"Server=x;Password=[redacted]\" is not valid.", error.GetProperty("message").GetString());
+    }
+
+    [Fact]
+    public void Row_values_with_quotes_and_backslashes_after_a_password_key_keep_the_result_valid()
+    {
+        Redaction.Register("424242");
+        var result = ToolResults.Ok(new { rows = new object[] { new { note = "pwd=a\\\"b and \"x\"", pin = 424242, ok = 7 } } });
+        var row = result.StructuredContent!.Value.GetProperty("rows")[0];
+        Assert.Equal("pwd=[redacted]\"b and \"x\"", row.GetProperty("note").GetString());
+        Assert.Equal("[redacted]", row.GetProperty("pin").GetString());
+        Assert.Equal(7, row.GetProperty("ok").GetInt32());
+    }
 }
 
 public sealed class SettingsTests
