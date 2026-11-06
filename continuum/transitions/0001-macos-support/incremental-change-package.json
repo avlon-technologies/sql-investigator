@@ -1,0 +1,44 @@
+{
+  "incremental-change-package": "continuum-incremental-change-package/2",
+  "package": "avlon.sqlinvestigator",
+  "reason": "REASON.md",
+  "base": {
+    "package": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+    "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+    "sequence": 2
+  },
+  "delta": {
+    "semantic": "changed",
+    "bindings": "changed",
+    "acceptance": "changed"
+  },
+  "semantic": {
+    "change": "changes/macos-support.adl-change"
+  },
+  "bindings": {
+    "documents": [
+      "local-development.adl-binding.json",
+      "avlon.bindings.localdotnet.vocabulary-claims.json"
+    ]
+  },
+  "acceptance": {
+    "added": [],
+    "changed": [
+      "b01-connection-provisioning"
+    ],
+    "removed": []
+  },
+  "expected": {
+    "sequence": 3
+  },
+  "transitionId": "sha256:3c3f1e8aca8760409f0e09403793672f8a1bb54a82c422e3955ffe57f18a703a",
+  "files": {
+    "REASON.md": "sha256:52f4c36bf5c351db715463f0364c7e3e105b4156ea2ad7fcf5903a031ad8d703",
+    "changes/macos-support.adl-change": "sha256:41092f7a60e4544fcabb134c8090f93b24e0fe0a332f7d1ebe62bdfc59a711c8",
+    "bindings/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:b0c7e3c38951c3ec181cc083b0b176516265111320ca6a90f8531e6f8776383f",
+    "bindings/local-development.adl-binding.json": "sha256:ca7a3dc8a15b81f334701034fda9534bb61e44235e3ec2c316e8aed3fdb2b12c",
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:059877a21c9f1dbd8dc1e059b3230ae0c4afea19c06e74d9348908b6a3f67dd6"
+  }
+}
