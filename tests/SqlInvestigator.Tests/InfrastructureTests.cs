@@ -377,7 +377,7 @@ public sealed class ToolSurfaceTests
         var home = Path.Combine(Path.GetTempPath(), "sqlinv-console-" + Guid.NewGuid().ToString("N"));
         var console = new ProvisioningConsole(new AppPaths(home), new Settings(), TimeProvider.System, new StringReader(string.Empty), output, new StringWriter());
         Assert.Equal(0, await console.RunAsync(["provision", "--help"]));
-        Assert.Contains("standard\n              input when input is redirected", output.ToString().Replace("\r\n", "\n"), StringComparison.Ordinal);
+        Assert.Contains("read as one line from standard input when input is redirected", System.Text.RegularExpressions.Regex.Replace(output.ToString(), @"\s+", " "), StringComparison.Ordinal);
         Assert.False(Directory.Exists(home));
     }
 
