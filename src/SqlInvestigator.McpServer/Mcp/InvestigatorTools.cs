@@ -32,11 +32,11 @@ internal sealed class InvestigatorTools(ConnectionRegistry registry, QueryGatewa
             alias,
             removed = registry.Remove(alias),
             secretDeleted = false,
-            action = $"The stored secret stays encrypted on disk. To delete it, the developer runs at a local console: SqlInvestigator.exe remove --alias {ConnectionCatalogReader.NormalizeAlias(alias)}",
+            action = $"The stored secret stays protected for the current user (DPAPI file or login keychain item). To delete it, the developer runs at a local console: SqlInvestigator remove --alias {ConnectionCatalogReader.NormalizeAlias(alias)}",
         });
 
     /// <summary>Only the local console creates or deletes a secret (gap 2026-11-06-remove-connection-secret, option 1).</summary>
-    internal const string SecretRetained = "This does NOT delete the alias's stored secret: its DPAPI-protected file stays encrypted for the current Windows user and unreachable by any tool. Only the developer deletes it, at a local console, with: SqlInvestigator.exe remove --alias <alias> (this also works after the alias was removed here).";
+    internal const string SecretRetained = "This does NOT delete the alias's stored secret: it stays protected for the current operating-system user (DPAPI on Windows, the login keychain on macOS) and unreachable by any tool. Only the developer deletes it, at a local console, with: SqlInvestigator remove --alias <alias> (this also works after the alias was removed here).";
 
     [McpServerTool(Name = "schema_inspect", ReadOnly = true, Destructive = false, Idempotent = true, OpenWorld = true, UseStructuredContent = true)]
     [Description("Return the schema snapshot of an alias's approved objects and columns, with its source and capture time. The snapshot is captured from the SQL Server catalog when absent, stale or drifted; drift is reported." + Untrusted)]

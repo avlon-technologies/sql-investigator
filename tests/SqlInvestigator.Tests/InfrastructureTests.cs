@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.Versioning;
 using ModelContextProtocol.Server;
 using SqlInvestigator.Connections;
 using SqlInvestigator.Infrastructure;
@@ -121,7 +122,18 @@ public sealed class StoreTests : IDisposable
 {
     private readonly string home = Path.Combine(Path.GetTempPath(), "sqlinv-unit-" + Guid.NewGuid().ToString("N"));
 
-    public void Dispose() => Directory.Delete(home, true);
+    public void Dispose()
+    {
+        if (OperatingSystem.IsMacOS())
+        {
+            foreach (var alias in new[] { "alpha", "beta", "gamma" })
+            {
+                KeychainProbe.Delete(home, alias);
+            }
+        }
+
+        Directory.Delete(home, true);
+    }
 
     private AppPaths Paths()
     {
@@ -196,7 +208,8 @@ public sealed class StoreTests : IDisposable
 
     // Cold-start release validation 2026-11-06: SQLINVESTIGATOR_HOME under a folder that grants only Modify (like a
     // folder made directly under C:\) crashed the server, because writing the owner needs WRITE_OWNER.
-    [Fact]
+    [WindowsFact]
+    [SupportedOSPlatform("windows")]
     public void A_private_directory_can_be_made_under_a_folder_that_grants_only_modify()
     {
         var parent = Path.Combine(home, "modify-only");
@@ -246,7 +259,8 @@ public sealed class StoreTests : IDisposable
         Assert.Empty(knowledge.Search("", null).Relationships);
     }
 
-    [Fact]
+    [WindowsFact]
+    [SupportedOSPlatform("windows")]
     public void The_vault_holds_a_dpapi_current_user_blob_bound_to_its_alias()
     {
         var paths = Paths();
@@ -280,14 +294,101 @@ public sealed class StoreTests : IDisposable
 
         Assert.True(registry.Remove("alpha"));
         Assert.Equal("alias.unknown", Assert.Throws<InvestigatorException>(() => new ConnectionCatalogReader(paths).Require("alpha")).Error.Code);
-        Assert.True(File.Exists(vault.FileFor("alpha")));
-        Assert.True(VaultInspector.IsCurrentUserOnly(vault.FileFor("alpha")));
+        Assert.True(VaultInspector.Check(home, "alpha", "remove-unit-secret").Present);
 
         var output = new StringWriter();
         var console = new ProvisioningConsole(paths, new Settings(), TimeProvider.System, new StringReader(string.Empty), output, new StringWriter());
         Assert.Equal(0, await console.RunAsync(["remove", "--alias", "alpha"]));
         Assert.Contains("and its stored secret", output.ToString(), StringComparison.Ordinal);
-        Assert.False(File.Exists(vault.FileFor("alpha")));
+        Assert.False(VaultInspector.Check(home, "alpha", "remove-unit-secret").Present);
+    }
+
+    // ADR-007: on macOS the secret is a generic-password item in the login keychain, named for this data home and
+    // this alias, and nothing about it lands under the data home. That only SqlInvestigator itself may read it is a
+    // cross-process property, checked by acceptance scenario B01 (the test host is the application that added it).
+    [MacFact]
+    [SupportedOSPlatform("macos")]
+    public void The_vault_keeps_a_keychain_item_per_alias_and_nothing_under_the_data_home()
+    {
+        var paths = Paths();
+        var vault = new CredentialVault(paths);
+        var provisioner = new VaultProvisioner(paths, vault);
+        provisioner.Store("alpha", "keychain-unit-secret");
+
+        Assert.Equal(KeychainProbe.Success, KeychainProbe.Lookup(home, "alpha"));
+        Assert.Equal(KeychainProbe.ItemNotFound, KeychainProbe.Lookup(home, "beta"));
+        Assert.Equal("keychain-unit-secret", vault.ReadSecret("alpha"));
+        Assert.False(Directory.Exists(paths.VaultDirectory));
+        Assert.Empty(VaultInspector.FilesContaining(home, "keychain-unit-secret"));
+
+        provisioner.Store("alpha", "keychain-unit-secret-2"); // --replace updates the item in place
+        Assert.Equal("keychain-unit-secret-2", vault.ReadSecret("alpha"));
+
+        // another data home never sees this home's item
+        var other = new CredentialVault(new AppPaths(home + "-other"));
+        Assert.Equal("credential.unavailable", Assert.Throws<InvestigatorException>(() => other.ReadSecret("alpha")).Error.Code);
+
+        Assert.True(provisioner.Delete("alpha"));
+        Assert.False(provisioner.Delete("alpha"));
+        Assert.Equal("credential.unavailable", Assert.Throws<InvestigatorException>(() => vault.ReadSecret("alpha")).Error.Code);
+    }
+
+    [MacFact]
+    [SupportedOSPlatform("macos")]
+    public void Data_folders_are_0700_and_store_files_0600_on_macos()
+    {
+        var paths = Paths();
+        new ConnectionRegistry(new ConnectionCatalogReader(paths), TimeProvider.System, new Settings()).RecordProvisioned(Entry(), false);
+        Assert.Equal(UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute, File.GetUnixFileMode(home));
+        Assert.Equal(UnixFileMode.UserRead | UnixFileMode.UserWrite, File.GetUnixFileMode(paths.CatalogFile));
+
+        // a folder someone else could read is tightened, not trusted
+        var loose = Path.Combine(home, "loose");
+        Directory.CreateDirectory(loose);
+        File.SetUnixFileMode(loose, (UnixFileMode)0b111_101_101);
+        SecureFiles.EnsurePrivateDirectory(loose);
+        Assert.True(VaultInspector.IsCurrentUserOnly(loose));
+    }
+
+    [MacFact]
+    [SupportedOSPlatform("macos")]
+    public void The_default_data_home_on_macos_is_under_application_support()
+    {
+        var previous = Environment.GetEnvironmentVariable("SQLINVESTIGATOR_HOME");
+        try
+        {
+            Environment.SetEnvironmentVariable("SQLINVESTIGATOR_HOME", null);
+            var expected = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Application Support", "SqlInvestigator", "data");
+            Assert.Equal(expected, AppPaths.FromEnvironment().Home);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SQLINVESTIGATOR_HOME", previous);
+        }
+    }
+}
+
+/// <summary>A fact that runs on Windows only (DPAPI and NTFS ACLs).</summary>
+public sealed class WindowsFactAttribute : FactAttribute
+{
+    public WindowsFactAttribute()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            Skip = "Windows only";
+        }
+    }
+}
+
+/// <summary>A fact that runs on macOS only (the login keychain and POSIX modes).</summary>
+public sealed class MacFactAttribute : FactAttribute
+{
+    public MacFactAttribute()
+    {
+        if (!OperatingSystem.IsMacOS())
+        {
+            Skip = "macOS only";
+        }
     }
 }
 
@@ -330,7 +431,7 @@ public sealed class ToolSurfaceTests
         var description = typeof(InvestigatorTools).GetMethod(nameof(InvestigatorTools.ConnectionRemove))!
             .GetCustomAttribute<System.ComponentModel.DescriptionAttribute>()!.Description;
         Assert.Contains("does NOT delete", description, StringComparison.Ordinal);
-        Assert.Contains("SqlInvestigator.exe remove --alias", description, StringComparison.Ordinal);
+        Assert.Contains("SqlInvestigator remove --alias", description, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -362,6 +463,11 @@ public sealed class ToolSurfaceTests
         }
         finally
         {
+            if (OperatingSystem.IsMacOS())
+            {
+                KeychainProbe.Delete(home, "bom");
+            }
+
             if (Directory.Exists(home))
             {
                 Directory.Delete(home, true);

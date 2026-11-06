@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- LocalMCPServer (continuum/model/architecture.adl): one Windows x64 .NET 10 executable.
+  <!-- LocalMCPServer (continuum/model/architecture.adl): one .NET 10 executable for Windows x64 or macOS (arm64, x64).
        Default mode: MCP over stdio for Claude Code. `provision` and the other console verbs: the local console. -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>

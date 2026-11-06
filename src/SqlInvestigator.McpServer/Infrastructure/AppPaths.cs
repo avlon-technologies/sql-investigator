@@ -22,7 +22,7 @@ internal sealed class AppPaths
     /// <summary>KnowledgeStore: schema snapshots and relationships. Written only by KnowledgeService.</summary>
     public string KnowledgeFile => Path.Combine(Home, "knowledge.json");
 
-    /// <summary>CredentialVault: one DPAPI CurrentUser blob per alias. Written only by the local provisioning console.</summary>
+    /// <summary>CredentialVault on Windows: one DPAPI CurrentUser blob per alias (on macOS the items live in the login keychain). Written only by the local provisioning console.</summary>
     public string VaultDirectory => Path.Combine(Home, "vault");
 
     public static AppPaths FromEnvironment()
@@ -33,7 +33,18 @@ internal sealed class AppPaths
             return new AppPaths(configured);
         }
 
-        var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        return new AppPaths(Path.Combine(local, "SqlInvestigator", "data"));
+        return new AppPaths(Path.Combine(DefaultParent(), "SqlInvestigator", "data"));
+    }
+
+    /// <summary>%LOCALAPPDATA% on Windows; ~/Library/Application Support on macOS, stated rather than left to the runtime's mapping.</summary>
+    private static string DefaultParent()
+    {
+        if (OperatingSystem.IsMacOS())
+        {
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return Path.Combine(home, "Library", "Application Support");
+        }
+
+        return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
     }
 }

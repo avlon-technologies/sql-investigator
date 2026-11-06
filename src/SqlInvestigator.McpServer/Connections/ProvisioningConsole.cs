@@ -24,7 +24,7 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
               The password is prompted for at the console (not echoed), or read as one line from standard
               input when input is redirected. It is never accepted as an argument.
               The login is checked to be read-only before it is stored (skip with --no-verify).
-          remove --alias <name>       remove the alias and delete its DPAPI-protected secret
+          remove --alias <name>       remove the alias and delete its protected secret (DPAPI file or keychain item)
           list                        list aliases (no secrets): alias, server/database, authentication,
                                       environment, scope, provisioned at; tab-separated
           erase-investigation --id <investigationId>   delete an investigation and its query provenance

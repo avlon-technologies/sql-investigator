@@ -14,6 +14,18 @@ internal static class Program
 {
     public static async Task<int> Main(string[] args)
     {
+        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS())
+        {
+            Console.Error.WriteLine(System.Text.Json.JsonSerializer.Serialize(new
+            {
+                level = "Critical",
+                code = "platform.unsupported",
+                message = "SQL Investigator runs on Windows x64 and macOS 15 or later: credentials need the operating system's per-user secret store.",
+                action = "Run it on Windows or macOS.",
+            }));
+            return 1;
+        }
+
         var settings = Settings.FromEnvironment();
         var paths = AppPaths.FromEnvironment();
 
@@ -35,6 +47,12 @@ internal static class Program
     private static async Task<int> RunMcpServerAsync(AppPaths paths, Settings settings)
     {
         Console.SetOut(Console.Error);
+        if (OperatingSystem.IsMacOS())
+        {
+            // Unattended under Claude Code: a keychain read that would need the user's approval fails at once
+            // (credential.unavailable) instead of waiting on a dialog nobody is looking at.
+            MacKeychain.SetInteractionAllowed(false);
+        }
 
         var builder = Host.CreateEmptyApplicationBuilder(new HostApplicationBuilderSettings { DisableDefaults = true });
         builder.Logging.ClearProviders();

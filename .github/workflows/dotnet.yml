@@ -49,15 +49,22 @@ jobs:
       - name: Unit and integration tests
         run: dotnet test SqlInvestigator.slnx -c Release --no-build --logger "trx" --results-directory TestResults
 
+      # While transition 0001-macos-support is approved but not adopted, the code is built for net10.0 and the suite
+      # that describes it is the transition's result (its adapter knows the new output folder). After adoption this
+      # step goes back to continuum/acceptance/run.mjs.
       - name: Acceptance scenarios against the real executable
         env:
           SQLINVESTIGATOR_SKIP_BUILD: "1"
           SQLINVESTIGATOR_ACCEPTANCE_CONFIGURATION: "Release"
-        run: node continuum/acceptance/run.mjs
+        run: |
+          $env:SQLINVESTIGATOR_EXE = Join-Path $PWD 'src/SqlInvestigator.McpServer/bin/Release/net10.0/win-x64/SqlInvestigator.exe'
+          $env:SQLINVESTIGATOR_FIXTURE_TOOL = Join-Path $PWD 'tests/SqlInvestigator.FixtureTool/bin/Release/net10.0/win-x64/SqlInvestigator.FixtureTool.exe'
+          node continuum/transitions/0001-macos-support/result/acceptance/run.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Remove leftover fixtures
         if: always()
-        run: tests/SqlInvestigator.FixtureTool/bin/Release/net10.0-windows/win-x64/SqlInvestigator.FixtureTool.exe drop-all
+        run: tests/SqlInvestigator.FixtureTool/bin/Release/net10.0/win-x64/SqlInvestigator.FixtureTool.exe drop-all
         continue-on-error: true
 
       - uses: actions/upload-artifact@v4

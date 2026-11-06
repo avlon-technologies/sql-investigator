@@ -70,7 +70,7 @@ internal sealed class ConnectionRegistry(ConnectionCatalogReader catalog, TimePr
     }
 
     /// <summary>
-    /// RemoveConnection: the alias leaves the catalog, so no tool can reach it again. Its DPAPI secret is not a
+    /// RemoveConnection: the alias leaves the catalog, so no tool can reach it again. Its protected secret is not a
     /// catalog entry and no service writes the vault; the console's <c>remove</c> verb deletes it.
     /// </summary>
     public bool Remove(string? alias)

@@ -24,7 +24,7 @@ try
         "row-count" => new { ok = true, rows = Attached().RowCount(Arg("table")) },
         "table-exists" => new { ok = true, exists = Attached().TableExists(Arg("table")) },
         "exec-as" => ExecAs(Attached(), Arg("sql")),
-        "vault-check" => VaultCheck(Arg("file"), Arg("alias"), Arg("expected")),
+        "vault-check" => VaultCheck(Arg("home"), Arg("alias"), Arg("expected")),
         "acl-check" => new { ok = true, currentUserOnly = VaultInspector.IsCurrentUserOnly(Arg("path")) },
         "scan" => new { ok = true, files = VaultInspector.FilesContaining(Arg("root"), Arg("value")) },
         _ => throw new ArgumentException("commands: create, drop, drop-all, rename-column, row-count, table-exists, exec-as, vault-check, acl-check, scan"),
@@ -52,15 +52,18 @@ static object ExecAs(FixtureDatabase f, string sql)
     return new { ok = true, succeeded = error is null, error, message };
 }
 
-static object VaultCheck(string file, string alias, string expected)
+// credential.user-protected: DPAPI CurrentUser on Windows, an application-scoped login-keychain item on macOS.
+static object VaultCheck(string home, string alias, string expected)
 {
-    var blob = File.ReadAllBytes(file);
+    var f = VaultInspector.Check(home, alias, expected);
     return new
     {
         ok = true,
-        dpapiCurrentUser = VaultInspector.IsDpapiCurrentUserBlob(blob),
-        decryptsForAlias = VaultInspector.DecryptsForAlias(blob, alias, expected),
-        fileCurrentUserOnly = VaultInspector.IsCurrentUserOnly(file),
-        directoryCurrentUserOnly = VaultInspector.IsCurrentUserOnly(Path.GetDirectoryName(file)!),
+        mechanism = f.Mechanism,
+        present = f.Present,
+        protectedForUser = f.ProtectedForUser,
+        boundToAlias = f.BoundToAlias,
+        storeCurrentUserOnly = f.StoreCurrentUserOnly,
+        detail = f.Detail,
     };
 }
