@@ -42,8 +42,17 @@ jobs:
     name: Architecture gate
     runs-on: [self-hosted, Windows, X64, sqlinv-local]
     timeout-minutes: 10
+    env:
+      # Self-hosted Windows runner: step scripts run as .ps1 files and the PC's policy is Restricted.
+      # Bypass applies to this job's processes only.
+      PSExecutionPolicyPreference: Bypass
     steps:
       - uses: actions/checkout@v5
+
+      # Otherwise `shell: bash` resolves to WSL's C:\Windows\System32\bash.exe, which has no distribution.
+      - name: Use Git Bash for the bash steps
+        shell: cmd
+        run: echo %ProgramFiles%\Git\bin>>"%GITHUB_PATH%"
 
       - uses: actions/setup-node@v5
         with:

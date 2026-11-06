@@ -27,6 +27,8 @@ jobs:
       DOTNET_NOLOGO: "1"
       DOTNET_CLI_TELEMETRY_OPTOUT: "1"
       SQLINVESTIGATOR_FIXTURE_SERVER: "127.0.0.1,1433"
+      # Step scripts run as .ps1 files and the PC's policy is Restricted. Bypass applies to this job's processes only.
+      PSExecutionPolicyPreference: Bypass
     defaults:
       run:
         shell: powershell
