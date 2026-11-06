@@ -4,7 +4,9 @@
 - the unit tests;
 - the published-executable smoke test (Keychain lifecycle, owner-only permissions, application-scoped access, MCP stdio);
 - the 18 SQL Server integration tests;
-- **all 12 acceptance scenarios**, run against a disposable SQL Server in an Azure Container Instance (run 42232080041).
+- **all 12 acceptance scenarios**, run against a disposable SQL Server in an Azure Container Instance (run 42232080041, repeated after the TLS-error fix in run 42239946607).
+
+The independent cold-start evaluation of the published tarball also passed on both architectures; see [coldstart/README.md](coldstart/README.md).
 
 ## Where it ran
 
@@ -18,6 +20,7 @@
 | [42228910509](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42228910509) | `2ed472a` (= `0ad21a3` + scratch) | Failed at unit tests on both: `The_default_data_home_on_macos_is_under_application_support` tried to delete a temp folder it never created (a test bug; 130 other tests passed). Fixed in `f8238ce`. Log: `run-42228910509-failed.log` |
 | [42229416496](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42229416496) | `5835cd8` (= `f8238ce` + scratch) | **Passed on both**, without SQL Server (none configured). Log: `run-42229416496.log` |
 | [42232080041](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42232080041) | `5835cd8` | **Passed on both, with SQL Server.** Integration tests 18/18 and acceptance 12/12 on each architecture. Log: `run-42232080041.log` |
+| [42239946607](https://github.com/mikekangdev/sql-investigator-macos/actions/runs/42239946607) | `1a23c95` (= `94f8806` + scratch) | **Passed on both, with SQL Server**, after the TLS-error fix. Unit tests 131/131 (2 skipped), integration tests **19/19** (including the new untrusted-certificate test), acceptance 12/12 on each. Job time 3 min 17 s (arm64), 5 min 52 s (x64). Log: `run-42239946607.log` |
 
 ## Run 42232080041 (with SQL Server)
 
@@ -92,4 +95,4 @@ The CI keychain was a temporary keychain made the user's default: created, unloc
   - Re-prompting after an update of an ad-hoc-signed build.
 - **Readiness:**
   - **macOS (arm64, x64): Runtime-verified.** Not Distribution-ready: the builds are ad-hoc signed, not Developer ID signed or notarized.
-  - **Windows:** unchanged. On this PC, 130 unit tests, 18 integration tests and the 12 scenarios of the transition's result pass.
+  - **Windows:** unchanged. On this PC, at `94f8806`: 130 unit tests, 19 integration tests and the 12 acceptance scenarios pass.
