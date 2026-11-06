@@ -87,3 +87,10 @@ jobs:
           CONTINUUM_HOST_API_KEY: ${{ secrets.CONTINUUM_HOST_API_KEY }}
           CONTINUUM_HOST_TOKEN: ${{ secrets.CONTINUUM_HOST_TOKEN }}
         run: continuum guard ci --require-judgment
+
+      # On a self-hosted runner the job's temp folder outlives the job, so the feed
+      # credential written above is removed explicitly.
+      - name: Remove the feed credential
+        if: always()
+        shell: bash
+        run: rm -f "$RUNNER_TEMP/.npmrc"
