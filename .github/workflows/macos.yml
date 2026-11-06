@@ -1,0 +1,143 @@
+name: macOS
+
+# Runtime verification of the macOS builds (ADR-007, transition 0001-macos-support) on GitHub-hosted runners:
+# Apple silicon (macos-15, osx-arm64) and Intel (macos-15-intel, osx-x64). macOS minutes are billed (about
+# $0.062/min), so this runs ONLY when started by hand: no push, pull-request or schedule trigger.
+#
+# What it proves, per architecture, with the PUBLISHED single-file executable:
+#   unit tests (including the macOS keychain and permission facts), keychain create/read/update/delete,
+#   application-scoped access (another application cannot read the item without approval), 0700/0600 modes,
+#   the default data folder, MCP stdio start-up, and a published .tar.gz.
+# SQL Server connectivity and the 12 acceptance scenarios run only when a reachable test SQL Server is configured:
+# GitHub's macOS runners cannot run the SQL Server container. Set the repository variable
+# SQLINVESTIGATOR_FIXTURE_SERVER (host,port) and the secret SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD for a
+# disposable test server; never a production server.
+
+on:
+  workflow_dispatch:
+    inputs:
+      architectures:
+        description: "Which runners"
+        type: choice
+        options: [both, arm64, x64]
+        default: both
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    name: macOS ${{ matrix.rid }}
+    if: inputs.architectures == 'both' || inputs.architectures == matrix.arch
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-15, rid: osx-arm64, arch: arm64 }
+          - { runner: macos-15-intel, rid: osx-x64, arch: x64 }
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    env:
+      DOTNET_NOLOGO: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+      RID: ${{ matrix.rid }}
+      SQLINVESTIGATOR_FIXTURE_SERVER: ${{ vars.SQLINVESTIGATOR_FIXTURE_SERVER }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: .nuget/packages
+          key: nuget-${{ matrix.rid }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj') }}
+
+      - name: Machine
+        run: |
+          sw_vers
+          uname -m
+          dotnet --version
+          node --version
+
+      # A throwaway keychain, unlocked, as the user's default and only search-list entry, so items land there
+      # and never in the runner image's own keychains. Deleted at the end.
+      - name: Temporary login keychain
+        run: |
+          KC="$RUNNER_TEMP/sqlinv-ci.keychain-db"
+          PW="$(openssl rand -hex 16)"
+          security create-keychain -p "$PW" "$KC"
+          security set-keychain-settings -lut 21600 "$KC"
+          security unlock-keychain -p "$PW" "$KC"
+          security list-keychains -d user -s "$KC"
+          security default-keychain -d user -s "$KC"
+          security default-keychain -d user
+
+      - name: Build (warnings are errors)
+        run: dotnet build SqlInvestigator.slnx -c Release
+
+      - name: Unit tests
+        run: dotnet test tests/SqlInvestigator.Tests -c Release --no-build --logger trx --results-directory TestResults
+
+      - name: Publish (self-contained, single file)
+        run: |
+          dotnet publish src/SqlInvestigator.McpServer -c Release -r "$RID" --self-contained true \
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none \
+            -p:ContinuousIntegrationBuild=true -p:SourceRevisionId=$GITHUB_SHA -o publish/app
+          dotnet publish tests/SqlInvestigator.FixtureTool -c Release -r "$RID" --self-contained true \
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -o publish/fixture
+          ls -l publish/app
+          file publish/app/SqlInvestigator
+          codesign -dv publish/app/SqlInvestigator 2>&1 || true
+
+      - name: Smoke test the published executable (keychain, permissions, MCP stdio)
+        run: node eng/macos-smoke.mjs "$PWD/publish/app/SqlInvestigator" "$PWD/publish/fixture/SqlInvestigator.FixtureTool"
+
+      - name: Integration tests and acceptance scenarios (needs a reachable test SQL Server)
+        if: env.SQLINVESTIGATOR_FIXTURE_SERVER != ''
+        env:
+          SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD: ${{ secrets.SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD }}
+          SQLINVESTIGATOR_SKIP_BUILD: "1"
+        run: |
+          dotnet test tests/SqlInvestigator.IntegrationTests -c Release --no-build --logger trx --results-directory TestResults
+          export SQLINVESTIGATOR_EXE="$PWD/publish/app/SqlInvestigator"
+          export SQLINVESTIGATOR_FIXTURE_TOOL="$PWD/publish/fixture/SqlInvestigator.FixtureTool"
+          node continuum/transitions/0001-macos-support/result/acceptance/run.mjs
+
+      - name: SQL Server connectivity not verified
+        if: env.SQLINVESTIGATOR_FIXTURE_SERVER == ''
+        run: echo "::warning::No test SQL Server is configured (vars.SQLINVESTIGATOR_FIXTURE_SERVER), so SQL connectivity and the acceptance scenarios were NOT run on ${RID}."
+
+      - name: Package
+        run: |
+          VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
+          NAME="SqlInvestigator-$VERSION-$RID"
+          cp docs/USER-GUIDE.md publish/app/README.md
+          printf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \
+            "$VERSION" "$GITHUB_SHA" "$RID" > publish/app/VERSION.txt
+          mkdir -p artifacts
+          tar -C publish/app -czf "artifacts/$NAME.tar.gz" .
+          shasum -a 256 "artifacts/$NAME.tar.gz" | tee "artifacts/$NAME.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macos-${{ matrix.rid }}
+          path: |
+            artifacts
+            TestResults
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Remove the temporary keychain
+        if: always()
+        run: |
+          security default-keychain -d user -s login.keychain-db 2>/dev/null || true
+          security list-keychains -d user -s login.keychain-db 2>/dev/null || true
+          security delete-keychain "$RUNNER_TEMP/sqlinv-ci.keychain-db" 2>/dev/null || true
