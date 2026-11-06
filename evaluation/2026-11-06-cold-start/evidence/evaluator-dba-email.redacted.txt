@@ -1,0 +1,17 @@
+﻿From: the DBA team
+Subject: read-only logins for the dev Commerce and Fulfillment databases
+
+Server: 127.0.0.1,1433  (a development SQL Server 2022 container; it uses a self-signed TLS certificate)
+Both databases hold synthetic development data (environment: development).
+
+Database EvalCommerce
+  login:    eval_commerce_ro
+  password: <redacted: random, generated for this evaluation, never committed>
+  granted:  SELECT on dbo.Customers, dbo.Orders, dbo.OrderLines, dbo.Payments
+
+Database EvalFulfillment
+  login:    eval_fulfillment_ro
+  password: <redacted: random, generated for this evaluation, never committed>
+  granted:  SELECT on dbo.ExternalOrderReferences, dbo.Shipments, dbo.ShipmentEvents, dbo.Returns
+
+Each login can read only its own database.

@@ -12,7 +12,7 @@ Decisions the architecture deliberately leaves to the implementation (`continuum
 | Validator | `Microsoft.SqlServer.TransactSql.ScriptDom` 180, `TSql160Parser` | Bound by `sqlclient-scriptdom` |
 | Secrets | `System.Security.Cryptography.ProtectedData`, DPAPI `CurrentUser`, per-alias entropy | Bound by `windows-dpapi-currentuser` |
 | Persistence | `System.Text.Json` files, atomic replace (temp file, flush with write-through, `File.Move` overwrite), one named mutex per store | Bound by `atomic-json-files` |
-| Target | `net10.0-windows`, `win-x64`, framework-dependent | Bound by `dotnet-10-mcp-stdio` |
+| Target | `net10.0-windows`, `win-x64`; framework-dependent for development, self-contained for the release zip (`eng/release.ps1`) | Bound by `dotnet-10-mcp-stdio` (runtime, OS, transport); the deployment mode is not bound |
 | Tests | xUnit 2.9; fixtures are disposable SQL Server databases with synthetic data | Handoff §4 |
 
 `System.Security.Cryptography.Pkcs` is pinned to 10.0.14 because the version SqlClient brings in transitively carries known advisories (GHSA-2fmv-rv2c-59x7, GHSA-846f-f764-76mx).

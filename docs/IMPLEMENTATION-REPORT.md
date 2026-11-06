@@ -2,6 +2,8 @@
 
 **Date:** 2026-11-06 · **Implementation revision:** `c4a9c31` (the code). Later commits change docs and diagrams only · **Implemented by:** Claude Code, against the Continuum package in `continuum/`
 
+> **Update 2026-11-06 (later):** the Continuum CI gate now evaluates architecture, the connection-removal gap is resolved, and a release zip exists. See [`evaluation/2026-11-06-cold-start/`](../evaluation/2026-11-06-cold-start/). This report is otherwise kept as it was written.
+
 ## Outcome
 
 SQL Investigator is implemented: a .NET 10 MCP stdio server with three services, exactly the 11 declared MCP tools, and a local provisioning console. All 12 acceptance scenarios pass against the real executable, both locally and on CI. The architecture model, the bindings and the acceptance criteria were not changed.

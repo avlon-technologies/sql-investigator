@@ -18,7 +18,9 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 
 ## Install
 
-Prerequisites: Windows x64, the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (pinned in `global.json`), and for tests a SQL Server 2022 you can throw away (Developer edition, or the container below). Node.js 24+ runs the acceptance scenarios.
+**From a release zip (no .NET needed):** follow [`docs/USER-GUIDE.md`](docs/USER-GUIDE.md), which is also the README inside the zip. `eng/release.ps1 -Verify` builds the self-contained `SqlInvestigator-<version>-win-x64.zip` and its SHA-256 reproducibly, from a clean worktree of HEAD. The `Release build` workflow does the same on CI and keeps the zip as a workflow artifact. No GitHub Release has been published yet.
+
+**From source:** you need Windows x64, the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (pinned in `global.json`), and, for tests, a SQL Server 2022 you can throw away (Developer edition, or the container below). Node.js 24+ runs the acceptance scenarios.
 
 ```powershell
 dotnet publish src/SqlInvestigator.McpServer -c Release -o "$env:LOCALAPPDATA\SqlInvestigator\bin"
@@ -165,6 +167,9 @@ Do not edit derived files (`IMPLEMENTATION.md`, `BEHAVIOUR.md`, `PACKAGE.json`, 
 
 ## Owner actions still open
 
-1. **Configure the Continuum CI gate**: set the Actions variable `CONTINUUM_HOST` and the secret `CONTINUUM_HOST_API_KEY` (`continuum ci setup` checks them). Until then the `Continuum` workflow reports "architecture not evaluated".
-2. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
-3. **Read ADR alignment from the model.** The recorded alignment checks report "missing" only because the expectations lack the `::` root anchor (see `continuum/decisions/README.md`).
+1. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
+2. **Read ADR alignment from the model.** The recorded alignment checks report "missing" only because the expectations lack the `::` root anchor (see `continuum/decisions/README.md`).
+3. **Optionally, accept the remediated revision** as the new accepted state (`continuum package accept continuum --as <you> --verified-against HEAD`), and **publish a release** (`evaluation/2026-11-06-cold-start/RELEASE.md`).
+4. **Restore GitHub-hosted runners** if wanted. Billing currently refuses them, so both CI gates run on the self-hosted runner `sqlinv-local`.
+
+The Continuum CI gate evaluates the architecture with a Host judgment on every push (since 2026-11-06). The connection-removal gap is resolved. See `evaluation/2026-11-06-cold-start/` for the governance closeout, the release, the safety challenge and the cold-start evaluation.

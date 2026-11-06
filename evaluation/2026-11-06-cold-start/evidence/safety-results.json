@@ -1,0 +1,928 @@
+{
+  "at": "2026-11-06T12:01:28.056Z",
+  "exe": "C:\\sqlinv-eval\\safety\\bin\\SqlInvestigator.exe",
+  "results": [
+    {
+      "group": "surface",
+      "id": "T1",
+      "what": "tools/list",
+      "expectation": "exactly 11 tools, no credential parameters",
+      "pass": true,
+      "outcome": "connection_list,connection_remove,schema_inspect,sql_validate,sql_execute,investigation_start,investigation_record,investigation_get,knowledge_search,knowledge_propose,knowledge_review",
+      "detail": null
+    },
+    {
+      "group": "control",
+      "id": "C0",
+      "what": "allowed SELECT",
+      "expectation": "executes, 2 rows",
+      "pass": true,
+      "outcome": "ok rows=2",
+      "detail": null
+    },
+    {
+      "group": "allowlist",
+      "id": "W1",
+      "what": "INSERT",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found INSERT."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W2",
+      "what": "UPDATE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found UPDATE."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W3",
+      "what": "DELETE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found DELETE."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W4",
+      "what": "MERGE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found MERGE."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W5",
+      "what": "DROP TABLE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found a DROP statement (DDL)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W6",
+      "what": "CREATE TABLE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found a CREATE statement (DDL)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W7",
+      "what": "TRUNCATE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found TRUNCATE TABLE."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W8",
+      "what": "EXEC xp_cmdshell",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found EXECUTE."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W9",
+      "what": "SELECT INTO",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "SELECT INTO creates a table and is not allowed."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W10",
+      "what": "SELECT then DELETE in one batch",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Exactly one statement is allowed; found 2."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W11",
+      "what": "CTE feeding DELETE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found DELETE."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W12",
+      "what": "SELECT followed by WAITFOR",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Exactly one statement is allowed; found 2."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W13",
+      "what": "GRANT",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found a permission statement."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W14",
+      "what": "GO batch separator smuggling",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Exactly one batch is allowed; the statement contains a batch separator (GO) or no statement at all."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W15",
+      "what": "exclusive lock hint",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct a table hint is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W16",
+      "what": "SET option",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Only a SELECT statement is allowed; found SetRowCount."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "W17",
+      "what": "BEGIN TRAN / COMMIT",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Exactly one statement is allowed; found 3."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S1",
+      "what": "table outside scope (login CAN read it)",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "dbo.Hidden is outside the approved scope of alias \"probe\" (dbo.Orders, dbo.Big, dbo.NoGrant)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S2",
+      "what": "unapproved column",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Column CardToken is not an approved column of dbo.Orders for alias \"probe\"."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S3",
+      "what": "SELECT * on a column-limited table",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "SELECT * reads every column, but only some columns of dbo.Orders are approved; list the approved columns."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S4",
+      "what": "unapproved column through a table alias",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Column CardToken is not an approved column of dbo.Orders for alias \"probe\"."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S5",
+      "what": "unapproved column through a derived table",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Column CardToken is not an approved column of dbo.Orders for alias \"probe\"."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S6",
+      "what": "unapproved column used only in WHERE (oracle)",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Column CardToken is not an approved column of dbo.Orders for alias \"probe\"."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S7",
+      "what": "catalog view sys.tables",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "sys.tables is outside the approved scope of alias \"probe\" (dbo.Orders, dbo.Big, dbo.NoGrant)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S8",
+      "what": "INFORMATION_SCHEMA",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "INFORMATION_SCHEMA.COLUMNS is outside the approved scope of alias \"probe\" (dbo.Orders, dbo.Big, dbo.NoGrant)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S9",
+      "what": "one-part name",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Orders is not schema-qualified; name approved objects as schema.object (for example dbo.Orders)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S10",
+      "what": "join to out-of-scope table",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "dbo.Hidden is outside the approved scope of alias \"probe\" (dbo.Orders, dbo.Big, dbo.NoGrant).",
+          "h.x: h does not name a table of this query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S11",
+      "what": "unapproved column in correlated subquery",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Column CardToken is not an approved column of dbo.Orders for alias \"probe\"."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "S12",
+      "what": "unapproved column in ORDER BY",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Column CardToken is not an approved column of dbo.Orders for alias \"probe\"."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "X1",
+      "what": "three-part cross-database name",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "EvalCommerce.dbo.Orders names another database; each query reads one database, through one alias."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "X2",
+      "what": "four-part linked-server name",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "127.0.0.1.SafetyProbe.dbo.Orders names a linked server; linked servers are not allowed."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "X3",
+      "what": "OPENROWSET",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct OPENROWSET is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "X4",
+      "what": "OPENQUERY",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct OPENQUERY (linked server) is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "X5",
+      "what": "OPENDATASOURCE",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct AdHocDataSource is not allowed in an investigation query.",
+          "The construct OPENDATASOURCE (ad hoc linked server) is not allowed in an investigation query.",
+          "The construct SchemaObjectNameOrValueExpression is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "X6",
+      "what": "three-part name to own database",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "SafetyProbe.dbo.Orders names another database; each query reads one database, through one alias."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F1",
+      "what": "@@VERSION global",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct a variable is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F2",
+      "what": "SUSER_SNAME()",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The function SUSER_SNAME is not on the list of allowed built-in functions."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F3",
+      "what": "HAS_PERMS_BY_NAME",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The function HAS_PERMS_BY_NAME is not on the list of allowed built-in functions."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F4",
+      "what": "subquery on sys.objects",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "sys.objects is outside the approved scope of alias \"probe\" (dbo.Orders, dbo.Big, dbo.NoGrant)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F5",
+      "what": "variable",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "Exactly one statement is allowed; found 2."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F6",
+      "what": "user-defined function",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct a user-defined or schema-qualified function call is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F7",
+      "what": "QUOTED_IDENTIFIER-ambiguous double quotes",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The statement is ambiguous: it means different things depending on the QUOTED_IDENTIFIER setting. Use [brackets] for identifiers and 'single quotes' for strings."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F8",
+      "what": "temp table",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "#t is not schema-qualified; name approved objects as schema.object (for example dbo.Orders)."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F9",
+      "what": "OPENJSON rowset over a literal",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct OPENJSON is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist",
+      "id": "F10",
+      "what": "fn_my_permissions",
+      "expectation": "rejected by sql_validate and sql_execute (sql.rejected)",
+      "pass": true,
+      "outcome": "validate accepted=false; execute sql.rejected",
+      "detail": {
+        "reasons": [
+          "The construct a table-valued function is not allowed in an investigation query."
+        ]
+      }
+    },
+    {
+      "group": "allowlist-positive",
+      "id": "A1",
+      "what": "comment containing a semicolon and DELETE",
+      "expectation": "accepted and executed",
+      "pass": true,
+      "outcome": "ok rows=50",
+      "detail": null
+    },
+    {
+      "group": "allowlist-positive",
+      "id": "A2",
+      "what": "aggregates and CAST",
+      "expectation": "accepted and executed",
+      "pass": true,
+      "outcome": "ok rows=1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P1",
+      "what": "INSERT as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 229, Level 14, State 5, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P2",
+      "what": "UPDATE as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 229, Level 14, State 5, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P3",
+      "what": "DELETE as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 229, Level 14, State 5, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P4",
+      "what": "CREATE TABLE as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 262, Level 14, State 1, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P5",
+      "what": "ALTER TABLE as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 1088, Level 16, State 13, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P6",
+      "what": "SELECT INTO as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 262, Level 14, State 1, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P7",
+      "what": "xp_cmdshell as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 229, Level 14, State 5, Server 88ad9cfbedbd, Procedure master.dbo.xp_cmdshell, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P8",
+      "what": "read another database as safety_ro, direct",
+      "expectation": "SQL Server denies it",
+      "pass": true,
+      "outcome": "Msg 916, Level 14, State 2, Server 88ad9cfbedbd, Line 1",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P9",
+      "what": "data unchanged after every write attempt",
+      "expectation": "50 rows, all Open, no new tables",
+      "pass": true,
+      "outcome": "50,50; tables=4",
+      "detail": null
+    },
+    {
+      "group": "principal",
+      "id": "P10",
+      "what": "in-scope table the login has no SELECT on (allowlist passes, principal refuses)",
+      "expectation": "permission.denied",
+      "pass": true,
+      "outcome": "permission.denied",
+      "detail": {
+        "message": "The principal of alias \"probe\" is not permitted to do this (error 229).",
+        "action": "Stay within the alias's approved objects; the read-only principal does not grant more."
+      }
+    },
+    {
+      "group": "principal",
+      "id": "P11",
+      "what": "writer login stored with --no-verify, first use",
+      "expectation": "principal.unsafe, nothing executed",
+      "pass": true,
+      "outcome": "principal.unsafe",
+      "detail": {
+        "message": "The SQL principal of alias \"probe-rwnv\" is not read-only: member of db_datawriter; holds a database-level write, DDL or execute permission; can write or alter dbo.Orders."
+      }
+    },
+    {
+      "group": "access",
+      "id": "U1",
+      "what": "unknown alias",
+      "expectation": "alias.unknown",
+      "pass": true,
+      "outcome": "alias.unknown",
+      "detail": {
+        "message": "No connection alias \"nope\" is provisioned."
+      }
+    },
+    {
+      "group": "access",
+      "id": "U2",
+      "what": "alias refused at provisioning was never stored",
+      "expectation": "alias.unknown",
+      "pass": true,
+      "outcome": "alias.unknown",
+      "detail": {
+        "message": "No connection alias \"probe-rw\" is provisioned."
+      }
+    },
+    {
+      "group": "access",
+      "id": "U3",
+      "what": "connection string passed as an alias",
+      "expectation": "input.invalid",
+      "pass": true,
+      "outcome": "input.invalid",
+      "detail": {
+        "message": "\"Server=127.0.0.1;User Id=sa;Password=[redacted]\" is not a valid alias."
+      }
+    },
+    {
+      "group": "access",
+      "id": "U4",
+      "what": "schema_inspect of out-of-scope object",
+      "expectation": "scope.unapproved",
+      "pass": true,
+      "outcome": "scope.unapproved",
+      "detail": {
+        "message": "dbo.Hidden is not in the approved scope of alias \"probe\"."
+      }
+    },
+    {
+      "group": "disclosure",
+      "id": "D1",
+      "what": "connection_list",
+      "expectation": "no password, no connection string",
+      "pass": true,
+      "outcome": "aliases=probe,probe-rwnv",
+      "detail": null
+    },
+    {
+      "group": "disclosure",
+      "id": "D2",
+      "what": "query that selects the alias password as a literal",
+      "expectation": "password redacted from the result",
+      "pass": true,
+      "outcome": "redacted",
+      "detail": {
+        "result": "{\"queryId\":\"q-c9cacedde606\",\"alias\":\"probe\",\"sql\":\"SELECT N'[redacted]' AS echoed\",\"startedAt\":\"2026-11-06T12:01:10.6919905+00:00\",\"completedAt\":\"2026-11-06T12:01:10.7028457+00:00\",\"rowCount\":1,\"truncated\":false,\"columns\":[\"echoed\"],\"rows\":[[\"[redacted]\"]],\"rowLimit\":500,\"byteLimit\":1048576}"
+      }
+    },
+    {
+      "group": "disclosure",
+      "id": "D3",
+      "what": "SQL error message that would contain the password",
+      "expectation": "password redacted from the error",
+      "pass": true,
+      "outcome": "sql.error",
+      "detail": {
+        "result": "{\"error\":{\"code\":\"sql.error\",\"message\":\"SQL Server returned error 245 for the query on alias \\\"probe\\\": Conversion failed when converting the nvarchar value '[redacted]' to data type int.\",\"action\":\"Correct the query and run it again; nothing is returned for a failed query.\"}}"
+      }
+    },
+    {
+      "group": "drift",
+      "id": "R1",
+      "what": "column renamed under a running investigation",
+      "expectation": "actionable error for the stale column; drift reported by schema_inspect",
+      "pass": true,
+      "outcome": "query sql.error; drift={\"added\":[\"dbo.Orders(OrderId int)\"],\"removed\":[\"dbo.Orders(OrderId int, Status nvarchar(20))\",\"missing: dbo.Orders.Status\"],\"previousCapturedAt\":\"2026-11-06T12",
+      "detail": {
+        "message": "SQL Server could not resolve a name in the query on alias \"probe\" (error 207): Invalid column name 'Status'.",
+        "action": "The schema may have changed: call schema_inspect for the alias and correct the query."
+      }
+    },
+    {
+      "group": "budget",
+      "id": "B1",
+      "what": "MAX_QUERY_ROWS=10 over 3000 rows",
+      "expectation": "truncated to 10, truncatedBy rows",
+      "pass": true,
+      "outcome": "rows=10 truncated=true by=rows",
+      "detail": null
+    },
+    {
+      "group": "budget",
+      "id": "B2",
+      "what": "MAX_RESULT_BYTES=20000 over ~2.4 MB",
+      "expectation": "truncated, truncatedBy bytes",
+      "pass": true,
+      "outcome": "rows=49 truncated=true by=bytes",
+      "detail": null
+    },
+    {
+      "group": "budget",
+      "id": "B3",
+      "what": "malformed MAX_QUERY_ROWS=-5",
+      "expectation": "falls back to the default 500, not unlimited",
+      "pass": true,
+      "outcome": "rows=500 truncated=true",
+      "detail": null
+    },
+    {
+      "group": "budget",
+      "id": "B4",
+      "what": "SQL_TIMEOUT_SECONDS=2 on a long query",
+      "expectation": "budget.timeout near 2 s, and nothing left running on the server",
+      "pass": true,
+      "outcome": "budget.timeout after 2.5s; requests still running=0",
+      "detail": {
+        "message": "The query on alias \"probe\" exceeded the SQL timeout and was cancelled."
+      }
+    },
+    {
+      "group": "budget",
+      "id": "B5",
+      "what": "MAX_CONCURRENT_QUERIES=1 with a second query while one runs",
+      "expectation": "second refused with budget.concurrency",
+      "pass": true,
+      "outcome": "second=budget.concurrency; first=budget.timeout",
+      "detail": {
+        "message": "1 queries are already executing; this one was refused and not run."
+      }
+    },
+    {
+      "group": "budget",
+      "id": "B6",
+      "what": "MAX_QUERIES_PER_INVESTIGATION=2, three queries",
+      "expectation": "third refused with budget.investigation",
+      "pass": true,
+      "outcome": "ok,ok,budget.investigation",
+      "detail": null
+    },
+    {
+      "group": "budget",
+      "id": "B7",
+      "what": "MAX_SQL_LENGTH=100 with a longer statement",
+      "expectation": "sql.rejected",
+      "pass": true,
+      "outcome": "sql.rejected",
+      "detail": {
+        "reasons": [
+          "The statement is 314 characters; the limit is 100."
+        ]
+      }
+    },
+    {
+      "group": "cancellation",
+      "id": "K1",
+      "what": "MCP notifications/cancelled during a running query",
+      "expectation": "the server-side query stops promptly",
+      "pass": true,
+      "outcome": "running before=1, after=0 within 0.4s; late response=none",
+      "detail": null
+    },
+    {
+      "group": "audit",
+      "id": "AU1",
+      "what": "rejections, budgets and refusals are audited",
+      "expectation": "history.json audit has sql.rejected, budget.* and principal/permission events",
+      "pass": true,
+      "outcome": "{\"sql.started\":32,\"sql.succeeded\":21,\"sql.rejected\":188,\"sql.failed\":11,\"investigation.started\":4,\"budget.rows\":4,\"budget.bytes\":2,\"budget.concurrency\":2,\"budget.investigation\":2,\"budget.timeout\":2,\"cancelled\":1}",
+      "detail": null
+    },
+    {
+      "group": "disclosure",
+      "id": "D4",
+      "what": "scan of 127 MCP responses, all stderr and 5 data files for every password",
+      "expectation": "no password anywhere outside the DPAPI blobs",
+      "pass": true,
+      "outcome": "none found",
+      "detail": null
+    },
+    {
+      "group": "surface",
+      "id": "T2",
+      "what": "stdout carries only JSON-RPC",
+      "expectation": "no non-JSON line on stdout",
+      "pass": true,
+      "outcome": "0 non-JSON lines",
+      "detail": null
+    }
+  ]
+}
