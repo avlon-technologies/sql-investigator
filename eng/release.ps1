@@ -12,7 +12,7 @@
   the same commit with the same SDK produce the same zip hash. -Verify builds twice and checks that.
 
 .PARAMETER AllowDirty
-  Build from a working tree with uncommitted changes. The result is labelled dirty and is not a release.
+  Build although the working tree has uncommitted changes. The build always uses a clean checkout of HEAD, never the working copy.
 .PARAMETER Verify
   Build twice into separate folders and fail unless the two zip hashes are identical.
 #>
@@ -35,16 +35,23 @@ try {
     $name = "SqlInvestigator-$version-win-x64"
     $out = Join-Path $root 'artifacts/release'
 
+    # Build from a clean checkout of the commit, never the working copy: line endings and untracked files in a
+    # working copy differ from a fresh checkout and would change the hash.
     function Build-Once([string]$work) {
         if (Test-Path $work) { Remove-Item $work -Recurse -Force }
         $publish = Join-Path $work 'publish'
-        dotnet publish src/SqlInvestigator.McpServer -c Release -r win-x64 --self-contained true `
+        $src = Join-Path $work 'src'
+        git worktree add --detach --quiet $src $sha
+        if ($LASTEXITCODE -ne 0) { throw "git worktree add failed ($LASTEXITCODE)" }
+        try {
+        dotnet publish (Join-Path $src 'src/SqlInvestigator.McpServer') -c Release -r win-x64 --self-contained true `
             -p:ContinuousIntegrationBuild=true -p:Deterministic=true -p:SourceRevisionId=$sha `
             -p:DebugType=none -p:GenerateDocumentationFile=false -o $publish --nologo -v quiet | Out-Host
         if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed ($LASTEXITCODE)" }
 
-        Copy-Item docs/USER-GUIDE.md (Join-Path $publish 'README.md')
-        $label = if ($dirty) { "$sha (dirty working tree: not a release)" } else { $sha }
+        Copy-Item (Join-Path $src 'docs/USER-GUIDE.md') (Join-Path $publish 'README.md')
+        } finally { git worktree remove --force $src }
+        $label = if ($dirty) { "$sha (built from HEAD; the working tree had uncommitted changes)" } else { $sha }
         @(
             "SQL Investigator $version"
             "commit   $label"
