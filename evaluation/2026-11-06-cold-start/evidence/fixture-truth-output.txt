@@ -1,0 +1,77 @@
+﻿Changed database context to 'EvalFulfillment'.
+== counts
+orders|refs|shipments|events|returns
+------|----|---------|------|-------
+120|119|118|463|3
+== orders with no matched shipment
+OrderId|OrderNumber|Status|PromisedShipDate
+-------|-----------|------|----------------
+5|SO-100005|Cancelled|2026-09-08
+6|SO-100006|Shipped|2026-09-19
+12|SO-100012|Shipped|2026-10-05
+17|SO-100017|Cancelled|2026-10-10
+29|SO-100029|Cancelled|2026-09-22
+33|SO-100033|Delivered|2026-09-16
+41|SO-100041|Paid|2026-09-04
+58|SO-100058|Shipped|2026-10-11
+60|SO-100060|Shipped|2026-09-13
+77|SO-100077|Paid|2026-10-20
+88|SO-100088|Shipped|2026-09-21
+96|SO-100096|Paid|2026-09-09
+118|SO-100118|Paid|2026-11-07
+== references/shipments with no matched order
+ReferenceId|SourceSystem|ExternalOrderRef|ShipmentId
+-----------|------------|----------------|----------
+400|COMMERCE|SO-100990|400
+401|COMMERCE|SO-100991|401
+402|MARKETPLACE|MP-55001|402
+403|MARKETPLACE|MP-55002|403
+404|MARKETPLACE|MP-55003|404
+405|COMMERCE|SO-10006|405
+406|COMMERCE|NULL|406
+== orders with more than one reference
+MatchedOrderId|refs|shipments|r
+--------------|----|---------|-
+21|2|2|21:SO-100021 | 221:SO100021
+50|2|2|50:SO-100050 | 250:SO-100050
+64|2|2|64:SO-100064 | 264:SO100064
+89|2|2|89:SO-100089 | 289:SO100089
+102|2|1|102:SO-100102 | 302:SO-100102
+== non-canonical reference formats that still match
+ReferenceId|ExternalOrderRef|OrderNumber
+-----------|----------------|-----------
+221|SO100021|SO-100021
+25|SO100025|SO-100025
+264|SO100064|SO-100064
+81| SO-100081|SO-100081
+289|SO100089|SO-100089
+107|100107|SO-100107
+== shipped after the promised date, or in transit > 7 days
+OrderId|OrderNumber|PromisedShipDate|ShippedAt|daysLate|ShipStatus
+-------|-----------|----------------|---------|--------|----------
+8|SO-100008|2026-10-11|2026-10-19 10:00:00|8|Delivered
+36|SO-100036|2026-10-19|2026-10-25 10:00:00|6|Delivered
+47|SO-100047|2026-09-20|2026-09-19 15:00:00|-1|InTransit
+50|SO-100050|2026-09-03|2026-09-08 10:00:00|5|Delivered
+70|SO-100070|2026-09-23|2026-09-28 10:00:00|5|Delivered
+83|SO-100083|2026-09-16|2026-09-24 10:00:00|8|Delivered
+92|SO-100092|2026-09-15|2026-09-14 12:00:00|-1|InTransit
+111|SO-100111|2026-09-24|2026-09-30 10:00:00|6|Delivered
+== fulfilled orders not fully paid
+OrderId|OrderNumber|Status|TotalAmount|captured|paymentStatuses
+-------|-----------|------|-----------|--------|---------------
+14|SO-100014|Delivered|267.94|.00|Pending
+39|SO-100039|Delivered|77.98|38.99|Captured
+66|SO-100066|Delivered|95.98|.00|Failed
+73|SO-100073|Returned|118.96|.00|Refunded
+99|SO-100099|Delivered|77.98|.00|NULL
+== returns vs commerce
+ReturnId|ShipmentId|MatchedOrderId|Reason|RefundIssued|Status|payStatus
+--------|----------|--------------|------|------------|------|---------
+1|50|50|Damaged in transit|0|Delivered|Captured
+3|54|54|Wrong size|1|Delivered|Captured
+2|73|73|Changed mind|1|Returned|Refunded
+== duplicate customers by email
+Email| 
+-----|-
+hiro.lindqvist7@example.test|31/C6031, 7/C5007

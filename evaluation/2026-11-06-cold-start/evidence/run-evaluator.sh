@@ -8,10 +8,10 @@ LOGS="$(dirname "$0")/evaluator-logs"; mkdir -p "$LOGS"
 cd /c/sqlinv-eval/coldstart-1
 # not a child of this session: drop the parent session's markers
 unset CLAUDECODE CLAUDE_CODE_ENTRYPOINT CLAUDE_CODE_SESSION_ID CLAUDE_CODE_CHILD_SESSION CLAUDE_PID CLAUDE_CODE_MESSAGING_SOCKET CLAUDE_CODE_MESSAGING_TOKEN CLAUDE_CODE_SESSION_ATTENDED CLAUDE_CODE_EXECPATH CONTINUUM_API_KEY || true
-DENY='["Read(//c/projects/**)","Read(//c/Users/kangm/AppData/Local/Temp/claude/8304409b6c461889/**)","Read(//c/Users/kangm/AppData/Local/SqlInvestigator/**)","Read(//c/Users/kangm/.claude/projects/C--projects-avlon-sql-investigator/**)","Read(//c/actions-runner/**)","Read(//c/sqlinv-eval/smoke/**)","Edit(//c/projects/**)","Write(//c/projects/**)","mcp__sql-investigator__knowledge_review","mcp__sql-investigator__connection_remove"]'
+DENY='["Read(//c/projects/**)","Read(//c/Users/kangm/AppData/Local/Temp/claude/8304409b6c461889/**)","Read(//c/Users/kangm/AppData/Local/SqlInvestigator/**)","Read(//c/Users/kangm/.claude/projects/C--projects-avlon-sql-investigator/**)","Read(//c/actions-runner/**)","Read(//c/sqlinv-eval/smoke/**)","Edit(//c/projects/**)","Write(//c/projects/**)","mcp__sql-investigator-eval__knowledge_review","mcp__sql-investigator-eval__connection_remove"]'
 SETTINGS="{\"permissions\":{\"deny\":$DENY}}"
 BASE_TOOLS=(Bash PowerShell Read Write Edit Glob Grep)
-MCP_TOOLS=(mcp__sql-investigator__connection_list mcp__sql-investigator__schema_inspect mcp__sql-investigator__sql_validate mcp__sql-investigator__sql_execute mcp__sql-investigator__investigation_start mcp__sql-investigator__investigation_record mcp__sql-investigator__investigation_get mcp__sql-investigator__knowledge_search mcp__sql-investigator__knowledge_propose)
+MCP_TOOLS=(mcp__sql-investigator-eval__connection_list mcp__sql-investigator-eval__schema_inspect mcp__sql-investigator-eval__sql_validate mcp__sql-investigator-eval__sql_execute mcp__sql-investigator-eval__investigation_start mcp__sql-investigator-eval__investigation_record mcp__sql-investigator-eval__investigation_get mcp__sql-investigator-eval__knowledge_search mcp__sql-investigator-eval__knowledge_propose)
 case "$1" in
   phase1)
     claude -p "You are starting fresh. Read C:\\sqlinv-eval\\coldstart-1\\TASK.md and carry out Phase 1 exactly as it describes." \

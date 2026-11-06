@@ -165,6 +165,13 @@ Claude Code uses these tools:
 | `knowledge_review` | Records **your** verdict (accepted or rejected) on a proposed relationship. Claude Code should only call it when you have decided |
 | `connection_remove` | Removes an alias from the catalog. It does **not** delete the stored password; run `SqlInvestigator.exe remove --alias <name>` at a console for that |
 
+Good to know:
+
+- **Result values are strings.** Each row is a list of strings in invariant culture, so decimals and big integers come back exactly. `NULL` is `null`, `bit` is `"true"`/`"false"`, and dates and times are ISO 8601; a `date` column comes back as midnight, for example `2026-09-14T00:00:00.0000000`. `schema_inspect` gives each column's SQL type.
+- **`knowledge_review` and `connection_remove` record your decisions.** With the recommended permissions, Claude Code asks you before using them. If your permissions deny them, Claude Code does not see them at all.
+- **A proposal cannot be edited.** To correct a proposed relationship, propose a corrected one; when you review them, reject the old one with a note.
+- **The server answers only while its input is open.** When you test it by hand with piped JSON-RPC, it stops at end of input without answering requests still in flight. Keep input open, as Claude Code does.
+
 What it will and will not run:
 
 - **Exactly one SELECT per call**, over the approved tables and columns of one alias, using two-part names (`dbo.Orders`) and built-in functions only. `SELECT *` is not allowed on a table whose scope lists columns.
