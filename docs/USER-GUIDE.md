@@ -14,14 +14,13 @@ This guide is the `README.md` inside the release zip. It covers installing, conn
 ## 1. Install
 
 1. Download `SqlInvestigator-<version>-win-x64.zip` and its `.sha256` file.
-2. Check the download. The two hashes must match:
+2. Check the download. This prints `True` when the hash matches. PowerShell's `-eq` ignores case, which matters because `Get-FileHash` prints uppercase and the `.sha256` file is lowercase:
 
    ```powershell
-   (Get-FileHash .\SqlInvestigator-1.0.0-win-x64.zip -Algorithm SHA256).Hash
-   Get-Content .\SqlInvestigator-1.0.0-win-x64.zip.sha256
+   (Get-FileHash .\SqlInvestigator-1.0.0-win-x64.zip -Algorithm SHA256).Hash -eq (Get-Content .\SqlInvestigator-1.0.0-win-x64.zip.sha256).Split(' ')[0]
    ```
 
-3. Unzip it to a folder of your choice. The default used in this guide is `%LOCALAPPDATA%\Programs\SqlInvestigator`:
+3. Unzip it to a folder of your choice. The zip has no top-level folder, so `SqlInvestigator.exe` lands directly in the folder you choose. This guide uses `%LOCALAPPDATA%\Programs\SqlInvestigator`:
 
    ```powershell
    $dir = "$env:LOCALAPPDATA\Programs\SqlInvestigator"
@@ -30,7 +29,7 @@ This guide is the `README.md` inside the release zip. It covers installing, conn
    & "$dir\SqlInvestigator.exe" --version          # prints e.g. 1.0.0+<commit>
    ```
 
-`SqlInvestigator.exe --help` lists the console commands.
+`SqlInvestigator.exe --help` lists the console commands and options. So does `--help` after any command, such as `provision --help`.
 
 ### Where it keeps data
 
@@ -41,7 +40,7 @@ SQL Investigator stores its data in `%LOCALAPPDATA%\SqlInvestigator\data`:
 - `knowledge.json`: schema snapshots and relationships
 - `vault\`: encrypted passwords
 
-Only your Windows account can read the folder. To keep the data somewhere else, set `SQLINVESTIGATOR_HOME` to a folder path. Use the same value both at the console and in the Claude Code registration (step 3), or the two will not see the same connections.
+Only your Windows account can read the folder. The files are created when first needed: `catalog.json` when you provision, the others on first use. To keep the data somewhere else, set `SQLINVESTIGATOR_HOME` to the data folder itself. The files go directly into it, with no `data` subfolder, and the folder is created for you. Use the same value both at the console and in the Claude Code registration (step 3), or the two will not see the same connections.
 
 ```powershell
 $env:SQLINVESTIGATOR_HOME = "D:\sqlinv-data"   # optional; this console session only
@@ -72,14 +71,19 @@ Connections and passwords never pass through Claude Code or chat. You add each o
 | `--replace` | Re-provision an existing alias (new password, scope or server) |
 | `--no-verify` | Skip the connection and read-only check, for offline set-up. The check then runs when the alias is first used |
 
-The password is never accepted as a command-line argument. If you script provisioning, pipe it on standard input instead: the console reads one line when input is redirected.
+The password is never accepted as a command-line argument. If you script provisioning, pipe it on standard input instead: when input is redirected, the console reads one line and still prints the prompt. Pipe it from something that keeps it out of your command history, such as a secret store, rather than typing it into the command:
+
+```powershell
+# PowerShell SecretManagement, if you use it; any command that writes the password to stdout works
+Get-Secret commerce_ro -AsPlainText | & "$dir\SqlInvestigator.exe" provision --alias commerce ...
+```
 
 **The login is checked before it is stored.** The console connects and refuses the login (`principal.unsafe`) if it can write, alter or execute, or if it is sysadmin, db_owner, db_datawriter or db_ddladmin. The check runs again the first time the server uses the alias.
 
 Repeat for each database. Each database gets its own alias and its own read-only login.
 
 ```powershell
-& "$dir\SqlInvestigator.exe" list                    # aliases, servers, scope (no passwords)
+& "$dir\SqlInvestigator.exe" list                    # tab-separated: alias, server/database, auth, environment, scope, provisioned at
 & "$dir\SqlInvestigator.exe" remove --alias commerce # remove the alias AND delete its stored password
 ```
 
@@ -109,6 +113,8 @@ For one project only (writes `.mcp.json` in the current folder, which you can co
 claude mcp add sql-investigator --scope project -- "$env:LOCALAPPDATA\Programs\SqlInvestigator\SqlInvestigator.exe"
 ```
 
+**Choose the server name with care.** The name (`sql-investigator` above) becomes part of every tool name, as in `mcp__<name>__sql_execute`. If `claude mcp list` already shows a `sql-investigator` in another scope (for example, another copy with other data), the two collide and Claude Code uses only one of them. Either remove the one you do not want, or give this one another name, such as `sql-investigator-dev`, and use that name in the permission entries below.
+
 If you set `SQLINVESTIGATOR_HOME` or a budget (see [Limits](#limits)), pass it to the server with `-e`:
 
 ```powershell
@@ -117,9 +123,11 @@ claude mcp add sql-investigator --scope user -e SQLINVESTIGATOR_HOME=D:\sqlinv-d
 
 Check the registration:
 
-1. Run `claude mcp list`, which should show `sql-investigator ... ✓ Connected`.
-2. Start, or restart, Claude Code. A server added while Claude Code is running is not loaded until the next start.
-3. Type `/mcp`. Claude Code asks you to approve a project-scope server the first time.
+1. Run `claude mcp list`. A user-scope server shows `✓ Connected`. A new project-scope server shows `Pending approval` until you approve it. That is expected.
+2. Start, or restart, Claude Code in that folder. A server added while Claude Code is running is not loaded until the next start. For a project-scope server, Claude Code asks you to approve it: accept.
+3. Type `/mcp` and check that the server is connected with 11 tools.
+
+To approve a project-scope server without the prompt, for example for scripted use, add `"enabledMcpjsonServers": ["sql-investigator"]` to `.claude/settings.local.json` in that project.
 
 Recommended permissions (`.claude/settings.json` in your project, or `~/.claude/settings.json`). They let the read-only tools run without asking and ask before the two tools that record your decisions:
 

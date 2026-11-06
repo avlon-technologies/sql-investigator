@@ -369,6 +369,18 @@ public sealed class ToolSurfaceTests
         }
     }
 
+    // Cold-start evaluation 2026-11-06: `provision --help` was rejected as an unknown option.
+    [Fact]
+    public async Task Help_after_a_command_prints_the_usage_and_mentions_stdin()
+    {
+        var output = new StringWriter();
+        var home = Path.Combine(Path.GetTempPath(), "sqlinv-console-" + Guid.NewGuid().ToString("N"));
+        var console = new ProvisioningConsole(new AppPaths(home), new Settings(), TimeProvider.System, new StringReader(string.Empty), output, new StringWriter());
+        Assert.Equal(0, await console.RunAsync(["provision", "--help"]));
+        Assert.Contains("standard\n              input when input is redirected", output.ToString().Replace("\r\n", "\n"), StringComparison.Ordinal);
+        Assert.False(Directory.Exists(home));
+    }
+
     [Fact]
     public async Task The_console_refuses_production()
     {

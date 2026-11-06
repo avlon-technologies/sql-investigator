@@ -21,20 +21,22 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
                     --scope <schema.object[(col,...)]> [--scope ...]
                     (--user <login> | --windows-auth)
                     [--trust-server-certificate] [--no-encrypt] [--replace] [--no-verify]
-              The password is prompted for at the console and never accepted as an argument.
+              The password is prompted for at the console (not echoed), or read as one line from standard
+              input when input is redirected. It is never accepted as an argument.
               The login is checked to be read-only before it is stored (skip with --no-verify).
           remove --alias <name>       remove the alias and delete its DPAPI-protected secret
-          list                        list aliases (no secrets)
+          list                        list aliases (no secrets): alias, server/database, authentication,
+                                      environment, scope, provisioned at; tab-separated
           erase-investigation --id <investigationId>   delete an investigation and its query provenance
           erase-relationship --id <relationshipId>     delete a relationship with its evidence and review
           erase-snapshots --alias <name>               delete the stored schema snapshots of an alias
           --version                   print the version
-          --help                      print this text
+          --help                      print this text (also after any command, e.g. provision --help)
         """;
 
     public async Task<int> RunAsync(string[] args)
     {
-        if (args.Length == 0 || args[0] is "--help" or "-h" or "help")
+        if (args.Length == 0 || args[0] is "help" || args.Any(a => a is "--help" or "-h" or "/?"))
         {
             output.WriteLine(Usage);
             return 0;
