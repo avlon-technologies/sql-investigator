@@ -32,13 +32,11 @@ concurrency:
 jobs:
   macos:
     name: macOS ${{ matrix.rid }}
-    if: inputs.architectures == 'both' || inputs.architectures == matrix.arch
     strategy:
       fail-fast: false
+      # The runner list follows the input: a job-level if cannot see the matrix.
       matrix:
-        include:
-          - { runner: macos-15, rid: osx-arm64, arch: arm64 }
-          - { runner: macos-15-intel, rid: osx-x64, arch: x64 }
+        include: ${{ fromJSON(inputs.architectures == 'arm64' && '[{"runner":"macos-15","rid":"osx-arm64"}]' || inputs.architectures == 'x64' && '[{"runner":"macos-15-intel","rid":"osx-x64"}]' || '[{"runner":"macos-15","rid":"osx-arm64"},{"runner":"macos-15-intel","rid":"osx-x64"}]') }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 25
     env:
