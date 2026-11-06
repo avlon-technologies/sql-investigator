@@ -1,0 +1,128 @@
+name: macOS cold start
+
+# Independent cold-start evaluation of the published macOS build (mission item 11). The evaluator's script,
+# eng/coldstart/macos-coldstart.sh, was written from docs/MACOS.md and docs/USER-GUIDE.md alone. This workflow is
+# only the harness: it produces the release tarball exactly as the macOS workflow packages it, creates one disposable
+# database with SYNTHETIC data and a read-only login on the configured test SQL Server, hands the script nothing but
+# the tarball and those connection facts, and keeps the script's report.
+#
+# Billed macOS minutes: started by hand only. Needs vars.SQLINVESTIGATOR_FIXTURE_SERVER and
+# secrets.SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD for a disposable test server (never production).
+
+on:
+  workflow_dispatch:
+    inputs:
+      architectures:
+        description: "Which runners"
+        type: choice
+        options: [both, arm64, x64]
+        default: both
+
+permissions:
+  contents: read
+
+jobs:
+  coldstart:
+    name: Cold start ${{ matrix.rid }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.architectures == 'arm64' && '[{"runner":"macos-15","rid":"osx-arm64"}]' || inputs.architectures == 'x64' && '[{"runner":"macos-15-intel","rid":"osx-x64"}]' || '[{"runner":"macos-15","rid":"osx-arm64"},{"runner":"macos-15-intel","rid":"osx-x64"}]') }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    env:
+      DOTNET_NOLOGO: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+      RID: ${{ matrix.rid }}
+      SQLINVESTIGATOR_FIXTURE_SERVER: ${{ vars.SQLINVESTIGATOR_FIXTURE_SERVER }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: .nuget/packages
+          key: nuget-${{ matrix.rid }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj') }}
+
+      - name: Temporary login keychain
+        run: |
+          KC="$RUNNER_TEMP/sqlinv-ci.keychain-db"
+          PW="$(openssl rand -hex 16)"
+          security create-keychain -p "$PW" "$KC"
+          security set-keychain-settings -lut 21600 "$KC"
+          security unlock-keychain -p "$PW" "$KC"
+          security list-keychains -d user -s "$KC"
+          security default-keychain -d user -s "$KC"
+
+      # The release tarball, packaged exactly as .github/workflows/macos.yml packages it.
+      - name: Build the release tarball (harness)
+        run: |
+          dotnet publish src/SqlInvestigator.McpServer -c Release -r "$RID" --self-contained true \
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none \
+            -p:ContinuousIntegrationBuild=true -p:SourceRevisionId=$GITHUB_SHA -o "$RUNNER_TEMP/publish/app" --nologo -v quiet
+          dotnet publish tests/SqlInvestigator.FixtureTool -c Release -r "$RID" --self-contained true \
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=none -o "$RUNNER_TEMP/publish/fixture" --nologo -v quiet
+          VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
+          cp docs/USER-GUIDE.md "$RUNNER_TEMP/publish/app/README.md"
+          printf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \
+            "$VERSION" "$GITHUB_SHA" "$RID" > "$RUNNER_TEMP/publish/app/VERSION.txt"
+          mkdir -p "$RUNNER_TEMP/download"
+          tar -C "$RUNNER_TEMP/publish/app" -czf "$RUNNER_TEMP/download/SqlInvestigator-$VERSION-$RID.tar.gz" .
+          echo "SQLINV_TARBALL=$RUNNER_TEMP/download/SqlInvestigator-$VERSION-$RID.tar.gz" >> "$GITHUB_ENV"
+
+      # One disposable database with synthetic orders and a SELECT-only login on dbo.Orders (harness).
+      - name: Synthetic database and read-only login (harness)
+        env:
+          SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD: ${{ secrets.SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD }}
+        run: |
+          test -n "$SQLINVESTIGATOR_FIXTURE_SERVER" || { echo "::error::vars.SQLINVESTIGATOR_FIXTURE_SERVER is not set"; exit 1; }
+          OUT=$("$RUNNER_TEMP/publish/fixture/SqlInvestigator.FixtureTool" create --name "coldstart_${RID//-/_}" --kind orders --grant dbo.Orders)
+          echo "$OUT" | grep -q '"ok":true' || { echo "::error::fixture create failed: $OUT"; exit 1; }
+          DB=$(echo "$OUT" | sed -n 's/.*"database":"\([^"]*\)".*/\1/p')
+          LOGIN=$(echo "$OUT" | sed -n 's/.*"login":"\([^"]*\)".*/\1/p')
+          echo "FIXTURE_DB=$DB" >> "$GITHUB_ENV"
+          echo "FIXTURE_LOGIN=$LOGIN" >> "$GITHUB_ENV"
+
+      - name: Cold-start evaluation (the evaluator's script)
+        env:
+          SQLINV_SQL_SERVER: ${{ vars.SQLINVESTIGATOR_FIXTURE_SERVER }}
+          SQLINV_SQL_PASSWORD: fixture-secret
+          SQLINV_SQL_SCOPE: dbo.Orders
+        run: |
+          export SQLINV_SQL_DATABASE="$FIXTURE_DB" SQLINV_SQL_LOGIN="$FIXTURE_LOGIN"
+          export SQLINV_REPORT="$RUNNER_TEMP/report/coldstart-$RID.md"
+          mkdir -p "$RUNNER_TEMP/report"
+          # The evaluator's script and its own helpers, run from a copy outside the checkout so nothing else is at hand.
+          mkdir -p "$RUNNER_TEMP/evaluator" && cp eng/coldstart/* "$RUNNER_TEMP/evaluator/"
+          cd "$RUNNER_TEMP/evaluator"
+          bash ./macos-coldstart.sh
+
+      - name: Show the report
+        if: always()
+        run: cat "$RUNNER_TEMP/report/"*.md 2>/dev/null || echo "no report was written"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coldstart-${{ matrix.rid }}
+          path: ${{ runner.temp }}/report
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Drop the synthetic database (harness)
+        if: always()
+        env:
+          SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD: ${{ secrets.SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD }}
+        run: |
+          test -n "${FIXTURE_DB:-}" && "$RUNNER_TEMP/publish/fixture/SqlInvestigator.FixtureTool" drop --database "$FIXTURE_DB" --login "$FIXTURE_LOGIN" || true
+
+      - name: Remove the temporary keychain
+        if: always()
+        run: |
+          security default-keychain -d user -s login.keychain-db 2>/dev/null || true
+          security list-keychains -d user -s login.keychain-db 2>/dev/null || true
+          security delete-keychain "$RUNNER_TEMP/sqlinv-ci.keychain-db" 2>/dev/null || true
