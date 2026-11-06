@@ -323,6 +323,29 @@ public sealed class ToolSurfaceTests
         Assert.False(Directory.Exists(home));
     }
 
+    // Cold-start safety run 2026-11-06: `$pw | SqlInvestigator.exe provision ...` in Windows PowerShell 5.1 sends
+    // EF BB BF first, and the BOM became part of the stored password, so every login failed.
+    [Fact]
+    public async Task A_piped_password_loses_a_leading_byte_order_mark()
+    {
+        var home = Path.Combine(Path.GetTempPath(), "sqlinv-console-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var paths = new AppPaths(home);
+            var console = new ProvisioningConsole(paths, new Settings(), TimeProvider.System, new StringReader("﻿piped-secret\n"), new StringWriter(), new StringWriter());
+            var code = await console.RunAsync(["provision", "--alias", "bom", "--server", "s", "--database", "d", "--user", "u", "--environment", "fixture", "--scope", "dbo.T", "--no-verify"]);
+            Assert.Equal(0, code);
+            Assert.Equal("piped-secret", new CredentialVault(paths).ReadSecret("bom"));
+        }
+        finally
+        {
+            if (Directory.Exists(home))
+            {
+                Directory.Delete(home, true);
+            }
+        }
+    }
+
     [Fact]
     public async Task The_console_refuses_production()
     {

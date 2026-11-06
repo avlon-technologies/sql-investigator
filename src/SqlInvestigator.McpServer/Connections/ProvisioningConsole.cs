@@ -197,7 +197,8 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
         output.Flush();
         if (!ReferenceEquals(input, Console.In) || Console.IsInputRedirected)
         {
-            var line = input.ReadLine();
+            // Windows PowerShell pipes text to a native program with a UTF-8 byte-order mark, which is never part of a password
+            var line = input.ReadLine()?.TrimStart('﻿');
             output.WriteLine();
             return line;
         }
