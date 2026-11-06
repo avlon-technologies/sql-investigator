@@ -171,6 +171,29 @@ public sealed class StoreTests : IDisposable
         Assert.Empty(Directory.GetFiles(home, "*.tmp"));
     }
 
+    // Cold-start release validation 2026-11-06: SQLINVESTIGATOR_HOME under a folder that grants only Modify (like a
+    // folder made directly under C:\) crashed the server, because writing the owner needs WRITE_OWNER.
+    [Fact]
+    public void A_private_directory_can_be_made_under_a_folder_that_grants_only_modify()
+    {
+        var parent = Path.Combine(home, "modify-only");
+        Directory.CreateDirectory(parent);
+        var user = System.Security.Principal.WindowsIdentity.GetCurrent().User!;
+        var restricted = new System.Security.AccessControl.DirectorySecurity();
+        restricted.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
+        restricted.AddAccessRule(new System.Security.AccessControl.FileSystemAccessRule(user,
+            System.Security.AccessControl.FileSystemRights.Modify | System.Security.AccessControl.FileSystemRights.Synchronize,
+            System.Security.AccessControl.InheritanceFlags.ContainerInherit | System.Security.AccessControl.InheritanceFlags.ObjectInherit,
+            System.Security.AccessControl.PropagationFlags.None, System.Security.AccessControl.AccessControlType.Allow));
+        new DirectoryInfo(parent).SetAccessControl(restricted);
+
+        var data = Path.Combine(parent, "data");
+        SecureFiles.EnsurePrivateDirectory(data);
+        Assert.True(VaultInspector.IsCurrentUserOnly(data));
+        new ConnectionRegistry(new ConnectionCatalogReader(new AppPaths(data)), TimeProvider.System, new Settings()).RecordProvisioned(Entry(), false);
+        Assert.True(VaultInspector.IsCurrentUserOnly(Path.Combine(data, "catalog.json")));
+    }
+
     [Fact]
     public void History_and_knowledge_entries_can_be_erased_with_an_audit_event()
     {

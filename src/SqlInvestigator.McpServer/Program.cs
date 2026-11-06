@@ -64,7 +64,17 @@ internal static class Program
             .WithStdioServerTransport()
             .WithTools<InvestigatorTools>();
 
-        SecureFiles.EnsurePrivateDirectory(paths.Home);
+        try
+        {
+            SecureFiles.EnsurePrivateDirectory(paths.Home);
+        }
+        catch (InvestigatorException e)
+        {
+            // stdout stays protocol-only; the reason goes to stderr, where Claude Code shows a failed server's output
+            Console.Error.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { level = "Critical", code = e.Error.Code, message = Redaction.Apply(e.Error.Message), action = e.Error.Action }));
+            return 1;
+        }
+
         await builder.Build().RunAsync();
         return 0;
     }

@@ -20,28 +20,54 @@ internal static class SecureFiles
     /// </summary>
     public static void EnsurePrivateDirectory(string path)
     {
-        var dir = Directory.CreateDirectory(path);
-        var security = new DirectorySecurity();
-        security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
-        security.SetOwner(CurrentUser);
-        security.AddAccessRule(new FileSystemAccessRule(
-            CurrentUser,
-            FileSystemRights.FullControl,
-            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-            PropagationFlags.None,
-            AccessControlType.Allow));
-        dir.SetAccessControl(security);
+        try
+        {
+            var dir = Directory.CreateDirectory(path);
+            var security = new DirectorySecurity();
+            security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
+            SetOwnerIfDifferent(security, dir.GetAccessControl(AccessControlSections.Owner));
+            security.AddAccessRule(new FileSystemAccessRule(
+                CurrentUser,
+                FileSystemRights.FullControl,
+                InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                PropagationFlags.None,
+                AccessControlType.Allow));
+            dir.SetAccessControl(security);
+        }
+        catch (Exception e) when (e is UnauthorizedAccessException or IOException or PrivilegeNotHeldException)
+        {
+            throw Inaccessible(path, e);
+        }
     }
 
     /// <summary>Give one file an explicit protected DACL: the current user, full control, and nobody else.</summary>
     public static void RestrictFile(string path)
     {
+        var file = new FileInfo(path);
         var security = new FileSecurity();
         security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
-        security.SetOwner(CurrentUser);
+        SetOwnerIfDifferent(security, file.GetAccessControl(AccessControlSections.Owner));
         security.AddAccessRule(new FileSystemAccessRule(CurrentUser, FileSystemRights.FullControl, AccessControlType.Allow));
-        new FileInfo(path).SetAccessControl(security);
+        file.SetAccessControl(security);
     }
+
+    /// <summary>
+    /// Writing the owner needs WRITE_OWNER, which an ordinary user lacks in a folder that grants only Modify (for
+    /// example a folder made directly under C:\). A directory or file this user just created is already theirs, so
+    /// the owner is written only when it is someone else; the DACL alone needs only the owner's implicit WRITE_DAC.
+    /// </summary>
+    private static void SetOwnerIfDifferent(FileSystemSecurity target, FileSystemSecurity current)
+    {
+        if (current.GetOwner(typeof(SecurityIdentifier)) is not SecurityIdentifier owner || !owner.Equals(CurrentUser))
+        {
+            target.SetOwner(CurrentUser);
+        }
+    }
+
+    private static InvestigatorException Inaccessible(string path, Exception e) => new(new InvestigatorError(
+        "store.inaccessible",
+        $"SQL Investigator cannot create or restrict its data folder {path} to the current Windows user ({e.GetType().Name}).",
+        "Use a folder you own with full control, such as the default under %LOCALAPPDATA%, or set SQLINVESTIGATOR_HOME to one."));
 
     /// <summary>
     /// True when every access rule on the file grants the current user and the rules are not inherited.
