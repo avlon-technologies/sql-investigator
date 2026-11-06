@@ -17,15 +17,20 @@ sequenceDiagram
   K->>A: Tsql.ReadCatalog
   K->>S: save snapshot with source and capture time
   K-->>C: SchemaSnapshot
-  C->>Q: sql_validate / sql_execute(A, SELECT)
+  C->>Q: sql_validate / sql_execute(A, SELECT, investigationId)
   Q->>Q: SelectOnlyAllowlist + QueryBudgets
-  Q->>A: Tsql.ExecuteSelect as read-only principal
-  Q->>H: query id, exact SQL, alias, timestamps (no rows)
-  Q-->>C: QueryEvidence (rows, truncation flag)
-  C->>Q: sql_execute(B, SELECT)
+  alt statement rejected or over budget
+    Q->>H: audit the refusal
+    Q-->>C: actionable error, nothing sent to SQL Server
+  else accepted
+    Q->>A: Tsql.ExecuteSelect as read-only principal
+    Q->>H: query id, exact SQL, alias, timestamps (no rows)
+    Q-->>C: QueryEvidence (rows, truncation flag)
+  end
+  C->>Q: sql_execute(B, SELECT, investigationId)
   Q->>B: Tsql.ExecuteSelect
   Q-->>C: QueryEvidence
-  C->>C: correlate; label unmatched and ambiguous records
+  C->>C: correlate, then label unmatched and ambiguous records
   C->>K: knowledge_propose(relationship, evidence)
   K->>S: relationship stays proposed
   C->>Q: investigation_record(hypothesis, finding, uncertainty)
