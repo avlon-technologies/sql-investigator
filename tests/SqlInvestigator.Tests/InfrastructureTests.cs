@@ -132,7 +132,10 @@ public sealed class StoreTests : IDisposable
             }
         }
 
-        Directory.Delete(home, true);
+        if (Directory.Exists(home))
+        {
+            Directory.Delete(home, true);
+        }
     }
 
     private AppPaths Paths()
