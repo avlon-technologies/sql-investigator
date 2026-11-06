@@ -1,17 +1,6 @@
 {
-  "profile": "continuum-decision-authority/1",
-  "note": "Who may decide what. Sent once by `continuum decision init` as the first act of the space; after that the record is the policy, and changing it is a govern act. Edit this file BEFORE init.",
-  "principals": {
-    "owner": {
-      "issuer": "https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0",
-      "oid": "2605c7a8-5120-4edb-98cc-76d563601c0f",
-      "note": "Michael Kang"
-    }
-  },
   "grants": [
     {
-      "id": "owner",
-      "principal": "owner",
       "actingAs": "self",
       "actions": [
         "govern",
@@ -25,25 +14,27 @@
         "check",
         "evidence"
       ],
+      "id": "owner",
+      "principal": "owner",
       "subjects": [
         "*"
       ]
     },
     {
-      "id": "claude-code-delegate",
-      "principal": "owner",
       "actingAs": "agent:claude-code",
-      "delegatedBy": "owner",
       "actions": [
         "propose",
         "amend",
         "check",
         "evidence"
       ],
+      "delegatedBy": "owner",
+      "id": "claude-code-delegate",
+      "note": "agent:claude-code may propose, amend, check and record evidence through a delegation the owner mints (continuum decision delegate). It may never accept, reject, revoke or supersede.",
+      "principal": "owner",
       "subjects": [
         "*"
-      ],
-      "note": "agent:claude-code may propose, amend, check and record evidence through a delegation the owner mints (continuum decision delegate). It may never accept, reject, revoke or supersede."
+      ]
     },
     {
       "id": "chatgpt-delegate",
@@ -58,11 +49,39 @@
         "reject"
       ],
       "subjects": [
+        "SQLInvestigator",
         "::SQLInvestigator"
-      ]
+      ],
+      "expires": "2026-11-12T23:59:59.000Z",
+      "note": "agent:remote-mcp (ChatGPT and other Remote MCP connectors, recognized by the Host from the relay client) may accept or reject SQL Investigator decisions for the owner, until the expiry. Scope names both the unanchored form the ADRs record and the root-anchored form."
     }
   ],
+  "note": "Who may decide what. The policy in force is the latest governed event in the Host record, not this file. This file mirrors it; to change it, edit here and run continuum decision govern --policy <this file> --reason <why>.",
+  "principals": {
+    "owner": {
+      "issuer": "https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0",
+      "note": "Michael Kang",
+      "oid": "2605c7a8-5120-4edb-98cc-76d563601c0f"
+    }
+  },
+  "profile": "continuum-decision-authority/1",
   "rules": [
-    
+    {
+      "id": "an-approver-who-did-not-author-it",
+      "actions": [
+        "accept",
+        "revoke",
+        "supersede"
+      ],
+      "subjects": [
+        "*"
+      ],
+      "separation": "distinct-party",
+      "approverKinds": [
+        "human",
+        "workload"
+      ],
+      "note": "A decision is approved by a person or a delegated workload, never by the party that proposed or amended it. A workload approves only where its own grant includes the action (agent:claude-code holds no accept)."
+    }
   ]
 }

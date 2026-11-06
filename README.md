@@ -14,7 +14,7 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 | Development package (`continuum/`) | `continuum package build` succeeds; `continuum package check continuum` reports it intact |
 | Acceptance scenarios (12) | All references resolve; adapter scaffolded; **0 / 12 passing**: every step is a stub until the implementation exists |
 | Diagrams | Atlas C1/C2/C3 and security views in `continuum/diagrams/atlas/`, checked against the model; Mermaid editorial supplements |
-| ADRs (`continuum/decisions/`) | ADR-001..006 **proposed** in a Host-governed decision space. **Not accepted**: acceptance is the owner's act |
+| ADRs (`continuum/decisions/`) | ADR-001..006 **proposed** in a Host-governed decision space. **Not accepted**. The owner, or `agent:remote-mcp` (ChatGPT) under the owner's delegation until 2026-11-12, may accept them |
 | Initial accepted state (S0) | Not recorded yet; the owner records it |
 
 The architecture guard (`pre-push`, CI) runs the full acceptance suite. It reports implementation drift until the scenarios pass, which is expected before any code exists.
@@ -77,6 +77,6 @@ Do not edit derived files (`IMPLEMENTATION.md`, `BEHAVIOUR.md`, `PACKAGE.json`, 
 
 ## Owner actions still open
 
-1. **Decide the six ADRs.** Their alignment checks report "missing" because the expectations were written without the `::` root anchor (see `continuum/decisions/README.md`). Either accept them as proposed (`continuum decision accept ADR-001 --reason "<why>"`, and so on for each), or reject them so they can be re-proposed with anchored expectations.
+1. **Decide the six ADRs.** Their alignment checks report "missing" because the expectations were written without the `::` root anchor (see `continuum/decisions/README.md`). Either accept them as proposed (`continuum decision accept ADR-001 --reason "<why>"`, and so on for each, or through ChatGPT's `continuum_decision_accept`, which the policy permits until 2026-11-12), or reject them so they can be re-proposed with anchored expectations.
 2. **Record the initial accepted state** once you have reviewed the model: `continuum package accept continuum --as <you> --verified-against HEAD`, then `continuum ledger record continuum --verified-against HEAD`.
 3. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
