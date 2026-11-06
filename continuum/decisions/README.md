@@ -33,9 +33,14 @@ continuum decision verify               # the Host confirms the export matches i
 
 ## Authority policy
 
+The policy in force is the latest `governed` event in the Host record, not `decision-authority.json`. The file mirrors it. To change the policy, edit the file and run `continuum decision govern --policy continuum/decisions/decision-authority.json --reason "<why>"` (CLI 0.28.8 or later), signed in as the owner. Editing the file alone changes nothing.
+
+In force since event 14 (2026-11-06, policy `sha256:a97d5f9fbc5f9c44e8b7daa446833040bdad848a9cd2a58aebe464aa60f361eb`; the genesis policy was `sha256:8de00d45…`):
+
 - **Owner:** Michael Kang (Entra object id `2605c7a8-5120-4edb-98cc-76d563601c0f`), with every action on every decision.
 - **`agent:claude-code`:** may propose, amend, check and record evidence, only through a short-lived delegation the owner mints. It may never accept, reject, revoke or supersede.
-- **Separation of duties:** accept, revoke and supersede must be performed by a human who is not the author.
+- **`agent:remote-mcp`** (ChatGPT and other Remote MCP connectors, recognized by the Host from the relay's client): may propose, check, record evidence, accept and reject decisions scoped to `SQLInvestigator`, for the owner, **until 2026-11-12T23:59:59Z**. After that the grant is dead; withdraw it sooner with another `govern`.
+- **Separation of duties:** accept, revoke and supersede are performed by a person or a delegated workload that did **not** propose or amend the decision (`distinct-party`). A workload approves only where its own grant includes the action.
 
 The six proposals were made by `agent:claude-code` under a delegation. The Host subsequently authorized `agent:remote-mcp` to accept them through the `chatgpt-delegate` grant while enforcing its non-author-approver rule.
 
