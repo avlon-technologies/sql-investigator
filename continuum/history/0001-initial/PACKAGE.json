@@ -1,0 +1,154 @@
+{
+  "development-package": "continuum-development-package/1",
+  "name": "sql-investigator",
+  "generator": {
+    "tool": "tools/development-package.mjs",
+    "version": "0.1.0"
+  },
+  "goal": "GOAL.md",
+  "semantic": {
+    "package": "avlon.sqlinvestigator",
+    "version": "draft-1",
+    "core": "adl/1.6",
+    "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+    "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+    "manifest": "model/architecture.adl-manifest.json",
+    "documents": [
+      "model/architecture.adl"
+    ],
+    "textProjection": "model/architecture.adl.txt",
+    "proof": "model/compile-proof.json",
+    "warnings": 0,
+    "notEvaluated": 0
+  },
+  "change": null,
+  "environment": {
+    "name": "LocalDevelopment",
+    "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+    "document": "model/local-development.adl-binding.json",
+    "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
+  },
+  "environments": [
+    {
+      "name": "LocalDevelopment",
+      "id": "a2eaf960-60d0-4a93-a7c6-4e61e672983a",
+      "document": "model/local-development.adl-binding.json",
+      "bindingDigest": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
+    }
+  ],
+  "bindings": [
+    "model/local-development.adl-binding.json"
+  ],
+  "vocabularies": [
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json"
+  ],
+  "acceptance": {
+    "scenarios": "acceptance/scenarios",
+    "runner": "acceptance/run.mjs",
+    "fakeProvider": "acceptance/fake-model-provider.mjs",
+    "adapter": "acceptance/adapter.mjs",
+    "count": 12,
+    "names": [
+      "b01-connection-provisioning",
+      "b02-bounded-select",
+      "b03-reject-writes",
+      "b04-fail-closed-policy",
+      "b05-resource-budgets",
+      "b06-cross-database-correlation",
+      "b07-history",
+      "b08-relationship-review",
+      "b09-secret-redaction",
+      "b10-schema-drift",
+      "b11-safe-failures",
+      "b12-claude-only"
+    ],
+    "traces": [
+      "acceptance/traces/b01-connection-provisioning.trace.json",
+      "acceptance/traces/b07-history.trace.json",
+      "acceptance/traces/b08-relationship-review.trace.json"
+    ],
+    "executed": false,
+    "results": null,
+    "uncoveredRequirements": []
+  },
+  "implementation": "IMPLEMENTATION.md",
+  "behaviour": {
+    "document": "BEHAVIOUR.md",
+    "starts": 3,
+    "underspecified": 0
+  },
+  "readme": "README.md",
+  "controls": [
+    {
+      "variable": "MAX_QUERY_ROWS",
+      "default": "500",
+      "meaning": "Recommended default, not architecture: maximum rows returned per query; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "MAX_RESULT_BYTES",
+      "default": "1048576",
+      "meaning": "Recommended default, not architecture: maximum serialized result size per query in bytes; the gateway truncates beyond it and sets the truncation flag."
+    },
+    {
+      "variable": "SQL_TIMEOUT_SECONDS",
+      "default": "15",
+      "meaning": "Recommended default, not architecture: SQL command timeout; the gateway cancels the command and reports a sanitized timeout error."
+    },
+    {
+      "variable": "MAX_CONCURRENT_QUERIES",
+      "default": "2",
+      "meaning": "Recommended default, not architecture: queries executing at once across all aliases; further requests are refused with an audited budget event."
+    },
+    {
+      "variable": "MAX_QUERIES_PER_INVESTIGATION",
+      "default": "50",
+      "meaning": "Recommended default, not architecture: executed queries allowed per investigation; further requests are refused with an audited budget event."
+    }
+  ],
+  "generated": [
+    "BEHAVIOUR.md",
+    "IMPLEMENTATION.md",
+    "README.md",
+    "acceptance/README.md",
+    "acceptance/fake-model-provider.mjs",
+    "acceptance/run.mjs",
+    "acceptance/traces/b01-connection-provisioning.trace.json",
+    "acceptance/traces/b07-history.trace.json",
+    "acceptance/traces/b08-relationship-review.trace.json",
+    "model/architecture.adl.txt",
+    "model/compile-proof.json"
+  ],
+  "files": {
+    "BEHAVIOUR.md": "sha256:65ce0a857465e39541a99363fef1c02bff624105f0211ab611ff0dcbad16e99c",
+    "GOAL.md": "sha256:242c389a8bd6ca13518b6f7655dcdd7b5b379b5674982e9cb03ddec01f31b90b",
+    "IMPLEMENTATION.md": "sha256:cc40325530c851dbfc2b80c224d3ade08840eabb7be9216f3f6ae1a99b997697",
+    "README.md": "sha256:92fb666e4c354e7492cff191dd171dfb21ad44c149f6d2d9a320562ee84586e1",
+    "acceptance/README.md": "sha256:219a628f6484e4b713f7a5da625b52389e38c28341b6456794ecce0310d2f441",
+    "acceptance/adapter.mjs": "sha256:3abcf2e0db2525e1a5eb8ed75d32283880dd459a2777a3c8733c0ea37f4e1d62",
+    "acceptance/fake-model-provider.mjs": "sha256:d2ec0ce524ca996865beef2c339c205deb9d7ad2610a1e7ff72a1b7732781b69",
+    "acceptance/run.mjs": "sha256:447dac8db77b8e1d93382e778b52ebd4fead29f0ef62b05e3a924717dea01370",
+    "acceptance/scenarios/b01-connection-provisioning.scenario.json": "sha256:955c72804d756dd3283c725a910e0216828b9762ec8fa4fd3211f66bf26d89d8",
+    "acceptance/scenarios/b02-bounded-select.scenario.json": "sha256:dd84c7da0a756adc3828fc7b1712b4288d91320507f1271d63f920d3f4d8d29d",
+    "acceptance/scenarios/b03-reject-writes.scenario.json": "sha256:9206d39f7ebac837a6108d239114dadf2e6f27ca1a46c764cf700a3fc98d859e",
+    "acceptance/scenarios/b04-fail-closed-policy.scenario.json": "sha256:ac618940ef4a976fdccd24d524b0a4ebac18c917af90f055c35c29a7ae300b5c",
+    "acceptance/scenarios/b05-resource-budgets.scenario.json": "sha256:82714c748ddc74b8de2bd41c7e25d6e579d866a9b963933b7f222f754a935965",
+    "acceptance/scenarios/b06-cross-database-correlation.scenario.json": "sha256:bd2154d110d28c42b712bc6456ef3558272b8888109dbf0293c13fceed2e2d34",
+    "acceptance/scenarios/b07-history.scenario.json": "sha256:95752b3d6434f2a3877c77c99db54a6dc14c5f5db2ba7e5c318b3cb9c86bd63c",
+    "acceptance/scenarios/b08-relationship-review.scenario.json": "sha256:fdc906111455064027bdfbc717034dede58fbb992d8765d4a5a12b0e48f3a316",
+    "acceptance/scenarios/b09-secret-redaction.scenario.json": "sha256:06a91929b4722ec3d7f371c9e1090d2f17693cdb05fdeed13e21873bafb7ff2c",
+    "acceptance/scenarios/b10-schema-drift.scenario.json": "sha256:598bb48a7e738e58435cc890245c669d888a4154241d9ff452a2239b6c53c215",
+    "acceptance/scenarios/b11-safe-failures.scenario.json": "sha256:8e38c665f881885b83793591903f096e339f4fa4e3c0e9bf2da02d11b979a077",
+    "acceptance/scenarios/b12-claude-only.scenario.json": "sha256:b029d5fa960b13b4b2acdc806aac616d88cd8a02f4cdf5cde259b15e8b99e52e",
+    "acceptance/traces/b01-connection-provisioning.trace.json": "sha256:ef9f20dd75d83fe2da4443df3d7a48e63fa03d523ff9b4fcc3a8b930ab7c94f7",
+    "acceptance/traces/b07-history.trace.json": "sha256:392632411cb815508f83da1877f5c73a5a27c1f538a47abce4846853749ff5fa",
+    "acceptance/traces/b08-relationship-review.trace.json": "sha256:f2d7d74654772194dd1611d30ce7983eba6fccb17a08fb8ee4ba1c90e6c44f21",
+    "development-package.json": "sha256:3f772625969fe3b37a816f87883cb89ae0021d33de7744d6e9a39f3693f54180",
+    "model/architecture.adl": "sha256:a7845e458cff2c79a8e846521ef12db47dfdbd12c3016cbf2ddaa9dd144ebca1",
+    "model/architecture.adl-manifest.json": "sha256:b50c9982c5a508a967ac05a6d4159d8ac37a8b6fc33e8a5e9de2a94b0514c450",
+    "model/architecture.adl.txt": "sha256:09e51d11fe68c196186a15fc34ddc2bae89efce3ab9cb583c2014b7621d3f3d1",
+    "model/avlon.bindings.localdotnet.vocabulary-claims.json": "sha256:060216c3bd88966ea382d014a5fdfe5aa2329618b410229e2809ca9983554367",
+    "model/compile-proof.json": "sha256:6603a9f5957a39df6907cc548869a011f722b955ed7b7fc3742b8c6420c3a8e1",
+    "model/local-development.adl-binding.json": "sha256:b602265a873b3d839f8bf535f07c75b63e911132ae988216000cff20109d61c5",
+    "model/sql-investigator.bdl": "sha256:ce3b667ffb3ad537e20369623ed8ada53ee01360fbc94478e62b9391c2a3ddc8"
+  }
+}

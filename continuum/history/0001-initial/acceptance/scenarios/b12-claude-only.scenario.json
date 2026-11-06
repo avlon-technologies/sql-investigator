@@ -1,0 +1,42 @@
+{
+  "acceptance-scenario": "1",
+  "name": "b12-claude-only",
+  "purpose": "Routine workflow is MCP-accessible; credential entry remains local",
+  "verifies": [
+    "::SQLInvestigator.Investigation.InvestigateData.SoleConversationalHost",
+    "::SQLInvestigator.LocalMCPServer"
+  ],
+  "test": "::SQLInvestigator.ClaudeOnlySuite",
+  "environment": "LocalDevelopment",
+  "given": [
+    {
+      "step": "mcp.start-stdio",
+      "args": {},
+      "text": "Claude Code starts LocalMCPServer as an MCP stdio child process"
+    }
+  ],
+  "when": [
+    {
+      "step": "mcp.exercise-routine-tools",
+      "args": {},
+      "text": "Claude Code calls each routine tool"
+    }
+  ],
+  "then": [
+    {
+      "step": "connection.verify-local-only-provisioning",
+      "args": {},
+      "text": "no MCP tool accepts or returns a credential, and provisioning is not an MCP tool"
+    },
+    {
+      "step": "mcp.stdout-protocol-only",
+      "args": {},
+      "text": "everything written to stdout is a well-formed MCP protocol message"
+    },
+    {
+      "step": "mcp.tool-surface-exact",
+      "args": {},
+      "text": "the advertised tools are exactly connection_list, connection_remove, schema_inspect, sql_validate, sql_execute, investigation_start, investigation_record, investigation_get, knowledge_search, knowledge_propose and knowledge_review"
+    }
+  ]
+}

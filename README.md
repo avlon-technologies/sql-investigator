@@ -14,7 +14,7 @@ A single-user, local Windows developer tool: ask Claude Code questions about dat
 | Acceptance (`continuum/acceptance`) | 12 / 12 scenarios pass; all 46 steps drive the real exe over MCP stdio and the console |
 | Architecture model, bindings, package | Unchanged by the implementation; `continuum package check continuum` intact |
 | ADRs (`continuum/decisions/`) | ADR-001..006 accepted in the Continuum Host |
-| Initial accepted state (S0) | Not recorded yet; the owner records it (see the end of this file) |
+| Initial accepted state (S0) | Recorded 2026-11-06 by mike@avlon.ca at `5fdd905` (suite 12/12); ledger checkpoint 0001, verified |
 
 ## Install
 
@@ -165,7 +165,6 @@ Do not edit derived files (`IMPLEMENTATION.md`, `BEHAVIOUR.md`, `PACKAGE.json`, 
 
 ## Owner actions still open
 
-1. **Record the initial accepted state** once you have reviewed the model and implementation: `continuum package accept continuum --as <you> --verified-against HEAD`, then `continuum ledger record continuum --verified-against HEAD`.
-2. **Configure the Continuum CI gate**: set the Actions variable `CONTINUUM_HOST` and the secret `CONTINUUM_HOST_API_KEY` (`continuum ci setup` checks them). Until then the `Continuum` workflow reports "architecture not evaluated".
-3. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
-4. **Read ADR alignment from the model.** The recorded alignment checks report "missing" only because the expectations lack the `::` root anchor (see `continuum/decisions/README.md`).
+1. **Configure the Continuum CI gate**: set the Actions variable `CONTINUUM_HOST` and the secret `CONTINUUM_HOST_API_KEY` (`continuum ci setup` checks them). Until then the `Continuum` workflow reports "architecture not evaluated".
+2. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
+3. **Read ADR alignment from the model.** The recorded alignment checks report "missing" only because the expectations lack the `::` root anchor (see `continuum/decisions/README.md`).

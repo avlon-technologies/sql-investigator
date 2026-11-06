@@ -1,0 +1,34 @@
+{
+  "continuum-ledger": "continuum-ledger/1",
+  "package": "avlon.sqlinvestigator",
+  "current": 1,
+  "entries": [
+    {
+      "sequence": 1,
+      "label": "initial",
+      "recorded": "history/0001-initial",
+      "package": "avlon.sqlinvestigator",
+      "version": "draft-1",
+      "core": "adl/1.6",
+      "changeState": "sha256:def71c2de556c87d6fcde76ced19b541be633f83f7a19d97098a90742d156a3a",
+      "attestation": "sha256:df885cefc7aba2905bf00c676755cd0ec8b3ae6170da605b600ee44c2c7d3a77",
+      "environment": "LocalDevelopment",
+      "bindingDigests": {
+        "LocalDevelopment": "sha256:2122859ffe92d059b5f01484d03f89955038ca820d79498e3f71e308dd9075e7"
+      },
+      "acceptance": {
+        "count": 12,
+        "executed": false,
+        "accepted": {
+          "fact": "sha256:fdbddf00addb951250e11871a880d6e1c77edb5a4dc99af0122cf3c7ee22abc9",
+          "implementationRevision": "5fdd905713f09a9f8356ea54e256049a63eb2688"
+        }
+      },
+      "transition": null,
+      "previous": null,
+      "verifiedAgainst": {
+        "commit": "5fdd905713f09a9f8356ea54e256049a63eb2688"
+      }
+    }
+  ]
+}

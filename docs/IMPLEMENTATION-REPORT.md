@@ -28,7 +28,7 @@ The negative security tests run on their own, as `CLAUDE.md` requires:
 ## What was not established
 
 - **Conformance above L1.** `continuum conformance assess` cannot establish a source revision or a correspondence map for this repository, and `continuum conformance check` supports only JS/TS sources. So L2 is a verifier limit, not a failed check. **No level above L1 is claimed.** The test and acceptance results above are reported alongside the assessment and are not a conformance level.
-- **The lifecycle state.** `continuum ledger current` reports `NOT VERIFIED`. The initial accepted state (S0) is an owner act and has not been recorded.
+- **The lifecycle state.** At the time of this report `continuum ledger current` reported `NOT VERIFIED`. The owner has since recorded S0: acceptance fact `sha256:fdbddf00…` by mike@avlon.ca at `5fdd905` (12/12), ledger checkpoint 0001 `initial`, verified.
 - **The Continuum CI gate.** The `Continuum` workflow reports "architecture not evaluated" because the `CONTINUUM_HOST` variable and the `CONTINUUM_HOST_API_KEY` secret are not set. The `.NET` workflow is green.
 
 ## Open gap
@@ -43,7 +43,7 @@ The recommended disposition needs no model change. The gap waits for the owner a
 
 ## Owner actions
 
-1. Review the model and the implementation, then record S0: `continuum package accept continuum --as <you> --verified-against HEAD`, followed by `continuum ledger record continuum --verified-against HEAD`.
+1. ~~Record S0.~~ Done 2026-11-06 (checkpoint 0001).
 2. Set the Actions variable `CONTINUUM_HOST` and the secret `CONTINUUM_HOST_API_KEY` (`continuum ci setup` checks them).
 3. Get data-owner approval before connecting any non-fixture database. The BDL `SensitiveDataPolicy` is still open.
 4. Dispose of the gap above.
