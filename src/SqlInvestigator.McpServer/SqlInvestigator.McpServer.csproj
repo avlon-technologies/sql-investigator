@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- LocalMCPServer (continuum/model/architecture.adl): one Windows x64 .NET 10 executable.
+       Default mode: MCP over stdio for Claude Code. `provision` and the other console verbs: the local console. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SqlInvestigator</AssemblyName>
+    <RootNamespace>SqlInvestigator</RootNamespace>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="SqlInvestigator.Tests" />
+    <InternalsVisibleTo Include="SqlInvestigator.IntegrationTests" />
+  </ItemGroup>
+</Project>

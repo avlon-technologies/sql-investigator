@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Fixture commands for continuum/acceptance/adapter.mjs: create and drop disposable databases, change a fixture
+       schema, act directly as a fixture principal, and inspect the credential vault. Test tooling only. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SqlInvestigator.FixtureTool</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlInvestigator.Testing\SqlInvestigator.Testing.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SqlInvestigator.FixtureTool/SqlInvestigator.FixtureTool.csproj" />
+    <Project Path="tests/SqlInvestigator.IntegrationTests/SqlInvestigator.IntegrationTests.csproj" />
+    <Project Path="tests/SqlInvestigator.Testing/SqlInvestigator.Testing.csproj" />
+    <Project Path="tests/SqlInvestigator.Tests/SqlInvestigator.Tests.csproj" />
+  </Folder>
+</Solution>
