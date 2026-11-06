@@ -29,7 +29,7 @@ internal static class SqlValidator
         nameof(QualifiedJoin), nameof(UnqualifiedJoin), nameof(JoinParenthesisTableReference), nameof(QueryDerivedTable),
         nameof(ColumnReferenceExpression), nameof(IdentifierOrValueExpression),
         nameof(IntegerLiteral), nameof(StringLiteral), nameof(NumericLiteral), nameof(RealLiteral), nameof(MoneyLiteral),
-        nameof(NullLiteral), nameof(MaxLiteral), nameof(BinaryLiteral),
+        nameof(NullLiteral), nameof(MaxLiteral), nameof(BinaryLiteral), nameof(IdentifierLiteral),
         nameof(BooleanComparisonExpression), nameof(BooleanBinaryExpression), nameof(BooleanNotExpression),
         nameof(BooleanParenthesisExpression), nameof(BooleanIsNullExpression), nameof(BooleanTernaryExpression),
         nameof(InPredicate), nameof(LikePredicate), nameof(ExistsPredicate), nameof(SubqueryComparisonPredicate), nameof(DistinctPredicate),
@@ -175,6 +175,7 @@ internal static class SqlValidator
         nameof(OptimizerHint) or nameof(LiteralOptimizerHint) or nameof(TableHintsOptimizerHint) => "an OPTION query hint",
         nameof(XmlForClause) or nameof(JsonForClause) or nameof(BrowseForClause) or nameof(ReadOnlyForClause) or nameof(UpdateForClause) => "a FOR clause",
         nameof(SchemaObjectFunctionTableReference) or nameof(GlobalFunctionTableReference) => "a table-valued function",
+        nameof(MultiPartIdentifierCallTarget) or nameof(ExpressionCallTarget) or nameof(UserDefinedTypeCallTarget) => "a user-defined or schema-qualified function call",
         nameof(TableSampleClause) => "TABLESAMPLE",
         nameof(ComputeClause) => "COMPUTE",
         nameof(SelectSetVariable) => "a variable assignment",
@@ -319,11 +320,27 @@ internal static class SqlValidator
             {
                 exempt.Add(datePart);
             }
+            else if (DatePartFunctions.Contains(name) && node.Parameters.Count > 0
+                && node.Parameters[0] is IdentifierLiteral literal && DateParts.Contains(literal.Value))
+            {
+                exempt.Add(literal);
+            }
 
             if ((name.Equals("COUNT", StringComparison.OrdinalIgnoreCase) || name.Equals("COUNT_BIG", StringComparison.OrdinalIgnoreCase))
                 && node.Parameters is [ColumnReferenceExpression { ColumnType: ColumnType.Wildcard, MultiPartIdentifier: null } star])
             {
                 exempt.Add(star);
+            }
+
+            base.ExplicitVisit(node);
+        }
+
+        /// <summary>A bare keyword literal is allowed only as the date part of a date function.</summary>
+        public override void ExplicitVisit(IdentifierLiteral node)
+        {
+            if (!exempt.Contains(node))
+            {
+                Reasons.Add($"{node.Value} is allowed only as the date part of a date function.");
             }
 
             base.ExplicitVisit(node);

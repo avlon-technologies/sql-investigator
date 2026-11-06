@@ -25,6 +25,9 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
               The login is checked to be read-only before it is stored (skip with --no-verify).
           remove --alias <name>       remove the alias and delete its DPAPI-protected secret
           list                        list aliases (no secrets)
+          erase-investigation --id <investigationId>   delete an investigation and its query provenance
+          erase-relationship --id <relationshipId>     delete a relationship with its evidence and review
+          erase-snapshots --alias <name>               delete the stored schema snapshots of an alias
           --version                   print the version
           --help                      print this text
         """;
@@ -44,6 +47,9 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
                 "provision" => await ProvisionAsync(Options.Parse(args[1..])),
                 "remove" => Remove(Options.Parse(args[1..])),
                 "list" => List(),
+                "erase-investigation" => Erase(o => Gateway().EraseInvestigation(o.Required("id")), args, "investigation"),
+                "erase-relationship" => Erase(o => Knowledge().EraseRelationship(o.Required("id")), args, "relationship"),
+                "erase-snapshots" => Erase(o => Knowledge().EraseSnapshots(o.Required("alias")) > 0, args, "schema snapshots"),
                 _ => Fail($"Unknown command \"{args[0]}\". Run SqlInvestigator --help."),
             };
         }
@@ -166,6 +172,24 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
         return 0;
     }
 
+    private int Erase(Func<Options, bool> erase, string[] args, string what)
+    {
+        var erased = erase(Options.Parse(args[1..]));
+        output.WriteLine(erased ? $"Erased the {what}." : $"No such {what}; nothing was erased.");
+        return 0;
+    }
+
+    private Queries.QueryGateway Gateway()
+    {
+        var vault = new CredentialVault(paths);
+        return new Queries.QueryGateway(new ConnectionCatalogReader(paths), new SqlConnectionFactory(vault, settings),
+            new Queries.InvestigationHistory(paths, clock, settings), settings, Microsoft.Extensions.Logging.Abstractions.NullLogger<Queries.QueryGateway>.Instance);
+    }
+
+    private Knowledge.KnowledgeService Knowledge()
+        => new(paths, new ConnectionCatalogReader(paths), new SqlConnectionFactory(new CredentialVault(paths), settings), clock, settings,
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<Knowledge.KnowledgeService>.Instance);
+
     /// <summary>Reads the secret without echoing it when a console is attached; otherwise one line of stdin.</summary>
     private string? ReadSecret(string prompt)
     {
@@ -211,7 +235,7 @@ internal sealed class ProvisioningConsole(AppPaths paths, Settings settings, Tim
     private sealed class Options
     {
         private static readonly HashSet<string> Flags = ["windows-auth", "trust-server-certificate", "no-encrypt", "replace", "no-verify"];
-        private static readonly HashSet<string> Known = ["alias", "server", "database", "environment", "scope", "user"];
+        private static readonly HashSet<string> Known = ["alias", "server", "database", "environment", "scope", "user", "id"];
         private static readonly HashSet<string> Forbidden = ["password", "pwd", "secret", "credential", "connection-string"];
         private readonly Dictionary<string, List<string>> values = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> flags = new(StringComparer.OrdinalIgnoreCase);

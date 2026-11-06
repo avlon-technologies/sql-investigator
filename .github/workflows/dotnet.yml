@@ -1,0 +1,66 @@
+# Build, test and acceptance for the SQL Investigator executable.
+#
+# Runs on Windows (DPAPI CurrentUser and NTFS ACLs are part of what is tested) against a throwaway SQL Server
+# installed on the runner. The fixtures are disposable databases with synthetic data; nothing here can reach a
+# real database. The sa password below is for that ephemeral runner instance only and protects nothing.
+name: .NET
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: Build, test and acceptance
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      DOTNET_NOLOGO: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      SQLINVESTIGATOR_FIXTURE_SERVER: "localhost"
+      SQLINVESTIGATOR_FIXTURE_ADMIN_USER: "sa"
+      SQLINVESTIGATOR_FIXTURE_ADMIN_PASSWORD: "Ci-Fixture-Only-1!"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Install a disposable SQL Server
+        uses: potatoqualitee/mssqlsuite@v1.12
+        with:
+          install: sqlengine
+          version: "2022"
+          sa-password: "Ci-Fixture-Only-1!"
+
+      - name: Build (warnings are errors)
+        run: dotnet build SqlInvestigator.slnx -c Release
+
+      - name: Unit and integration tests
+        run: dotnet test SqlInvestigator.slnx -c Release --no-build --logger "trx" --results-directory TestResults
+
+      - name: Acceptance scenarios against the real executable
+        env:
+          SQLINVESTIGATOR_SKIP_BUILD: "1"
+          SQLINVESTIGATOR_ACCEPTANCE_CONFIGURATION: "Release"
+        run: node continuum/acceptance/run.mjs
+
+      - name: Remove leftover fixtures
+        if: always()
+        run: tests/SqlInvestigator.FixtureTool/bin/Release/net10.0-windows/win-x64/SqlInvestigator.FixtureTool.exe drop-all
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: TestResults
+          if-no-files-found: ignore

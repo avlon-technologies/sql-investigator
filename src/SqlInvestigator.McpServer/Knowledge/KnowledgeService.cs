@@ -200,6 +200,27 @@ internal sealed class KnowledgeService(
         });
     }
 
+    /// <summary>Erasure (binding: erasure-capable), at the developer's console: one relationship, with its evidence and review.</summary>
+    public bool EraseRelationship(string? relationshipId) => store.Update(document =>
+    {
+        var id = relationshipId?.Trim() ?? string.Empty;
+        var removed = document.Relationships.RemoveAll(r => r.RelationshipId == id) > 0;
+        Audit(document, removed ? "relationship.erased" : "relationship.erase-unknown", null, id);
+        return removed;
+    });
+
+    /// <summary>Erasure, at the developer's console: every schema snapshot of an alias.</summary>
+    public int EraseSnapshots(string? alias)
+    {
+        var name = ConnectionCatalogReader.NormalizeAlias(alias);
+        return store.Update(document =>
+        {
+            var removed = document.Snapshots.RemoveAll(s => s.Alias == name);
+            Audit(document, "schema.erased", name, $"{removed} snapshot(s)");
+            return removed;
+        });
+    }
+
     private async Task<SchemaSnapshot> CaptureAsync(ConnectionEntry entry, IReadOnlyList<ScopeEntry> scope, DateTimeOffset now, CancellationToken cancel)
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancel);

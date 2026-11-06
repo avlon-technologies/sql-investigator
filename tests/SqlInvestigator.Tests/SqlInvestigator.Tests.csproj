@@ -11,6 +11,7 @@
   <ItemGroup>
     <Using Include="Xunit" />
     <ProjectReference Include="..\..\src\SqlInvestigator.McpServer\SqlInvestigator.McpServer.csproj" />
+    <ProjectReference Include="..\SqlInvestigator.Testing\SqlInvestigator.Testing.csproj" />
 
   </ItemGroup>
 </Project>

@@ -174,6 +174,16 @@ internal sealed class QueryGateway(
         return new InvestigationView(investigation, queries);
     }
 
+    /// <summary>Erasure (binding: erasure-capable): the developer deletes an investigation and the provenance of its queries. Console only.</summary>
+    public bool EraseInvestigation(string? investigationId) => history.Update(document =>
+    {
+        var id = investigationId?.Trim() ?? string.Empty;
+        var removed = document.Investigations.RemoveAll(i => i.InvestigationId == id) > 0;
+        var queries = document.Queries.RemoveAll(q => q.InvestigationId == id);
+        history.Audit(document, removed ? "investigation.erased" : "investigation.erase-unknown", investigationId: id, detail: $"{queries} query record(s) erased");
+        return removed;
+    });
+
     private static InvestigationRecord FindInvestigation(HistoryDocument document, string id)
         => document.Investigations.FirstOrDefault(i => i.InvestigationId == id)
             ?? throw new InvestigatorException(new InvestigatorError(
