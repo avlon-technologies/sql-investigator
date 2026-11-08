@@ -17,3 +17,6 @@ appsettings.*.local.json
 # The development package in continuum/ IS committed; this is not.
 .continuum/
 # <<< continuum <<<
+
+# Continuum decision-ledger export: carries signed personal identity data; the Host keeps the record.
+continuum/decisions/decisions.jsonl

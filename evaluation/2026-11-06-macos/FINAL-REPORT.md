@@ -25,7 +25,7 @@
 | 21 | ADR-007 proposed, "Support macOS; protect credentials with the operating system's per-user secret store" | this agent, under the owner's delegation |
 | 22 | Checked: aligned, 7 of 7 | the Continuum Host |
 | 23 | **Accepted**, option `macos` | ChatGPT (`agent:remote-mcp`), a party distinct from the proposer |
-| 24 | **ADR-004 superseded by ADR-007**, with the reason stated | the owner (Michael Kang), grant `owner`, signed by the Host |
+| 24 | **ADR-004 superseded by ADR-007**, with the reason stated | the owner, grant `owner`, signed by the Host |
 
 - **Current state:** the decision space holds 7 decisions over 24 events: ADR-001 to ADR-003, ADR-005 to ADR-007 accepted, and ADR-004 superseded by ADR-007.
 - **ADR-004's other clauses still stand.** The supersession acts on the whole decision, but ADR-007's accepted text restates ADR-004's store decision unchanged (System.Text.Json files with atomic replacement, one writing service per store, no SQLite). The reason recorded at event 24 says the same.

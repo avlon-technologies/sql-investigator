@@ -85,35 +85,35 @@
 - Alternative considered: Standalone chat application
 - Alternative considered: Hosted web service
 - Alternative considered: Embedded local LLM
-- Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
+- Proposed by agent:claude-code acting for the project owner (Host-verified) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 ### ADR-002 — SQL Server and T-SQL only · **ACCEPTED IN HOST**
 - Support only SQL Server and T-SQL, using Microsoft.Data.SqlClient for access and Microsoft.SqlServer.TransactSql.ScriptDom for validation.
 - Rationale: A generic database provider abstraction would dilute the grammar-specific safety guarantees the validator relies on.
 - Alternative considered: Generic multi-engine provider abstraction
-- Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
+- Proposed by agent:claude-code acting for the project owner (Host-verified) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 ### ADR-003 — Bounded autonomous read-only investigation · **ACCEPTED IN HOST**
 - Allow Claude Code to run multiple SELECT investigations without per-query human approval, only within independent, fail-closed MCP-side and SQL Server-side policy boundaries.
 - Rationale: Per-SELECT human approval breaks the intended conversational workflow; trusting the model to police itself is unsafe, so enforcement must be independent of the agent.
 - Alternative considered: Human approval of every SELECT
 - Alternative considered: Trust the agent to self-police
-- Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
+- Proposed by agent:claude-code acting for the project owner (Host-verified) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 ### ADR-004 — Local JSON and DPAPI, not SQLite · **ACCEPTED IN HOST**
 - Use System.Text.Json files with atomic replacement for connection metadata, knowledge and history; protect credentials separately with Windows DPAPI CurrentUser.
 - Rationale: SQLite adds a database dependency that a single-user local tool does not need; plaintext credentials are unacceptable.
 - Alternative considered: SQLite
 - Alternative considered: Plaintext or config-file credentials
-- Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
+- Proposed by agent:claude-code acting for the project owner (Host-verified) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 ### ADR-005 — Separate queries and agent-side correlation · **ACCEPTED IN HOST**
 - Query each authorized database independently through its own alias; Claude Code correlates the bounded observations and reports unmatched and ambiguous matches.
 - Rationale: Linked servers and cross-database server-side joins broaden privileges and create hidden coupling between independently authorized databases.
 - Alternative considered: Linked servers
 - Alternative considered: Cross-database server-side joins
-- Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
+- Proposed by agent:claude-code acting for the project owner (Host-verified) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 ### ADR-006 — Continuum at design time, optional knowledge at runtime · **ACCEPTED IN HOST**
 - Use Continuum for architecture governance and the implementation handoff only. Optional exported context files may be imported as knowledge, but the executable has no Continuum runtime dependency.
 - Rationale: A runtime dependency would complicate a small local investigation tool and tie it to a networked service.
 - Alternative considered: Continuum Host or MCP as a runtime dependency
-- Proposed by agent:claude-code acting for Michael Kang (Host-verified: https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0 oid 2605c7a8-5120-4edb-98cc-76d563601c0f) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
+- Proposed by agent:claude-code acting for the project owner (Host-verified) under Host delegation 4686a9d1-45e0-425f-9574-fd68019a97c8
 
 
 > Decision statuses above are synchronized from Continuum Host acceptance events 15–20. This overview is a human-readable snapshot; the Host is authoritative, and the signed decision export in `decisions/decisions.jsonl` has been refreshed and verifies intact.

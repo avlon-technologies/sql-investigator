@@ -59,9 +59,9 @@
   "note": "Who may decide what. The policy in force is the latest governed event in the Host record, not this file. This file mirrors it; to change it, edit here and run continuum decision govern --policy <this file> --reason <why>.",
   "principals": {
     "owner": {
-      "issuer": "https://login.microsoftonline.com/f7ef9e19-20fa-47ac-91dd-47890978afe8/v2.0",
-      "note": "Michael Kang",
-      "oid": "2605c7a8-5120-4edb-98cc-76d563601c0f"
+      "issuer": "https://login.microsoftonline.com/<tenant-id>/v2.0",
+      "note": "the project owner",
+      "oid": "<owner-object-id>"
     }
   },
   "profile": "continuum-decision-authority/1",
