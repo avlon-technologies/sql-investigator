@@ -5,7 +5,7 @@
 .DESCRIPTION
   Publishes src/SqlInvestigator.McpServer self-contained for win-x64 (net10.0, as bound by BindLocalMCPServer),
   then writes artifacts/release/SqlInvestigator-<version>-win-x64.zip, its .sha256, and RELEASE.json. The zip
-  holds the program files, README.md (docs/USER-GUIDE.md) and VERSION.txt.
+  holds the program files, README.md (docs/USER-GUIDE.md), LICENSE.txt, THIRD-PARTY-NOTICES.md, licenses/ and VERSION.txt.
 
   Reproducible: deterministic compilation with ContinuousIntegrationBuild path mapping, the commit SHA as the
   source revision, zip entries in ordinal order, and every entry timestamped with the commit time. Two runs at
@@ -50,6 +50,9 @@ try {
         if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed ($LASTEXITCODE)" }
 
         Copy-Item (Join-Path $src 'docs/USER-GUIDE.md') (Join-Path $publish 'README.md')
+        Copy-Item (Join-Path $src 'LICENSE') (Join-Path $publish 'LICENSE.txt')
+        Copy-Item (Join-Path $src 'THIRD-PARTY-NOTICES.md') (Join-Path $publish 'THIRD-PARTY-NOTICES.md')
+        Copy-Item (Join-Path $src 'eng/licenses') (Join-Path $publish 'licenses') -Recurse
         } finally { git worktree remove --force $src }
         $label = if ($dirty) { "$sha (built from HEAD; the working tree had uncommitted changes)" } else { $sha }
         @(

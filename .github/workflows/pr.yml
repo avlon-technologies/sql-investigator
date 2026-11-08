@@ -1,0 +1,30 @@
+# Pull-request check on GitHub-hosted runners only: build (warnings are errors) and unit tests.
+# It never uses the self-hosted runner and gets no secrets, so it is safe for pull requests from forks.
+# The integration tests and acceptance scenarios need a SQL Server and run in dotnet.yml after merge.
+name: Pull request
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: Build and unit tests (windows-latest)
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      DOTNET_NOLOGO: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - name: Build (warnings are errors)
+        run: dotnet build SqlInvestigator.slnx -c Release
+      - name: Unit tests
+        run: dotnet test tests/SqlInvestigator.Tests -c Release --no-build

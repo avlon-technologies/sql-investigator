@@ -7,9 +7,11 @@
 # disposable SqlInvFixture_* databases with synthetic data; nothing here can reach a real database.
 name: .NET
 
+# Self-hosted runner: NEVER trigger on pull_request. A public repository would let anyone run code from a fork PR
+# on the maintainer machine. Pushes come only from people with write access.
 on:
   push:
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,6 +23,7 @@ concurrency:
 jobs:
   build-test:
     name: Build, test and acceptance
+    if: github.repository == 'avlon-technologies/sql-investigator'
     runs-on: [self-hosted, Windows, X64, sqlinv-local]
     timeout-minutes: 45
     env:

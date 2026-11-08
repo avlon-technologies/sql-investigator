@@ -33,13 +33,16 @@
 # from 1, a workflow can choose to retry an outage and never retry a genuine FAIL.
 name: Continuum
 
+# Self-hosted runner: NEVER trigger on pull_request. A public repository would let anyone run code from a fork PR
+# on the maintainer machine. Pushes come only from people with write access.
 on:
   push:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   architecture:
     name: Architecture gate
+    if: github.repository == 'avlon-technologies/sql-investigator'
     runs-on: [self-hosted, Windows, X64, sqlinv-local]
     timeout-minutes: 10
     env:

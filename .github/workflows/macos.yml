@@ -118,6 +118,7 @@ jobs:
           NAME="SqlInvestigator-$VERSION-$RID"
           cp docs/USER-GUIDE.md publish/app/README.md
           cp docs/MACOS.md publish/app/MACOS.md
+          cp LICENSE publish/app/LICENSE.txt && cp THIRD-PARTY-NOTICES.md publish/app/ && mkdir -p publish/app/licenses && cp eng/licenses/Apache-2.0.txt publish/app/licenses/
           printf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \
             "$VERSION" "$GITHUB_SHA" "$RID" > publish/app/VERSION.txt
           mkdir -p artifacts

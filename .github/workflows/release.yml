@@ -15,6 +15,7 @@ concurrency:
 jobs:
   release:
     name: Build the release zip
+    if: github.repository == 'avlon-technologies/sql-investigator'
     runs-on: [self-hosted, Windows, X64, sqlinv-local]
     timeout-minutes: 20
     env:

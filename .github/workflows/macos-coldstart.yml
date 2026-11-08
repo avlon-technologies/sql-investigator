@@ -69,6 +69,7 @@ jobs:
           VERSION=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SqlInvestigator.McpServer/SqlInvestigator.McpServer.csproj | head -1)
           cp docs/USER-GUIDE.md "$RUNNER_TEMP/publish/app/README.md"
           cp docs/MACOS.md "$RUNNER_TEMP/publish/app/MACOS.md"
+          cp LICENSE "$RUNNER_TEMP/publish/app/LICENSE.txt" && cp THIRD-PARTY-NOTICES.md "$RUNNER_TEMP/publish/app/" && mkdir -p "$RUNNER_TEMP/publish/app/licenses" && cp eng/licenses/Apache-2.0.txt "$RUNNER_TEMP/publish/app/licenses/"
           printf 'SQL Investigator %s\ncommit   %s\nplatform macOS %s, self-contained .NET 10, single file\nsigning  ad-hoc (development build: not Developer ID signed, not notarized)\n' \
             "$VERSION" "$GITHUB_SHA" "$RID" > "$RUNNER_TEMP/publish/app/VERSION.txt"
           mkdir -p "$RUNNER_TEMP/download"

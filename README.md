@@ -2,6 +2,10 @@
 
 A single-user, local developer tool for Windows and macOS: ask Claude Code questions about data in one or more SQL Server databases and get evidence-backed answers. A local .NET 10 MCP server (stdio) provides authorized schema discovery, bounded read-only query execution, investigation history and reviewed relationship knowledge. See [`VISION.md`](VISION.md).
 
+> **Use at your own risk.** SQL Investigator is provided "as is", without warranty of any kind, under the [MIT License](LICENSE). It sends query results from your databases to an AI agent (Claude Code), and from there to the agent's model provider. **You are responsible for deciding which data that agent may see**, and for complying with your organisation's policies and any data-protection law that applies (for example GDPR, PIPEDA or HIPAA). Its safety controls reduce risk but do not remove it. A read-only query can still disclose sensitive data or load a server. Always use a dedicated, least-privilege, read-only SQL login, and do not point it at production data you are not authorised to share with an AI service.
+>
+> SQL Investigator is an independent project of Avlon Technologies. It is not affiliated with, endorsed by or sponsored by Anthropic or Microsoft.
+
 ## Status
 
 **Implemented.** The application is built against the accepted Continuum package and all 12 acceptance scenarios pass against the real executable. The evidence is in [`docs/IMPLEMENTATION-REPORT.md`](docs/IMPLEMENTATION-REPORT.md).
@@ -141,7 +145,7 @@ The integration and acceptance tests create and drop disposable databases (`SqlI
 docker run -d --name sqlinvestigator-mssql -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=<throwaway> -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-`tests/SqlInvestigator.FixtureTool` is the fixture CLI the acceptance adapter drives (`drop-all` removes leftovers). CI (`.github/workflows/dotnet.yml`) runs the build, the tests and the acceptance scenarios on a self-hosted Windows runner on the developer's PC (label `sqlinv-local`, in `C:\actions-runner\sql-investigator`), against the local SQL Server container.
+`tests/SqlInvestigator.FixtureTool` is the fixture CLI the acceptance adapter drives (`drop-all` removes leftovers). CI: `.github/workflows/pr.yml` builds and runs the unit tests on GitHub-hosted Windows and macOS runners for every pull request. The full suite (`dotnet.yml`, with integration and acceptance against a SQL Server container) and the Continuum architecture gate (`continuum.yml`) run only on pushes to this repository by maintainers, on a maintainer-controlled runner. They never run for pull requests from forks.
 
 Implementation decisions (MCP SDK, store formats, allowlist design and the rest) are in [`docs/IMPLEMENTATION-NOTES.md`](docs/IMPLEMENTATION-NOTES.md).
 
@@ -173,6 +177,12 @@ Do not edit derived files (`IMPLEMENTATION.md`, `BEHAVIOUR.md`, `PACKAGE.json`, 
 1. **Get data-owner approval** before any non-fixture database is connected (the BDL `SensitiveDataPolicy` is still open).
 2. **Read ADR alignment from the model.** The recorded alignment checks report "missing" only because the expectations lack the `::` root anchor (see `continuum/decisions/README.md`).
 3. **Optionally, accept the remediated revision** as the new accepted state (`continuum package accept continuum --as <you> --verified-against HEAD`), and **publish a release** (`evaluation/2026-11-06-cold-start/RELEASE.md`).
-4. **Restore GitHub-hosted runners** if wanted. Billing currently refuses them, so both CI gates run on the self-hosted runner `sqlinv-local`.
+4. **Move the full suite to GitHub-hosted runners** if wanted. Public repositories get standard GitHub-hosted minutes free, but the integration tests need a SQL Server the hosted Windows runners cannot containerise, so for now the full suite runs on a maintainer runner, for pushes only.
 
 The Continuum CI gate evaluates the architecture with a Host judgment on every push (since 2026-11-06). The connection-removal gap is resolved. See `evaluation/2026-11-06-cold-start/` for the governance closeout, the release, the safety challenge and the cold-start evaluation.
+
+## Security, contributing and license
+
+- Report vulnerabilities privately: [`SECURITY.md`](SECURITY.md).
+- Contributions: [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- Copyright (c) 2026 Avlon Technologies. Released under the [MIT License](LICENSE). Third-party components and their licenses: [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). The Windows release includes a Microsoft redistributable component under Microsoft's own license terms.

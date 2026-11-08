@@ -9,6 +9,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SelfContained>false</SelfContained>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <Company>Avlon Technologies</Company>
+    <Authors>Avlon Technologies</Authors>
+    <Product>SQL Investigator</Product>
+    <Copyright>Copyright (c) 2026 Avlon Technologies. MIT License.</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/avlon-technologies/sql-investigator</RepositoryUrl>
   </PropertyGroup>
   <!-- The build machine's own runtime unless one is passed (dotnet publish -r osx-arm64 cross-publishes). -->
   <PropertyGroup Condition="'$(RuntimeIdentifier)' == ''">
